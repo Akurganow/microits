@@ -1,0 +1,8 @@
+:root {
+    --area-dialog-background: #fff;
+    --area-dialog-foreground: #000;
+    --area-dialog-secondaryBackground: #f5f5f5;
+    --area-dialog-secondaryForeground: #000;
+
+    font-size: 16px;
+}

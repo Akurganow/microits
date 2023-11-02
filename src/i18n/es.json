@@ -1,0 +1,23 @@
+{
+  "translation": {
+    "add": "Añadir",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "title": "Título",
+    "close": "Cerrar",
+    "status": "Estado",
+    "priority": "Prioridad",
+    "date": "Fecha",
+    "time": "Hora",
+    "estimate": "Estimación",
+    "dueDate": "Fecha de vencimiento",
+    "timeSpent": "Tiempo gastado",
+    "checkList": "Lista de verificación",
+    "tags": "Etiquetas",
+    "hideUnsorted": "Haz clic para ocultar los no ordenados",
+    "showUnsorted": "Haz clic para mostrar los no ordenados",
+    "addNewTask": "Añadir nueva tarea"
+  }
+}

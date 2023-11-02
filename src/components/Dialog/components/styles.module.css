@@ -1,0 +1,28 @@
+.header {
+	padding-block: 0.25rem;
+	padding-inline: 1rem;
+	text-align: center;
+}
+
+.header ~ .body {
+	border-top: 1px solid var(--area-dialog-secondaryBackground);
+}
+
+.body {
+	padding-block: 0.5rem;
+	padding-inline: 1rem;
+	min-width: 32rem;
+}
+
+.footer {
+	display: flex;
+	justify-content: flex-end;
+	padding-block: 0.25rem;
+	padding-inline: 1rem;
+	background-color: var(--area-dialog-secondaryBackground);
+	color: var(--area-dialog-secondaryForeground);
+}
+
+.footer > * {
+	margin-inline-start: 0.5rem;
+}

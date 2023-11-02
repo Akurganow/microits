@@ -1,0 +1,23 @@
+{
+  "translation": {
+    "add": "Ajouter",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "title": "Titre",
+    "close": "Fermer",
+    "status": "Statut",
+    "priority": "Priorité",
+    "date": "Date",
+    "time": "Heure",
+    "estimate": "Estimation",
+    "dueDate": "Date d'échéance",
+    "timeSpent": "Temps passé",
+    "checkList": "Liste de contrôle",
+    "tags": "Tags",
+    "hideUnsorted": "Cliquez pour cacher les non triés",
+    "showUnsorted": "Cliquez pour montrer les non triés",
+    "addNewTask": "Ajouter une nouvelle tâche"
+  }
+}

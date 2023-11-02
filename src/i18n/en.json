@@ -1,0 +1,59 @@
+{
+  "translation": {
+    "add": "Add",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "title": "Title",
+    "close": "Close",
+    "status": "Status",
+    "priority": "Priority",
+    "date": "Date",
+    "time": "Time",
+    "estimate": "Estimate",
+    "dueDate": "Due Date",
+    "timeSpent": "Time Spent",
+    "checkList": "Check List",
+    "tags": "Tags",
+    "hideUnsorted": "Click to hide unsorted",
+    "showUnsorted": "Click to show unsorted",
+    "addNewTask": "Add New Task",
+    "repeatable": "Repeatable",
+    "notRepeatable": "Not Repeatable",
+    "itemsCount": {
+      "urgent_one": "1 urgent priority task",
+      "urgent_other": "{{count}} urgent priority tasks",
+      "high_one": "1 high priority task",
+      "high_other": "{{count}} high priority tasks",
+      "normal_one": "1 normal priority task",
+      "normal_other": "{{count}} normal priority tasks",
+      "low_one": "1 low priority task",
+      "low_other": "{{count}} low priority tasks"
+    },
+    "repeat": {
+      "day_one": "Every day",
+      "day_other": "Every {{count}} days",
+      "week_one": "Every week",
+      "week_other": "Every {{count}} weeks",
+      "month_one": "Every month",
+      "month_other": "Every {{count}} months",
+      "year_one": "Every year",
+      "year_other": "Every {{count}} years"
+    },
+    "newTask": {
+      "repeat": {
+        "day": "Day",
+        "week": "Week",
+        "month": "Month",
+        "year": "Year"
+      }
+    },
+    "priorityType": {
+      "urgent": "Urgent",
+      "high": "High",
+      "normal": "Normal",
+      "low": "Low"
+    }
+  }
+}

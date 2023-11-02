@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "i18n/*": ["src/i18n/*"],
+      "store/*": ["src/store/*"],
+      "components/*": ["src/components/*"],
+      "containers/*": ["src/containers/*"],
+      "pages/*": ["src/pages/*"],
+      "utils/*": ["src/utils/*"],
+      "types/*": ["src/types/*"],
+      "src/*": ["src/*"],
+      "*": ["*"]
+    },
+    "jsx": "react-jsx",
+    "module": "commonjs",
+    "target": "esnext",
+    "lib": [
+      "dom",
+      "es2017",
+      "es2018",
+      "es2019",
+      "es2020",
+      "es2021",
+      "esnext"
+    ],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ]
+  },
+  "include": [
+    "./**/*"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./dist",
+    "./.idea"
+  ]
+}
