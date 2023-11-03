@@ -6,7 +6,7 @@ import { uniq } from 'lodash'
 export const storeKey = 'tasks'
 
 export const initialState: TasksState = {
-	tasks: process.env.NODE_ENV === 'production' ? [] : createTasksMock(50),
+	tasks: [],
 }
 
 function initialTags() {
@@ -68,6 +68,7 @@ function createCheckListItemMock(): Task['checkList'][0] {
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function createTasksMock(count: number): Task[] {
 	const initTags = initialTags()
 
