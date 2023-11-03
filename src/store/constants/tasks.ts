@@ -6,7 +6,7 @@ import { uniq } from 'lodash'
 export const storeKey = 'tasks'
 
 export const initialState: TasksState = {
-	tasks: createTasksMock(50),
+	tasks: process.env.NODE_ENV === 'production' ? [] : createTasksMock(50),
 }
 
 function initialTags() {

@@ -2,7 +2,7 @@ import { List, Typography } from 'antd'
 import { ListTitle } from 'components/TasksList'
 import { HTMLAttributes } from 'react'
 import cn from 'classnames'
-import st from './styles.module.css'
+import * as st from './styles.module.css'
 
 interface TaskListTitleProps extends HTMLAttributes<HTMLDivElement> {
     item: ListTitle

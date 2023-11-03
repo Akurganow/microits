@@ -1,5 +1,5 @@
 import { Badge, Button, List, Tooltip, Typography } from 'antd'
-import st from './style.module.css'
+import * as st from './style.module.css'
 import cn from 'classnames'
 import { TaskListItemProps } from 'components/TaskListItem/types'
 import { useMemo } from 'react'

@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, HTMLAttributes } from 'react'
 import cn from 'classnames'
-import st from './styles.module.css'
+import * as st from './styles.module.css'
 
 interface DialogFooterProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 

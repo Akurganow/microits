@@ -19,7 +19,7 @@ import { closeDialog } from 'store/actions/dialogs'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { isEmpty } from '@plq/is'
-import st from './styles.module.css'
+import * as st from './styles.module.css'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 

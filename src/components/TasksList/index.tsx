@@ -3,7 +3,7 @@ import { AutoSizer, List } from 'react-virtualized'
 import TaskListItem from 'components/TaskListItem'
 import TaskListTitle from 'components/TaskListTitle'
 import { Task } from 'types/tasks'
-import st from './styles.module.css'
+import * as st from './styles.module.css'
 import { Empty } from 'antd'
 
 export interface ListTitle<T = 'date' | 'time'> {
