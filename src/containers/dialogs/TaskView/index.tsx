@@ -97,6 +97,8 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	}, [dispatch, item, name])
 
 	return <Modal
+		getContainer="#dialog"
+		destroyOnClose={true}
 		width="75vw"
 		open={isDialogOpened}
 		title={`#${item.id}`}
