@@ -51,7 +51,7 @@ export const selectedTasksDateRange = createSelector(
 export const selectedTasksWithRepeatable = createSelector(
 	selectedTasksWithDate,
 	selectedTasksDateRange,
-	(tasks, { firstDate, lastDate }) => {
+	(tasks, datesRange) => {
 		if (tasks.length === 0) return []
 
 		const repeatable = tasks.filter((item) => item.repeatable)
@@ -63,7 +63,7 @@ export const selectedTasksWithRepeatable = createSelector(
 					.add(addCount, item.repeatable.repeatType)
 					.toISOString()
 
-				if (dayjs(date).isAfter(lastDate)) return null
+				if (dayjs(date).isAfter(datesRange?.lastDate)) return null
 				if (dayjs(date).isSame(item.date)) return null
 
 				return {
@@ -71,7 +71,7 @@ export const selectedTasksWithRepeatable = createSelector(
 					date,
 				} as typeof item
 			}
-			const itemsCount = Math.floor(lastDate.diff(firstDate, item.repeatable.repeatType) / item.repeatable.repeatEvery)
+			const itemsCount = Math.floor(datesRange?.lastDate.diff(datesRange?.firstDate, item.repeatable.repeatType) / item.repeatable.repeatEvery)
 
 			return Array.from({ length: itemsCount }, addItemsFn)
 		})
