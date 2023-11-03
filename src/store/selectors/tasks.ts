@@ -4,7 +4,6 @@ import { RootState } from '../types'
 import dayjs from 'dayjs'
 import { Task } from 'types/tasks'
 import { WithRequired } from 'types/common'
-import { sortBy } from '@plq/array-functions'
 import minMax from 'dayjs/plugin/minMax'
 import { getDayTitle, splitByDays, splitByTime } from 'utils/tasks'
 import { ListTitle } from 'components/TasksList'
@@ -39,6 +38,8 @@ export const selectedTasksWithoutDate = createSelector(
 export const selectedTasksDateRange = createSelector(
 	selectedTasksWithDate,
 	(tasks) => {
+		if (tasks.length === 0) return null
+
 		const dates = tasks.map((task) => dayjs(task.date))
 		return {
 			firstDate: dayjs.min(dates).startOf('day'),
@@ -51,6 +52,8 @@ export const selectedTasksWithRepeatable = createSelector(
 	selectedTasksWithDate,
 	selectedTasksDateRange,
 	(tasks, { firstDate, lastDate }) => {
+		if (tasks.length === 0) return []
+
 		const repeatable = tasks.filter((item) => item.repeatable)
 		const nonRepeatable = tasks.filter((item) => !item.repeatable)
 		const repeatTasks = repeatable.flatMap((item) => {
@@ -85,13 +88,17 @@ export const selectedTasksWithTitles = createSelector(
 	selectedTasksWithRepeatable,
 	tasks => splitByDays(tasks)
 		.flatMap(group => {
-			const withTime = sortBy(group.filter(item => item.time), ['time', 'priority']) as WithRequired<Task, 'time' | 'date'>[]
+			const withTime = group
+				.filter(item => item.time)
+				.sort((a, b) => dayjs(a.time).diff(dayjs(b.time))) as unknown as WithRequired<Task, 'date' | 'time'>[]
 			const withTimeSplit = splitByTime(withTime).flatMap(group => {
 				const time = dayjs(group[0].time).format('HH:mm')
 
 				return [{ type: 'time', title: time }, ...group] as (Task | ListTitle)[]
 			})
-			const withoutTime = sortBy(group.filter((item) => !item.time), ['priority'])
+			const withoutTime = group
+				.filter((item) => !item.time)
+				.sort((a, b) => a.priority - b.priority)
 
 			return [{ type: 'date', title: getDayTitle(group[0].date) }, ...withoutTime, ...withTimeSplit] as (Task | ListTitle)[]
 		})
