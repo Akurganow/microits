@@ -45,7 +45,7 @@ interface TaskViewProperties extends ModalProps {
 }
 
 function valuesToTask(values: TaskFormValues, task: Task): Task {
-	const checkList = values.checkList.map((checkListItem, index) => {
+	const checkList = values.checkList?.map((checkListItem, index) => {
 		const itemChecklist = task.checkList[index]
 
 		return {
