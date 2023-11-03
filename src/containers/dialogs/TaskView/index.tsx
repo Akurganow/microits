@@ -179,10 +179,10 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 				<Select bordered={false} mode="tags" options={tagsOptions} />
 			</Form.Item>
 
-			<Col offset={6} span={18}>
+			{item.checkList && <Col offset={6} span={18}>
 				{item.checkList.map((checkListItem, index) => (
 					<Form.Item<Task>
-						key={item.id+checkListItem.id}
+						key={item.id + checkListItem.id}
 						valuePropName="checked"
 						name={['checkList', index, 'completed']}
 						className={st.formItem}
@@ -190,7 +190,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 						<Checkbox>{checkListItem.title}</Checkbox>
 					</Form.Item>
 				))}
-			</Col>
+			</Col>}
 		</Form>
 	</Modal>
 }
