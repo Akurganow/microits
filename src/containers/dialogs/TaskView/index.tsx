@@ -1,7 +1,6 @@
 import { Task, TaskFormValues, TaskPriority, TaskStatus } from 'types/tasks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-	Button,
 	Checkbox, Col,
 	DatePicker,
 	Form,
@@ -104,10 +103,10 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		open={isDialogOpened}
 		title={`#${item.id}`}
 		onCancel={handleClose}
-		footer={() => <>
-			<Button type="primary" htmlType="submit" form={'task-form'+item.id+index}>{t('save')}</Button>
-			<Button onClick={handleClose}>{t('close')}</Button>
-		</>}
+		okButtonProps={{ form: 'task-form'+item.id+index, htmlType: 'submit' }}
+		okText={t('save')}
+		cancelButtonProps={{ onClick: handleClose }}
+		cancelText={t('close')}
 		{...props}
 	>
 		<Form<TaskFormValues>

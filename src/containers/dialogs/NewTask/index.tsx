@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useCallback } from 'react'
-import { Button, Modal } from 'antd'
+import { Modal } from 'antd'
 import { closeDialog } from 'store/actions/dialogs'
 import TaskForm from 'components/TaskForm'
 import { Task, TaskFormValues, TaskPriority, TaskStatus } from 'types/tasks'
@@ -44,10 +44,12 @@ export default function () {
 		open={isDialogOpened}
 		title={t('addNewTask')}
 		onCancel={handleClose}
-		footer={() => <>
-			<Button type="primary" htmlType="submit" form="new-task-form">{t('save')}</Button>
-			<Button onClick={handleClose}>{t('close')}</Button>
-		</>}
+		okButtonProps={{ form: 'new-task-form', htmlType: 'submit' }}
+		okText={t('save')}
+		cancelButtonProps={{ onClick: handleClose }}
+		cancelText={t('close')}
+		getContainer="#dialog"
+		destroyOnClose={true}
 	>
 		<TaskForm initialValues={initialForm} onFinish={handleFormSubmit} name="new-task-form" />
 	</Modal>
