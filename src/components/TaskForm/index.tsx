@@ -34,7 +34,6 @@ export default function TaskForm({ initialValues, name, onFinish }: TaskFormProp
 		onFinish={onFinish}
 		labelCol={{ span: 7 }}
 		wrapperCol={{ span: 16 }}
-		preserve={false}
 	>
 		<Form.Item<Task> name="title" label={t('title')} rules={[{ required: true }]}>
 			<Input />

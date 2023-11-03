@@ -31,7 +31,7 @@ export default function () {
 			completed: false,
 		}))
 		values.repeatable = isEmpty(values.repeatable) ? null : values.repeatable
-		dispatch(addTask({ ...values, checkList } as Task))
+		dispatch(addTask({ ...values, checkList } as unknown as Task))
 		dispatch(closeDialog('new-task'))
 	}, [dispatch])
 
