@@ -10,9 +10,12 @@
     "status": "Status",
     "priority": "Priority",
     "date": "Date",
+    "noDate": "Date not specified",
     "time": "Time",
-    "estimate": "Estimate",
+    "noTime": "Time not specified",
+    "estimate": "Estimation",
     "dueDate": "Due Date",
+    "noDueDate": "Due date not specified",
     "timeSpent": "Time Spent",
     "checkList": "Check List",
     "tags": "Tags",
@@ -21,6 +24,9 @@
     "addNewTask": "Add New Task",
     "repeatable": "Repeatable",
     "notRepeatable": "Not Repeatable",
+    "repeatTask": "Repeat",
+    "repeatEvery": "Repeat every",
+    "repeatType": "Repeat type",
     "itemsCount": {
       "urgent_one": "1 urgent priority task",
       "urgent_other": "{{count}} urgent priority tasks",
@@ -41,19 +47,24 @@
       "year_one": "Every year",
       "year_other": "Every {{count}} years"
     },
-    "newTask": {
-      "repeat": {
-        "day": "Day",
-        "week": "Week",
-        "month": "Month",
-        "year": "Year"
-      }
+    "repeatTypes": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month",
+      "year": "Year"
     },
     "priorityType": {
       "urgent": "Urgent",
       "high": "High",
       "normal": "Normal",
       "low": "Low"
-    }
+    },
+    "statusType": {
+      "init": "Initial",
+      "open": "Open",
+      "inProgress": "In Progress",
+      "done": "Done"
+    },
+    "estimation": "Estimation — {{estimate}}, Time Spent — {{timeSpent}}"
   }
 }

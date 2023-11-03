@@ -11,8 +11,9 @@ import { useDispatch } from 'react-redux'
 import { TaskStatus } from 'types/tasks'
 import { SyncOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
+import { isEmpty } from '@plq/is'
 
-export default function TaskListItem({ item, className, ...props }: TaskListItemProps) {
+export default function TaskListItem({ index, item, className, ...props }: TaskListItemProps) {
 	const dispatch = useDispatch()
 	const { t } = useTranslation()
 	const priority = useMemo(() => getPriority(item.priority), [item.priority])
@@ -22,7 +23,7 @@ export default function TaskListItem({ item, className, ...props }: TaskListItem
 	}
 
 	const repeatableTooltipTitle = useMemo(() => {
-		if (!item.repeatable) return ''
+		if (isEmpty(item.repeatable)) return ''
 		const { repeatType, repeatEvery } = item.repeatable
 		return t(`repeat.${repeatType}`, { count: repeatEvery })
 	}, [item.repeatable, t])
@@ -37,7 +38,7 @@ export default function TaskListItem({ item, className, ...props }: TaskListItem
 			>
 				<Button type="link" onClick={handleItemClick}>
 					<span className={st.titleText}>
-						{item.repeatable && <Tooltip title={repeatableTooltipTitle}>
+						{!isEmpty(item.repeatable) && <Tooltip title={repeatableTooltipTitle}>
 							<SyncOutlined />
 						</Tooltip>} {item.title}
 					</span>
@@ -45,25 +46,26 @@ export default function TaskListItem({ item, className, ...props }: TaskListItem
 			</Typography.Text>
 
 			<div className={st.schedule}>
-				{item.dueDate && <Typography.Text
-					style={{ color: getDueDateColor(item.dueDate) }}
-					className={st.date}
-				>
-					{dayjs(item.dueDate).format('DD.MM.YYYY')}
-				</Typography.Text>}
+				<Tooltip title={getDueDateText(item.dueDate)}>
+					{item.dueDate && <Typography.Text
+						style={{ color: getDueDateColor(item.dueDate) }}
+						className={st.date}
+					>
+						{dayjs(item.dueDate).format('DD.MM.YYYY')}
+					</Typography.Text>}
+				</Tooltip>
 			</div>
 
 			<div className={st.badges}>
-				<Tooltip title={getDueDateText(item.dueDate)}>
+				<Tooltip title={t('estimation', { estimate: item.estimate, timeSpent: item.timeSpent || 0 })} color="grey">
 					<Badge
 						showZero
 						count={item.estimate}
-						color="blue"
-						title="Estimation"
+						color="grey"
 						size="small" />
 				</Tooltip>
 			</div>
 		</div>
-		<TaskView name={'task'+item.id} task={item} />
+		<TaskView name={'task'+item.id} item={item} index={index} />
 	</List.Item>
 }

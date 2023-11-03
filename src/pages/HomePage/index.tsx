@@ -15,8 +15,6 @@ export default function HomePage() {
 	const withoutDate = useSelector(selectedTasksWithoutDate)
 	const showUnsorted = useSelector(selectedSettingValue('showUnsorted'))
 
-	console.log(withoutDate.at(-1))
-
 	return <Layout>
 		<Header />
 		<Layout.Content style={{ paddingInline: '50px' }}>

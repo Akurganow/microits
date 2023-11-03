@@ -10,14 +10,60 @@
     "status": "Estado",
     "priority": "Prioridad",
     "date": "Fecha",
-    "time": "Hora",
-    "estimate": "Estimación",
+    "time": "Tiempo",
+    "estimate": "Estimado",
     "dueDate": "Fecha de vencimiento",
     "timeSpent": "Tiempo gastado",
     "checkList": "Lista de verificación",
     "tags": "Etiquetas",
-    "hideUnsorted": "Haz clic para ocultar los no ordenados",
-    "showUnsorted": "Haz clic para mostrar los no ordenados",
-    "addNewTask": "Añadir nueva tarea"
+    "hideUnsorted": "Haga clic para ocultar los no clasificados",
+    "showUnsorted": "Haga clic para mostrar los no clasificados",
+    "addNewTask": "Añadir nueva tarea",
+    "repeatable": "Repetible",
+    "notRepeatable": "No repetible",
+    "repeatTask": "Repetir",
+    "repeatEvery": "Repetir cada",
+    "repeatType": "Tipo de repetición",
+    "itemsCount": {
+      "urgent_one": "1 tarea de prioridad urgente",
+      "urgent_other": "{{count}} tareas de prioridad urgente",
+      "high_one": "1 tarea de alta prioridad",
+      "high_other": "{{count}} tareas de alta prioridad",
+      "normal_one": "1 tarea de prioridad normal",
+      "normal_other": "{{count}} tareas de prioridad normal",
+      "low_one": "1 tarea de baja prioridad",
+      "low_other": "{{count}} tareas de baja prioridad"
+    },
+    "repeat": {
+      "day_one": "Cada día",
+      "day_other": "Cada {{count}} días",
+      "week_one": "Cada semana",
+      "week_other": "Cada {{count}} semanas",
+      "month_one": "Cada mes",
+      "month_other": "Cada {{count}} meses",
+      "year_one": "Cada año",
+      "year_other": "Cada {{count}} años"
+    },
+    "newTask": {
+      "repeat": {
+        "day": "Día",
+        "week": "Semana",
+        "month": "Mes",
+        "year": "Año"
+      }
+    },
+    "priorityType": {
+      "urgent": "Urgente",
+      "high": "Alta",
+      "normal": "Normal",
+      "low": "Baja"
+    },
+    "statusType": {
+      "init": "Inicial",
+      "open": "Abierto",
+      "inProgress": "En progreso",
+      "done": "Hecho"
+    },
+    "estimation": "Estimación — {{estimate}}, Tiempo invertido — {{timeSpent}}"
   }
 }

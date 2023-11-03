@@ -6,3 +6,10 @@
 
     font-size: 16px;
 }
+
+.ant-form-item-control-input-content>[class*=ant-input],
+.ant-form-item-control-input-content>[class*=ant-picker],
+.ant-form-item-control-input-content>[class*=ant-btn] {
+    text-align: start;
+    width: 100%;
+}

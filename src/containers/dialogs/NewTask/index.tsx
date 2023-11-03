@@ -25,13 +25,13 @@ export default function () {
 	}
 
 	const handleFormSubmit = useCallback((values: Task) => {
-		values.checkList = values.checkList.map((checkListItem, index) => ({
-			...checkListItem,
+		const checkList = values.checkList.map((checkListItem, index) => ({
+			title: checkListItem,
 			id: index,
 			completed: false,
 		}))
 		values.repeatable = isEmpty(values.repeatable) ? null : values.repeatable
-		dispatch(addTask(values))
+		dispatch(addTask({ ...values, checkList } as Task))
 		dispatch(closeDialog('new-task'))
 	}, [dispatch])
 
@@ -40,6 +40,7 @@ export default function () {
 	}, [dispatch])
 
 	return <Modal
+		width="60vw"
 		open={isDialogOpened}
 		title={t('addNewTask')}
 		onCancel={handleClose}

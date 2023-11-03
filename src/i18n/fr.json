@@ -1,23 +1,69 @@
 {
   "translation": {
     "add": "Ajouter",
-    "save": "Enregistrer",
+    "save": "Sauvegarder",
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "edit": "Modifier",
+    "edit": "Éditer",
     "title": "Titre",
     "close": "Fermer",
     "status": "Statut",
     "priority": "Priorité",
     "date": "Date",
-    "time": "Heure",
+    "time": "Temps",
     "estimate": "Estimation",
     "dueDate": "Date d'échéance",
     "timeSpent": "Temps passé",
-    "checkList": "Liste de contrôle",
+    "checkList": "Liste de vérification",
     "tags": "Tags",
-    "hideUnsorted": "Cliquez pour cacher les non triés",
-    "showUnsorted": "Cliquez pour montrer les non triés",
-    "addNewTask": "Ajouter une nouvelle tâche"
+    "hideUnsorted": "Cliquez pour masquer les non triés",
+    "showUnsorted": "Cliquez pour afficher les non triés",
+    "addNewTask": "Ajouter une nouvelle tâche",
+    "repeatable": "Répétable",
+    "notRepeatable": "Non répétable",
+    "repeatTask": "Répéter",
+    "repeatEvery": "Répéter tous les",
+    "repeatType": "Type de répétition",
+    "itemsCount": {
+      "urgent_one": "1 tâche de priorité urgente",
+      "urgent_other": "{{count}} tâches de priorité urgente",
+      "high_one": "1 tâche de haute priorité",
+      "high_other": "{{count}} tâches de haute priorité",
+      "normal_one": "1 tâche de priorité normale",
+      "normal_other": "{{count}} tâches de priorité normale",
+      "low_one": "1 tâche de basse priorité",
+      "low_other": "{{count}} tâches de basse priorité"
+    },
+    "repeat": {
+      "day_one": "Tous les jours",
+      "day_other": "Tous les {{count}} jours",
+      "week_one": "Chaque semaine",
+      "week_other": "Toutes les {{count}} semaines",
+      "month_one": "Chaque mois",
+      "month_other": "Tous les {{count}} mois",
+      "year_one": "Chaque année",
+      "year_other": "Toutes les {{count}} années"
+    },
+    "newTask": {
+      "repeat": {
+        "day": "Jour",
+        "week": "Semaine",
+        "month": "Mois",
+        "year": "An"
+      }
+    },
+    "priorityType": {
+      "urgent": "Urgent",
+      "high": "Élevé",
+      "normal": "Normal",
+      "low": "Bas"
+    },
+    "statusType": {
+      "init": "Initial",
+      "open": "Ouvert",
+      "inProgress": "En cours",
+      "done": "Terminé"
+    },
+    "estimation": "Estimation — {{estimate}}, Temps passé — {{timeSpent}}"
   }
 }

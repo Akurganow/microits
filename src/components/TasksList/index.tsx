@@ -6,8 +6,8 @@ import { Task } from 'types/tasks'
 import st from './styles.module.css'
 import { Empty } from 'antd'
 
-export interface ListTitle {
-	type: 'date' | 'time'
+export interface ListTitle<T = 'date' | 'time'> {
+	type: T
 	title: string
 }
 
@@ -18,6 +18,11 @@ interface TasksListProps extends HTMLAttributes<HTMLUListElement> {
 function isTitle(item: Task | ListTitle): item is ListTitle {
 	return 'type' in item
 }
+
+function isDateTitle(item: Task | ListTitle): item is ListTitle<'date'> {
+	return isTitle(item) && item.type === 'date'
+}
+
 export default function TasksList({ items, ...props }: TasksListProps) {
 	const rowCount = useMemo(() => items.length, [items])
 
@@ -30,14 +35,14 @@ export default function TasksList({ items, ...props }: TasksListProps) {
 					rowHeight={({ index }) => {
 						const item = items[index]
 
-						return isTitle(item) && item.type === 'date' ? 64 : 32
+						return isTitle(item) && isDateTitle(item) ? 64 : 32
 					}}
 					rowRenderer={({ key, index, style }) => {
 						const item = items[index]
 
 						return isTitle(item)
 							? <TaskListTitle key={key} style={style} item={item} />
-							: <TaskListItem key={key} style={style} item={item} />
+							: <TaskListItem key={key} style={style} item={item} index={index} />
 					}}
 					rowCount={rowCount}
 					noRowsRenderer={() => <Empty />}

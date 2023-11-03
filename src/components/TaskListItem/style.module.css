@@ -8,7 +8,7 @@
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: 0.125rem 1fr max-content 2rem;
+    grid-template-columns: 0.125rem 1fr max-content 3rem;
     grid-template-rows: 1fr 1fr;
     grid-template-areas: "priority title schedule badges";
     font-size: 0.875rem;
