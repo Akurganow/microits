@@ -6,7 +6,7 @@
     "build-dev": "parcel build ./src/index.html --no-optimize --public-url ./",
     "prebuild": "shx rm -rf dist/*",
     "build": "parcel build ./src/index.html --public-url ./ --no-optimize",
-    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
+    "push-gh-pages": "gh-pages -d dist"
   },
   "browserslist": [
     "defaults"
@@ -27,9 +27,9 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-unicorn": "^48.0.1",
+    "gh-pages": "^6.0.0",
     "parcel": "^2.10.0",
     "process": "^0.11.10",
-    "push-dir": "^0.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "shx": "^0.3.2",
