@@ -92,7 +92,8 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	}, [dispatch, name])
 
 	const handleSubmit = useCallback((values: TaskFormValues) => {
-		dispatch(updateTask(valuesToTask(values, item)))
+		const repeatable = isRepeatable ? values.repeatable : null
+		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
 		dispatch(closeDialog(name))
 	}, [dispatch, item, name])
 
@@ -115,7 +116,6 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			onFinish={handleSubmit}
 			labelCol={{ span: 6 }}
 			wrapperCol={{ span: 18 }}
-			preserve={false}
 		>
 			<Form.Item<TaskFormValues> name="title" label={t('title')} className={st.formItem}>
 				<Input bordered={false} />
