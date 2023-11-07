@@ -1,4 +1,4 @@
-import { Button, ColorPicker, Form, Input, List, Modal, Popconfirm } from 'antd'
+import { Button, ColorPicker, Flex, Form, Input, List, Modal, Popconfirm } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -80,7 +80,9 @@ const TagItem = ({ id }: TagItemProperties) => {
 				/>,
 			]}
 		>
-			{finalTag.name}
+			<Flex gap="small" align="center">
+				<div className={st.color} style={{ backgroundColor: finalTag.color }} /> {finalTag.name}
+			</Flex>
 		</List.Item>
 		{isEditing && <Form<TagForm>
 			layout="inline"

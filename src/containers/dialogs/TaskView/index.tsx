@@ -101,9 +101,10 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	const tagRenderer = useCallback(props => {
 		const { label, closable, onClose } = props
 		const tag = storedTags.find((tag) => tag.id === label)
+		const color = tag ? tag.color : grey.primary
 
 		return <Tag
-			color={tag ? tag.color : grey.primary}
+			color={color}
 			closable={closable}
 			onClose={onClose}
 		>
