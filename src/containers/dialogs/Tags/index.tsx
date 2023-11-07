@@ -8,7 +8,7 @@ import { Tag, TagForm } from 'types/tags'
 import { selectedAllTags, selectedTag } from 'store/selectors/tags'
 import { COLOR_PRESETS, INITIAL_TAG_FORM, TAGS_MODAL_NAME } from 'store/constants/tags'
 import { addTag, editTag, removeTag } from 'store/actions/tags'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { DeleteOutlined } from '@ant-design/icons'
 import * as st from './styles.module.css'
 import { nanoid } from 'nanoid'
 
@@ -73,17 +73,19 @@ const TagItem = ({ id }: TagItemProperties) => {
 						danger
 					/>
 				</Popconfirm> : undefined,
-				<Button
-					key="edit"
-					onClick={switchEditing}
-					icon={<EditOutlined />}
-					type="link"
-				/>,
 			]}
 		>
-			<Flex gap="small" align="center">
-				<div className={st.color} style={{ backgroundColor: finalTag.color }} /> {finalTag.name}
-			</Flex>
+			<Button
+				key="edit"
+				onClick={switchEditing}
+				type="link"
+				style={{ width: '100%' }}
+			>
+				<Flex gap="small" align="center">
+					<div className={st.color} style={{ backgroundColor: finalTag.color }} />
+					{finalTag.name}
+				</Flex>
+			</Button>
 		</List.Item>
 		{isEditing && <Form<TagForm>
 			layout="inline"
@@ -91,10 +93,10 @@ const TagItem = ({ id }: TagItemProperties) => {
 			className={st.form}
 			form={form}
 		>
-			<Form.Item<Tag> name="name" label={t('name')}>
+			<Form.Item<Tag> name="name">
 				<Input />
 			</Form.Item>
-			<Form.Item<Tag> name="color" label={t('color')}>
+			<Form.Item<Tag> name="color">
 				<ColorPicker
 					defaultFormat="rgb"
 					presets={COLOR_PRESETS}
@@ -130,7 +132,7 @@ export default function Tags() {
 		open={isDialogOpened}
 		getContainer="#dialog"
 		destroyOnClose={true}
-		width="60vw"
+		width="50vw"
 		title="Edit tags"
 		onCancel={handleClose}
 		footer={null}
