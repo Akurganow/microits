@@ -1,4 +1,4 @@
-import { Button, ColorPicker, Flex, Form, Input, List, Modal, Popconfirm } from 'antd'
+import { Button, Checkbox, ColorPicker, Flex, Form, Input, List, Modal, Popconfirm } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -7,9 +7,10 @@ import { useTranslation } from 'react-i18next'
 import { Tag, TagForm } from 'types/tags'
 import { selectedAllTags, selectedTag } from 'store/selectors/tags'
 import { COLOR_PRESETS, INITIAL_TAG_FORM, TAGS_MODAL_NAME } from 'store/constants/tags'
-import { editTag, removeTag } from 'store/actions/tags'
+import { addTag, editTag, removeTag } from 'store/actions/tags'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import * as st from './styles.module.css'
+import { nanoid } from 'nanoid'
 
 interface TagItemProperties {
 	id: Tag['id']
@@ -99,6 +100,9 @@ const TagItem = ({ id }: TagItemProperties) => {
 					presets={COLOR_PRESETS}
 				/>
 			</Form.Item>
+			<Form.Item<Tag> name="showStats" label={t('showStats')} valuePropName="checked">
+				<Checkbox />
+			</Form.Item>
 			<Form.Item>
 				<Button htmlType="submit" type="primary">
 					{t('save')}
@@ -109,12 +113,17 @@ const TagItem = ({ id }: TagItemProperties) => {
 }
 
 export default function Tags() {
+	const { t } = useTranslation()
 	const tags = useSelector(selectedAllTags)
 	const isDialogOpened = useSelector(selectedDialog(TAGS_MODAL_NAME))
 	const dispatch = useDispatch()
 
 	const handleClose = useCallback(() => {
 		dispatch(closeDialog(TAGS_MODAL_NAME))
+	}, [dispatch])
+
+	const handleAddTag = useCallback(() => {
+		dispatch(addTag({ ...INITIAL_TAG_FORM, name: 'New tag', id: nanoid() }))
 	}, [dispatch])
 
 	return <Modal
@@ -128,6 +137,9 @@ export default function Tags() {
 	>
 		<List>
 			{tags.map((tag) => <TagItem key={tag} id={tag} />)}
+			<List.Item>
+				<Button ghost type="primary" onClick={handleAddTag}>{t('addTag')}</Button>
+			</List.Item>
 		</List>
 	</Modal>
 }
