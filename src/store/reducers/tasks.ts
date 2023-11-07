@@ -1,6 +1,6 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers'
 import { Task, TasksState } from 'types/tasks'
-import { addTask, removeTask, setTaskField, toggleTask, updateTask } from 'store/actions/tasks'
+import { addTask, removeTask, setTaskField, updateTask } from 'store/actions/tasks'
 
 const createReducer = (initialState: TasksState) => reducerWithInitialState(initialState)
 	.case(addTask, (state, task) => ({
@@ -14,10 +14,6 @@ const createReducer = (initialState: TasksState) => reducerWithInitialState(init
 	.case(updateTask, (state, task) => ({
 		...state,
 		tasks: state.tasks.map(t => t.id === task.id ? task : t),
-	}))
-	.case(toggleTask, (state, id) => ({
-		...state,
-		tasks: state.tasks.map(task => task.id === id ? { ...task, completed: !task.completed } : task),
 	}))
 	.case(setTaskField, (state, { id, field, value }) => ({
 		...state,

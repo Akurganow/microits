@@ -9,7 +9,7 @@ import {
 	Modal,
 	ModalProps,
 	Select,
-	Switch,
+	Switch, Tag,
 	TimePicker
 } from 'antd'
 import { updateTask } from 'store/actions/tasks'
@@ -21,6 +21,7 @@ import { isEmpty } from '@plq/is'
 import * as st from './styles.module.css'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import { selectedAllTags, selectedTags } from 'store/selectors/tags'
 
 dayjs.extend(localizedFormat)
 
@@ -28,7 +29,7 @@ import frLocale from 'antd/es/date-picker/locale/fr_FR'
 import esLocale from 'antd/es/date-picker/locale/es_ES'
 import ruLocale from 'antd/es/date-picker/locale/ru_RU'
 import enLocale from 'antd/es/date-picker/locale/en_US'
-import { selectedTags } from 'store/selectors/tasks'
+import { grey } from '@ant-design/colors'
 
 const locales = {
 	en: enLocale,
@@ -66,6 +67,9 @@ function valuesToTask(values: TaskFormValues, task: Task): Task {
 export default function TaskView({ item, name, index, ...props }: TaskViewProperties) {
 	const dispatch = useDispatch()
 	const isDialogOpened = useSelector(selectedDialog(name))
+	const tags = useSelector(selectedAllTags)
+	const storedTags = useSelector(selectedTags)
+	const tagsOptions = tags.map((tag) => ({ label: tag, value: tag }))
 	const { t, i18n } = useTranslation()
 	const locale = useMemo(() => locales[i18n.resolvedLanguage.split('-')[0]], [i18n.resolvedLanguage])
 	const initialValues: TaskFormValues = useMemo(() => ({
@@ -74,8 +78,6 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		date: isEmpty(item.date) ? undefined : dayjs(item.date),
 		time: isEmpty(item.time) ? undefined : dayjs(item.time),
 	}), [item])
-	const tags = useSelector(selectedTags)
-	const tagsOptions = tags.map((tag) => ({ label: tag, value: tag }))
 
 	const [form] = Form.useForm<TaskFormValues>()
 	const [isRepeatable, setIsRepeatable] = useState(!isEmpty(initialValues?.repeatable))
@@ -94,7 +96,20 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		const repeatable = isRepeatable ? values.repeatable : null
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
 		dispatch(closeDialog(name))
-	}, [dispatch, item, name])
+	}, [dispatch, isRepeatable, item, name])
+
+	const tagRenderer = useCallback(props => {
+		const { label, closable, onClose } = props
+		const tag = storedTags.find((tag) => tag.id === label)
+
+		return <Tag
+			color={tag ? tag.color : grey.primary}
+			closable={closable}
+			onClose={onClose}
+		>
+			{label}
+		</Tag>
+	}, [storedTags])
 
 	return <Modal
 		getContainer="#dialog"
@@ -177,7 +192,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			</Form.Item>
 
 			<Form.Item<Task> name="tags" label={t('tags')} className={st.formItem}>
-				<Select bordered={false} mode="tags" options={tagsOptions} />
+				<Select bordered={false} mode="tags" options={tagsOptions} tagRender={tagRenderer} />
 			</Form.Item>
 
 			{item.checkList && <Col offset={6} span={18}>

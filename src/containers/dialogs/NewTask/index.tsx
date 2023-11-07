@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { isEmpty } from '@plq/is'
 
-export default function () {
+export default function NewTask() {
 	const dispatch = useDispatch()
 	const isDialogOpened = useSelector(selectedDialog('new-task'))
 	const { t } = useTranslation()
