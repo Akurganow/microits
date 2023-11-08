@@ -138,7 +138,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 					</Popconfirm>
 				</Flex>
 				<Flex>
-					<Button htmlType="submit" type="primary">{t('save')}</Button>
+					<Button htmlType="submit" type="primary" form={'task-form'+item.id+index}>{t('save')}</Button>
 					<Button onClick={handleClose}>{t('close')}</Button>
 				</Flex>
 			</Flex>
@@ -149,8 +149,8 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			form={form}
 			name={'task-form'+item.id+index}
 			onFinish={handleSubmit}
-			labelCol={{ span: 6 }}
-			wrapperCol={{ span: 18 }}
+			labelCol={{ span: 7 }}
+			wrapperCol={{ span: 16, offset: 1 }}
 		>
 			<Form.Item<TaskFormValues> name="title" label={t('title')} className={st.formItem}>
 				<Input bordered={false} />
@@ -161,7 +161,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			</Form.Item>
 
 			<Form.Item<TaskFormValues> name="timeSpent" label={t('timeSpent')} className={st.formItem}>
-				<InputNumber bordered={false} min={0} />
+				<InputNumber bordered={false} min={0} step={0.25} />
 			</Form.Item>
 
 			<Form.Item<TaskFormValues> name="dueDate" label={t('dueDate')} className={st.formItem}>
