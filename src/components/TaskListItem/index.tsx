@@ -1,22 +1,30 @@
-import { Badge, Button, List, Tooltip, Typography } from 'antd'
-import * as st from './style.module.css'
-import cn from 'classnames'
-import { TaskListItemProps } from 'components/TaskListItem/types'
 import { useMemo } from 'react'
-import { getDueDateColor, getDueDateText, getPriority } from './helpers'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { Badge, Button, List, Tag, Tooltip, Typography } from 'antd'
+import { SyncOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
+import cn from 'classnames'
+import { isEmpty } from '@plq/is'
+import { TaskListItemProps } from 'components/TaskListItem/types'
 import TaskView from 'containers/dialogs/TaskView'
 import { openDialog } from 'store/actions/dialogs'
-import { useDispatch } from 'react-redux'
+import { selectedTags } from 'store/selectors/tags'
 import { TaskStatus } from 'types/tasks'
-import { SyncOutlined } from '@ant-design/icons'
-import { useTranslation } from 'react-i18next'
-import { isEmpty } from '@plq/is'
+import { getDueDateColor, getDueDateText, getPriority } from './helpers'
+import * as st from './style.module.css'
 
 export default function TaskListItem({ index, item, className, ...props }: TaskListItemProps) {
 	const dispatch = useDispatch()
+	const storedTags = useSelector(selectedTags)
 	const { t } = useTranslation()
 	const priority = useMemo(() => getPriority(item.priority), [item.priority])
+	const itemStoredTags = useMemo(() => item.tags.map(tagId => storedTags.find(t => t.id === tagId)), [item.tags, storedTags])
+	const visibleTag = useMemo(() => {
+		const statsTags = itemStoredTags.filter(t => t?.showStats)
+
+		return statsTags.length > 0 ? statsTags[0] : itemStoredTags[0] ?? null
+	}, [itemStoredTags])
 
 	const handleItemClick = () => {
 		dispatch(openDialog('task'+item.id))
@@ -55,6 +63,10 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 					</Typography.Text>}
 				</Tooltip>
 			</div>
+
+			{visibleTag && <div className={st.tags}>
+				<Tag color={visibleTag.color}>{visibleTag.name}</Tag>
+			</div>}
 
 			<div className={st.badges}>
 				<Tooltip title={t('estimation', { estimate: item.estimate, timeSpent: item.timeSpent || 0 })} color="grey">
