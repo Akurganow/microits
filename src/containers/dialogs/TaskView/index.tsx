@@ -137,7 +137,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			</Form.Item>
 
 			<Form.Item<TaskFormValues> name="estimate" label={t('estimate')} className={st.formItem}>
-				<InputNumber bordered={false} min={1} />
+				<InputNumber bordered={false} min={0.1} step={0.1} />
 			</Form.Item>
 
 			<Form.Item<TaskFormValues> name="timeSpent" label={t('timeSpent')} className={st.formItem}>
