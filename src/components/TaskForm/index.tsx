@@ -40,7 +40,7 @@ export default function TaskForm({ initialValues, name, onFinish }: TaskFormProp
 		</Form.Item>
 
 		<Form.Item<Task> name="estimate" label={t('estimate')} rules={[{ required: true }]}>
-			<InputNumber min={0.1} step={0.1} />
+			<InputNumber min={0.1} step={0.25} />
 		</Form.Item>
 
 		<Form.Item<Task> name="dueDate" label={t('dueDate')}>
