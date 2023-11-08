@@ -73,6 +73,7 @@
     "editTags": "Edit tags",
     "deleteTagConfirm": "Are you sure you want to delete tag '{{name}}'?",
     "deleteTagConfirmDescription": "All tag settings will be lost!",
-    "showStats": "Show in statistics"
+    "showStats": "Show in statistics",
+    "deleteTaskConfirm": "Are you sure you want to delete task #{{id}}?"
   }
 }

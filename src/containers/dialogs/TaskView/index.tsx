@@ -1,18 +1,19 @@
 import { Task, TaskFormValues, TaskPriority, TaskStatus } from 'types/tasks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
+	Button,
 	Checkbox, Col,
-	DatePicker,
+	DatePicker, Flex,
 	Form,
 	Input,
 	InputNumber,
 	Modal,
-	ModalProps,
+	ModalProps, Popconfirm,
 	Select,
 	Switch, Tag,
 	TimePicker
 } from 'antd'
-import { updateTask } from 'store/actions/tasks'
+import { removeTask, updateTask } from 'store/actions/tasks'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { closeDialog } from 'store/actions/dialogs'
 import { useDispatch, useSelector } from 'react-redux'
@@ -92,6 +93,11 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		dispatch(closeDialog(name))
 	}, [dispatch, name])
 
+	const handleDelete = useCallback(() => {
+		dispatch(removeTask(item.id))
+		dispatch(closeDialog(name))
+	}, [dispatch, item.id, name])
+
 	const handleSubmit = useCallback((values: TaskFormValues) => {
 		const repeatable = isRepeatable ? values.repeatable : null
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
@@ -115,14 +121,28 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	return <Modal
 		getContainer="#dialog"
 		destroyOnClose={true}
-		width="75vw"
+		width="50vw"
 		open={isDialogOpened}
 		title={`#${item.id}`}
 		onCancel={handleClose}
-		okButtonProps={{ form: 'task-form'+item.id+index, htmlType: 'submit' }}
-		okText={t('save')}
-		cancelButtonProps={{ onClick: handleClose }}
-		cancelText={t('close')}
+		footer={
+			<Flex justify="space-between">
+				<Flex justify="end">
+					<Popconfirm
+						title={t('deleteTaskConfirm', { id: item.id })}
+						onConfirm={handleDelete}
+						okText={t('yes')}
+						cancelText={t('no')}
+					>
+						<Button danger>{t('delete')}</Button>
+					</Popconfirm>
+				</Flex>
+				<Flex>
+					<Button htmlType="submit" type="primary">{t('save')}</Button>
+					<Button onClick={handleClose}>{t('close')}</Button>
+				</Flex>
+			</Flex>
+		}
 		{...props}
 	>
 		<Form<TaskFormValues>

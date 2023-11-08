@@ -73,6 +73,7 @@
     "editTags": "Editar etiquetas",
     "deleteTagConfirm": "¿Estás seguro de que quieres eliminar la etiqueta '{{name}}'?",
     "deleteTagConfirmDescription": "¡Se perderán todas las configuraciones de la etiqueta!",
-    "showStats": "Mostrar en estadísticas"
+    "showStats": "Mostrar en estadísticas",
+    "deleteTaskConfirm": "¿Está seguro de que desea eliminar la tarea #{{id}}?"
   }
 }
