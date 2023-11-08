@@ -1,4 +1,4 @@
-import { Button, Checkbox, ColorPicker, Flex, Form, Input, List, Modal, Popconfirm } from 'antd'
+import { Button, Checkbox, ColorPicker, Empty, Flex, Form, Input, List, Modal, Popconfirm } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -27,8 +27,6 @@ const TagItem = ({ id }: TagItemProperties) => {
 	const initialValues = useMemo(() => ({
 		...finalTag,
 	}), [finalTag])
-
-	console.log('isStored', isStored, 'tag', tag, 'finalTag', finalTag)
 
 	const handleDelete = useCallback(() => {
 		dispatch(removeTag(finalTag.id))
@@ -61,7 +59,7 @@ const TagItem = ({ id }: TagItemProperties) => {
 			actions={[
 				isStored ? <Popconfirm
 					key="delete"
-					title={t('deleteTagConfirm')}
+					title={t('deleteTagConfirm', { name : finalTag.name })}
 					description={t('deleteTagConfirmDescription')}
 					onConfirm={handleDelete}
 					okText={t('yes')}
@@ -133,12 +131,16 @@ export default function Tags() {
 		getContainer="#dialog"
 		destroyOnClose={true}
 		width="50vw"
-		title="Edit tags"
+		title={t('editTags')}
 		onCancel={handleClose}
 		footer={null}
 	>
 		<List>
-			{tags.map((tag) => <TagItem key={tag} id={tag} />)}
+			{
+				tags.length > 0
+					? tags.map((tag) => <TagItem key={tag} id={tag} />)
+					: <Empty description={t('noTags')} />
+			}
 			<List.Item>
 				<Button ghost type="primary" onClick={handleAddTag}>{t('addTag')}</Button>
 			</List.Item>

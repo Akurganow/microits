@@ -1,5 +1,7 @@
 {
   "translation": {
+    "yes": "Sí",
+    "no": "No",
     "add": "Añadir",
     "save": "Guardar",
     "cancel": "Cancelar",
@@ -10,15 +12,18 @@
     "status": "Estado",
     "priority": "Prioridad",
     "date": "Fecha",
-    "time": "Tiempo",
-    "estimate": "Estimado",
+    "noDate": "Fecha no especificada",
+    "time": "Hora",
+    "noTime": "Hora no especificada",
+    "estimate": "Estimación",
     "dueDate": "Fecha de vencimiento",
-    "timeSpent": "Tiempo gastado",
+    "noDueDate": "Sin fecha de vencimiento",
+    "timeSpent": "Tiempo invertido",
     "checkList": "Lista de verificación",
     "tags": "Etiquetas",
-    "hideUnsorted": "Haga clic para ocultar los no clasificados",
-    "showUnsorted": "Haga clic para mostrar los no clasificados",
-    "addNewTask": "Añadir nueva tarea",
+    "hideUnsorted": "Ocultar no clasificados",
+    "showUnsorted": "Mostrar no clasificados",
+    "addNewTask": "Agregar nueva tarea",
     "repeatable": "Repetible",
     "notRepeatable": "No repetible",
     "repeatTask": "Repetir",
@@ -35,7 +40,7 @@
       "low_other": "{{count}} tareas de baja prioridad"
     },
     "repeat": {
-      "day_one": "Cada día",
+      "day_one": "Todos los días",
       "day_other": "Cada {{count}} días",
       "week_one": "Cada semana",
       "week_other": "Cada {{count}} semanas",
@@ -44,13 +49,11 @@
       "year_one": "Cada año",
       "year_other": "Cada {{count}} años"
     },
-    "newTask": {
-      "repeat": {
-        "day": "Día",
-        "week": "Semana",
-        "month": "Mes",
-        "year": "Año"
-      }
+    "repeatTypes": {
+      "day": "Día",
+      "week": "Semana",
+      "month": "Mes",
+      "year": "Año"
     },
     "priorityType": {
       "urgent": "Urgente",
@@ -64,6 +67,12 @@
       "inProgress": "En progreso",
       "done": "Hecho"
     },
-    "estimation": "Estimación — {{estimate}}, Tiempo invertido — {{timeSpent}}"
+    "estimation": "Estimación — {{estimate}}, Tiempo invertido — {{timeSpent}}",
+    "noTags": "Sin etiquetas",
+    "addTag": "Añadir etiqueta",
+    "editTags": "Editar etiquetas",
+    "deleteTagConfirm": "¿Estás seguro de que quieres eliminar la etiqueta '{{name}}'?",
+    "deleteTagConfirmDescription": "¡Se perderán todas las configuraciones de la etiqueta!",
+    "showStats": "Mostrar en estadísticas"
   }
 }

@@ -1,5 +1,7 @@
 {
   "translation": {
+    "yes": "Oui",
+    "no": "Non",
     "add": "Ajouter",
     "save": "Sauvegarder",
     "cancel": "Annuler",
@@ -10,14 +12,17 @@
     "status": "Statut",
     "priority": "Priorité",
     "date": "Date",
+    "noDate": "Date non spécifiée",
     "time": "Temps",
+    "noTime": "Temps non spécifié",
     "estimate": "Estimation",
     "dueDate": "Date d'échéance",
+    "noDueDate": "Date d'échéance non spécifiée",
     "timeSpent": "Temps passé",
     "checkList": "Liste de vérification",
     "tags": "Tags",
-    "hideUnsorted": "Cliquez pour masquer les non triés",
-    "showUnsorted": "Cliquez pour afficher les non triés",
+    "hideUnsorted": "Cacher non triés",
+    "showUnsorted": "Afficher non triés",
     "addNewTask": "Ajouter une nouvelle tâche",
     "repeatable": "Répétable",
     "notRepeatable": "Non répétable",
@@ -42,21 +47,19 @@
       "month_one": "Chaque mois",
       "month_other": "Tous les {{count}} mois",
       "year_one": "Chaque année",
-      "year_other": "Toutes les {{count}} années"
+      "year_other": "Tous les {{count}} ans"
     },
-    "newTask": {
-      "repeat": {
-        "day": "Jour",
-        "week": "Semaine",
-        "month": "Mois",
-        "year": "An"
-      }
+    "repeatTypes": {
+      "day": "Jour",
+      "week": "Semaine",
+      "month": "Mois",
+      "year": "Année"
     },
     "priorityType": {
       "urgent": "Urgent",
-      "high": "Élevé",
-      "normal": "Normal",
-      "low": "Bas"
+      "high": "Élevée",
+      "normal": "Normale",
+      "low": "Faible"
     },
     "statusType": {
       "init": "Initial",
@@ -64,6 +67,12 @@
       "inProgress": "En cours",
       "done": "Terminé"
     },
-    "estimation": "Estimation — {{estimate}}, Temps passé — {{timeSpent}}"
+    "estimation": "Estimation — {{estimate}}, Temps passé — {{timeSpent}}",
+    "noTags": "Aucun tag",
+    "addTag": "Ajouter un tag",
+    "editTags": "Éditer les tags",
+    "deleteTagConfirm": "Êtes-vous sûr de vouloir supprimer le tag '{{name}}'?",
+    "deleteTagConfirmDescription": "Tous les paramètres du tag seront perdus !",
+    "showStats": "Afficher dans les statistiques"
   }
 }
