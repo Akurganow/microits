@@ -7,14 +7,18 @@ import * as st from './styles.module.css'
 import { isEmpty } from '@plq/is'
 import { selectedTasksByDate } from 'store/selectors/tasks'
 import { selectedStatsTags } from 'store/selectors/tags'
+import { grey } from '@ant-design/colors'
+import { useTranslation } from 'react-i18next'
 
 interface TaskListTitleProps extends HTMLAttributes<HTMLDivElement> {
     item: ListTitle
 }
 
 function Stats ({ date }: { date: string }) {
+	const { t } = useTranslation()
 	const tasksByDate = useSelector(selectedTasksByDate(date))
 	const statsTags = useSelector(selectedStatsTags)
+	const estimateSum = useMemo(() => tasksByDate.reduce((acc, t) => acc + t.estimate, 0), [tasksByDate])
 	const stats = useMemo(() => {
 		const stats = statsTags.map(tag => {
 			const tasks = tasksByDate.filter(t => t.tags.includes(tag.id))
@@ -32,13 +36,12 @@ function Stats ({ date }: { date: string }) {
 	return <Typography.Text className={st.stats} type="secondary">
 		{
 			stats.map(tag =>
-				<span key={tag.id}>
-					<Tag color={tag.color}>
-						{tag.name} {tag.estimate}
-					</Tag>
-				</span>
+				<Tag color={tag.color} key={tag.id}>
+					{tag.name} {tag.estimate}
+				</Tag>
 			)
 		}
+		<Tag color={grey.primary}>{t('estimateSum')} {estimateSum}</Tag>
 	</Typography.Text>
 }
 

@@ -76,6 +76,7 @@
     "showStats": "Afficher dans les statistiques",
     "deleteTaskConfirm": "Êtes-vous sûr de vouloir supprimer la tâche n°{{id}}?",
     "expired": "Expiré",
-    "unsorted": "Non trié"
+    "unsorted": "Non trié",
+    "estimateSum": "Somme"
   }
 }

@@ -76,6 +76,7 @@
     "showStats": "Show in statistics",
     "deleteTaskConfirm": "Are you sure you want to delete task #{{id}}?",
     "expired": "Expired",
-    "unsorted": "Unsorted"
+    "unsorted": "Unsorted",
+    "estimateSum": "Sum"
   }
 }
