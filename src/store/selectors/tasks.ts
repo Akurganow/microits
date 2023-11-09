@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { storeKey } from '../constants/tasks'
 import { RootState } from '../types'
 import dayjs from 'dayjs'
-import { Task } from 'types/tasks'
+import { Task, TaskStatus } from 'types/tasks'
 import { WithRequired } from 'types/common'
 import minMax from 'dayjs/plugin/minMax'
 import { getDayTitle, splitByDays, splitByTime } from 'utils/tasks'
@@ -115,4 +115,12 @@ export const selectedTags = createSelector(
 		}
 		return [...tags]
 	}
+)
+
+export const selectedExpiredTasks = createSelector(
+	selectedTasks,
+	(tasks) => tasks.filter((task) =>
+		task.date && dayjs(task.date).isBefore(dayjs())
+		&& task.status !== TaskStatus.Done
+	)
 )

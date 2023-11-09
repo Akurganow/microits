@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import storage from 'redux-persist-indexeddb-storage'
 import tasksReducer from 'store/reducers/tasks'
 import dialogsReducer from 'store/reducers/dialogs'
 import settingsReducer from 'store/reducers/settings'
@@ -10,6 +10,8 @@ import { storeKey as dialogsStoreKey, initialState as dialogsInitialState } from
 import { storeKey as settingsStoreKey, initialState as settingsInitialState } from 'store/constants/settings'
 import { storeKey as tagsStoreKey, initialState as tagsInitialState } from 'store/constants/tags'
 import { RootState, PersistPartial } from 'store/types'
+
+export const PERSIST_STORAGE_DB_NAME = 'nanoits'
 
 export const initialState: RootState = {
 	[tasksStoreKey]: tasksInitialState as typeof tasksInitialState & PersistPartial,
@@ -28,15 +30,15 @@ function createPersistConfig(key: string, storage: Storage) {
 
 export const rootReducer = combineReducers({
 	[tasksStoreKey]: persistReducer(
-		createPersistConfig(tasksStoreKey, storage),
+		createPersistConfig(tasksStoreKey, storage(PERSIST_STORAGE_DB_NAME)),
 		tasksReducer(tasksInitialState),
 	),
 	[settingsStoreKey]: persistReducer(
-		createPersistConfig(settingsStoreKey, storage),
+		createPersistConfig(settingsStoreKey, storage(PERSIST_STORAGE_DB_NAME)),
 		settingsReducer(settingsInitialState),
 	),
 	[tagsStoreKey]: persistReducer(
-		createPersistConfig(tagsStoreKey, storage),
+		createPersistConfig(tagsStoreKey, storage(PERSIST_STORAGE_DB_NAME)),
 		tagsReducer(tagsInitialState),
 	),
 	[dialogsStoreKey]: dialogsReducer(dialogsInitialState),
