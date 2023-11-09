@@ -16,7 +16,7 @@ interface TasksListProps extends HTMLAttributes<HTMLUListElement> {
 }
 
 function isTitle(item: Task | ListTitle): item is ListTitle {
-	return 'type' in item
+	return item && 'type' in item
 }
 
 function isDateTitle(item: Task | ListTitle): item is ListTitle<'date'> {
