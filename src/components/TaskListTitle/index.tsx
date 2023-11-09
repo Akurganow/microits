@@ -34,7 +34,7 @@ function Stats ({ date }: { date: string }) {
 			stats.map(tag =>
 				<span key={tag.id}>
 					<Tag color={tag.color}>
-						{tag.name} {tag.count}
+						{tag.name} {tag.estimate}
 					</Tag>
 				</span>
 			)
