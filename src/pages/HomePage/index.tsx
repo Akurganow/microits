@@ -53,15 +53,15 @@ export default function HomePage() {
 		width: '50vw',
 		height: '100%',
 		display: 'grid',
-		gridTemplateRows: `${
+		gridTemplateRows: hasExpired || hasUnsorted ? `${
 			hasExpired
-				? (expiredTasks.length * 32) + 64
-				: 0
-		}px ${
+				? `${(expiredTasks.length * 32) + 64}px`
+				: 'auto'
+		} ${
 			hasUnsorted
-				? (withoutDate.length * 32) + 64
-				: 0
-		}px`,
+				? `${(withoutDate.length * 32) + 64}px`
+				: 'auto'
+		}` : 'auto',
 		gridTemplateColumns: '1fr',
 	}), [expiredTasks.length, hasExpired, hasUnsorted, withoutDate.length])
 
