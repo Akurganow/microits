@@ -22,10 +22,10 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 	const itemStoredTags = useMemo(() => item.tags && !isEmpty(item.tags)
 		? item.tags.map(tagId => storedTags.find(t => t.id === tagId))
 		: [], [item.tags, storedTags])
-	const visibleTag = useMemo(() => {
+	const visibleTags = useMemo(() => {
 		const statsTags = itemStoredTags.filter(t => t?.showStats)
 
-		return statsTags.length > 0 ? statsTags[0] : itemStoredTags[0] ?? null
+		return [...(statsTags.length > 0 ? statsTags : itemStoredTags)].slice(0, 3)
 	}, [itemStoredTags])
 	const dialogName = useMemo(() => 'task'+item.id+index, [index, item.id])
 
@@ -67,8 +67,10 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 				</Tooltip>
 			</div>
 
-			{visibleTag && <div className={st.tags}>
-				<Tag color={visibleTag.color}>{visibleTag.name}</Tag>
+			{visibleTags.length > 0 && <div className={st.tags}>
+				{visibleTags.map(tag =>
+					<Tag key={tag.id} color={tag.color}>{tag.name}</Tag>
+				)}
 			</div>}
 
 			<div className={st.badges}>
