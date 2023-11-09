@@ -133,16 +133,14 @@ export const selectedExpiredTasks = createSelector(
 export const selectedTasksByDate = memoize((date: string) =>
 	(state: TasksState) => createSelector(
 		[
-			selectedTasks,
-			(_state, date) => date
+			selectedTasksWithRepeatable,
+			(_state, date: string) => date
 		],
 		(tasks, date) => {
 			const filterDate = dayjs(date)
 
-			return tasks.filter((task) => {
-				if (!task.date) return false
-
-				return dayjs(task.date).isSame(filterDate, 'day')
-			})
+			return tasks.filter((task) =>
+				dayjs(task.date).isSame(filterDate, 'day')
+			)
 		}
 	)(state, date))

@@ -28,7 +28,7 @@ export const selectedTag = memoize((id: Tag['id']) =>
 	(state: SettingsState) => createSelector(
 		[
 			selectedTags,
-			(_state, id) => id,
+			(_state, id: Tag['id']) => id,
 		],
 		(tags, id) => {
 			const tag = tags.find((tag) => tag.id === id)
