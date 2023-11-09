@@ -4,7 +4,6 @@ import TaskListItem from 'components/TaskListItem'
 import TaskListTitle from 'components/TaskListTitle'
 import { Task } from 'types/tasks'
 import * as st from './styles.module.css'
-import { Empty } from 'antd'
 
 export interface ListTitle<T = 'date' | 'time'> {
 	type: T
@@ -49,7 +48,6 @@ export default function TasksList({ items, ...props }: TasksListProps) {
 					rowHeight={rowHeight}
 					rowRenderer={rowRenderer}
 					rowCount={rowCount}
-					noRowsRenderer={() => <Empty />}
 				/>
 			)}
 		</AutoSizer>

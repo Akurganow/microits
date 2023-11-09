@@ -19,7 +19,9 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 	const storedTags = useSelector(selectedTags)
 	const { t } = useTranslation()
 	const priority = useMemo(() => getPriority(item.priority), [item.priority])
-	const itemStoredTags = useMemo(() => item.tags.map(tagId => storedTags.find(t => t.id === tagId)), [item.tags, storedTags])
+	const itemStoredTags = useMemo(() => item.tags && !isEmpty(item.tags)
+		? item.tags.map(tagId => storedTags.find(t => t.id === tagId))
+		: [], [item.tags, storedTags])
 	const visibleTag = useMemo(() => {
 		const statsTags = itemStoredTags.filter(t => t?.showStats)
 
