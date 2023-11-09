@@ -120,7 +120,7 @@ export const selectedTags = createSelector(
 export const selectedExpiredTasks = createSelector(
 	selectedTasks,
 	(tasks) => tasks.filter((task) =>
-		task.date && dayjs(task.date).isBefore(dayjs())
+		task.date && dayjs(task.date).isBefore(dayjs().startOf('day'))
 		&& task.status !== TaskStatus.Done
 	)
 )
