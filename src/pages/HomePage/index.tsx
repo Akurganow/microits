@@ -56,11 +56,11 @@ export default function HomePage() {
 		gridTemplateRows: hasExpired || hasUnsorted ? `${
 			hasExpired
 				? `${(expiredTasks.length * 32) + 64}px`
-				: 'auto'
+				: '0'
 		} ${
 			hasUnsorted
 				? `${(withoutDate.length * 32) + 64}px`
-				: 'auto'
+				: '0'
 		}` : 'auto',
 		gridTemplateColumns: '1fr',
 	}), [expiredTasks.length, hasExpired, hasUnsorted, withoutDate.length])
