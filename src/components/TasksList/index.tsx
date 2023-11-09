@@ -8,6 +8,7 @@ import * as st from './styles.module.css'
 export interface ListTitle<T = 'date' | 'time'> {
 	type: T
 	title: string
+	date?: string
 }
 
 interface TasksListProps extends HTMLAttributes<HTMLUListElement> {

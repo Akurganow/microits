@@ -11,3 +11,12 @@
 .time {
     padding-block-start: 0.5rem;
 }
+
+.stats {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-inline: 0.5rem;
+    gap: 0.25rem;
+}

@@ -2,11 +2,12 @@ import { createSelector } from 'reselect'
 import { storeKey } from '../constants/tasks'
 import { RootState } from '../types'
 import dayjs from 'dayjs'
-import { Task, TaskStatus } from 'types/tasks'
+import { Task, TasksState, TaskStatus } from 'types/tasks'
 import { WithRequired } from 'types/common'
 import minMax from 'dayjs/plugin/minMax'
 import { getDayTitle, splitByDays, splitByTime } from 'utils/tasks'
 import { ListTitle } from 'components/TasksList'
+import memoize from 'lodash/memoize'
 
 dayjs.extend(minMax)
 
@@ -100,7 +101,11 @@ export const selectedTasksWithTitles = createSelector(
 				.filter((item) => !item.time)
 				.sort((a, b) => a.priority - b.priority)
 
-			return [{ type: 'date', title: getDayTitle(group[0].date) }, ...withoutTime, ...withTimeSplit] as (Task | ListTitle)[]
+			return [
+				{ type: 'date', title: getDayTitle(group[0].date), date: group[0].date },
+				...withoutTime,
+				...withTimeSplit
+			] as (Task | ListTitle)[]
 		})
 )
 
@@ -124,3 +129,20 @@ export const selectedExpiredTasks = createSelector(
 		&& task.status !== TaskStatus.Done
 	)
 )
+
+export const selectedTasksByDate = memoize((date: string) =>
+	(state: TasksState) => createSelector(
+		[
+			selectedTasks,
+			(_state, date) => date
+		],
+		(tasks, date) => {
+			const filterDate = dayjs(date)
+
+			return tasks.filter((task) => {
+				if (!task.date) return false
+
+				return dayjs(task.date).isSame(filterDate, 'day')
+			})
+		}
+	)(state, date))

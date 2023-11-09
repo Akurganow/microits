@@ -38,3 +38,8 @@ export const selectedTag = memoize((id: Tag['id']) =>
 			return null
 		}
 	)(state, id))
+
+export const selectedStatsTags = createSelector(
+	selectedTags,
+	(tags) => tags.filter((tag) => tag.showStats)
+)
