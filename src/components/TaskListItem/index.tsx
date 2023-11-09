@@ -27,9 +27,10 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 
 		return statsTags.length > 0 ? statsTags[0] : itemStoredTags[0] ?? null
 	}, [itemStoredTags])
+	const dialogName = useMemo(() => 'task'+item.id+index, [index, item.id])
 
 	const handleItemClick = () => {
-		dispatch(openDialog('task'+item.id))
+		dispatch(openDialog(dialogName))
 	}
 
 	const repeatableTooltipTitle = useMemo(() => {
@@ -80,6 +81,6 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 				</Tooltip>
 			</div>
 		</div>
-		<TaskView name={'task'+item.id} item={item} index={index} />
+		<TaskView name={dialogName} item={item} index={index} />
 	</List.Item>
 }
