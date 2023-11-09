@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { storeKey } from '../constants/tasks'
 import { RootState } from '../types'
 import dayjs from 'dayjs'
-import { Task, TasksState, TaskStatus } from 'types/tasks'
+import { Task, TaskStatus } from 'types/tasks'
 import { WithRequired } from 'types/common'
 import minMax from 'dayjs/plugin/minMax'
 import { getDayTitle, splitByDays, splitByTime } from 'utils/tasks'
@@ -131,16 +131,10 @@ export const selectedExpiredTasks = createSelector(
 )
 
 export const selectedTasksByDate = memoize((date: string) =>
-	(state: TasksState) => createSelector(
-		[
-			selectedTasksWithRepeatable,
-			(_state, date: string) => date
-		],
-		(tasks, date) => {
-			const filterDate = dayjs(date)
+	createSelector(
+		selectedTasksWithRepeatable,
+		tasks => tasks.filter((task) =>
+			dayjs(task.date).isSame(dayjs(date), 'day')
+		)
+	))
 
-			return tasks.filter((task) =>
-				dayjs(task.date).isSame(filterDate, 'day')
-			)
-		}
-	)(state, date))

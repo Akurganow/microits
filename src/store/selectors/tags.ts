@@ -3,7 +3,6 @@ import { createSelector } from 'reselect'
 import { storeKey } from 'store/constants/tags'
 import { selectedTags as selectedTasksTags } from 'store/selectors/tasks'
 import { Tag } from 'types/tags'
-import { SettingsState } from 'types/settings'
 import memoize from 'lodash/memoize'
 
 const rawTags = (state: RootState) => state[storeKey]
@@ -25,19 +24,17 @@ export const selectedAllTags = createSelector(
 )
 
 export const selectedTag = memoize((id: Tag['id']) =>
-	(state: SettingsState) => createSelector(
-		[
-			selectedTags,
-			(_state, id: Tag['id']) => id,
-		],
-		(tags, id) => {
+	createSelector(
+		selectedTags,
+		tags => {
 			const tag = tags.find((tag) => tag.id === id)
 
 			if (tag) return tag
 
 			return null
 		}
-	)(state, id))
+	)
+)
 
 export const selectedStatsTags = createSelector(
 	selectedTags,
