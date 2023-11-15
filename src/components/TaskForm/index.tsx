@@ -12,6 +12,11 @@ import esLocale from 'antd/es/date-picker/locale/es_ES'
 import ruLocale from 'antd/es/date-picker/locale/ru_RU'
 import enLocale from 'antd/es/date-picker/locale/en_US'
 
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import dayjs from 'dayjs'
+
+dayjs.extend(localizedFormat)
+
 const locales = {
 	en: enLocale,
 	ru: ruLocale,

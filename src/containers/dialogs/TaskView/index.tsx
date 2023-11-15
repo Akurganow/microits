@@ -54,17 +54,16 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	const dispatch = useDispatch()
 	const { t, i18n } = useTranslation()
 	const isDialogOpened = useSelector(selectedDialog(name))
-	if (isDialogOpened) console.log('item', item)
 	const tags = useSelector(selectedAllTags)
 	const storedTags = useSelector(selectedTags)
 	const lastItemId = useSelector(selectedLastItemId)
 	const originalDate = useSelector(selectedTaskDate(item.id))
 	const repeatableStatus = useSelector(selectedRepeatableStatus(item.id, item.date?.toString()))
-	if (isDialogOpened) console.log('repeatableStatus', repeatableStatus)
 	const status = repeatableStatus ?? item.status
-	if (isDialogOpened) console.log('status', status)
 	const tagsOptions = useMemo(() => tags.map((tag) => ({ label: tag, value: tag })), [tags])
-	const locale = useMemo(() => locales[i18n.resolvedLanguage.split('-')[0]], [i18n.resolvedLanguage])
+	const locale = useMemo(() =>
+		locales[i18n.resolvedLanguage.split('-')[0]] ?? enLocale,
+	[i18n.resolvedLanguage])
 	const initialValues: TaskFormValues = useMemo(() => ({
 		...item,
 		status,
@@ -117,8 +116,6 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			repeatStatuses.shift()
 			values.repeatStatuses = repeatStatuses
 		}
-
-		console.log('values', valuesToTask({ ...values, repeatable }, item))
 
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
 		dispatch(closeDialog(name))
@@ -193,7 +190,13 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			</Form.Item>
 
 			<Form.Item<TaskFormValues> name="time" label={t('time')} className={st.formItem}>
-				<TimePicker bordered={false} locale={locale} format="LT" />
+				<TimePicker
+					bordered={false}
+					locale={locale}
+					format="HH:mm"
+					minuteStep={15}
+					hideDisabledOptions={true}
+					disabledTime={() => ({ disabledHours: () => [0, 1, 2, 3, 4, 5, 6, 7, 8, 22, 23] })} />
 			</Form.Item>
 
 			<Form.Item<TaskFormValues> label={t('repeatTask')} className={st.formItem}>
