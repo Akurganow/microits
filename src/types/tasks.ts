@@ -23,6 +23,7 @@ export type CheckListItem = {
 export type TaskRepeatable = {
     repeatType: 'day' | 'week' | 'month' | 'year'
     repeatEvery: number
+    repeatIndex: number
 } | null
 
 export type Task = {
@@ -38,6 +39,7 @@ export type Task = {
     status: TaskStatus
     priority: TaskPriority
     checkList: CheckListItem[]
+    repeatStatuses?: TaskStatus[]
 }
 
 export type TaskFormValues = Omit<Task, 'id' | 'date' | 'time' | 'dueDate'> & {

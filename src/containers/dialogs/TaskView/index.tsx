@@ -23,14 +23,15 @@ import * as st from './styles.module.css'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { selectedAllTags, selectedTags } from 'store/selectors/tags'
+import { selectedRepeatableStatus } from 'store/selectors/tasks'
 
 dayjs.extend(localizedFormat)
 
+import { grey } from '@ant-design/colors'
 import frLocale from 'antd/es/date-picker/locale/fr_FR'
 import esLocale from 'antd/es/date-picker/locale/es_ES'
 import ruLocale from 'antd/es/date-picker/locale/ru_RU'
 import enLocale from 'antd/es/date-picker/locale/en_US'
-import { grey } from '@ant-design/colors'
 
 const locales = {
 	en: enLocale,
@@ -67,18 +68,20 @@ function valuesToTask(values: TaskFormValues, task: Task): Task {
 
 export default function TaskView({ item, name, index, ...props }: TaskViewProperties) {
 	const dispatch = useDispatch()
+	const { t, i18n } = useTranslation()
 	const isDialogOpened = useSelector(selectedDialog(name))
 	const tags = useSelector(selectedAllTags)
 	const storedTags = useSelector(selectedTags)
-	const tagsOptions = tags.map((tag) => ({ label: tag, value: tag }))
-	const { t, i18n } = useTranslation()
+	const status = useSelector(selectedRepeatableStatus(item.date?.toString()))
+	const tagsOptions = useMemo(() => tags.map((tag) => ({ label: tag, value: tag })), [tags])
 	const locale = useMemo(() => locales[i18n.resolvedLanguage.split('-')[0]], [i18n.resolvedLanguage])
 	const initialValues: TaskFormValues = useMemo(() => ({
 		...item,
+		status,
 		dueDate: isEmpty(item.dueDate) ? undefined : dayjs(item.dueDate),
 		date: isEmpty(item.date) ? undefined : dayjs(item.date),
 		time: isEmpty(item.time) ? undefined : dayjs(item.time),
-	}), [item])
+	}), [item, status])
 
 	const [form] = Form.useForm<TaskFormValues>()
 	const [isRepeatable, setIsRepeatable] = useState(!isEmpty(initialValues?.repeatable))
@@ -100,9 +103,17 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 
 	const handleSubmit = useCallback((values: TaskFormValues) => {
 		const repeatable = isRepeatable ? values.repeatable : null
+		const repeatStatuses = item.repeatStatuses || []
+
+		if (repeatable) {
+			repeatStatuses[item.repeatable.repeatIndex] = values.status
+			values.status = item.status
+			values.repeatStatuses = repeatStatuses
+		}
+
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
-		dispatch(closeDialog(name))
-	}, [dispatch, isRepeatable, item, name])
+		// dispatch(closeDialog(name))
+	}, [dispatch, isRepeatable, item])
 
 	const tagRenderer = useCallback(props => {
 		const { label, closable, onClose } = props
@@ -194,14 +205,14 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 				</Form.Item>
 			</>}
 
-			{!isRepeatable && <Form.Item<TaskFormValues> name="status" label={t('status')} className={st.formItem}>
+			<Form.Item<TaskFormValues> name="status" label={t('status')} className={st.formItem}>
 				<Select bordered={false}>
 					<Select.Option value={TaskStatus.Init}>{t('statusType.init')}</Select.Option>
 					<Select.Option value={TaskStatus.Open}>{t('statusType.open')}</Select.Option>
 					<Select.Option value={TaskStatus.InProgress}>{t('statusType.inProgress')}</Select.Option>
 					<Select.Option value={TaskStatus.Done}>{t('statusType.done')}</Select.Option>
 				</Select>
-			</Form.Item>}
+			</Form.Item>
 
 			<Form.Item<Task> name="priority" label={t('priority')} className={st.formItem}>
 				<Select bordered={false}>

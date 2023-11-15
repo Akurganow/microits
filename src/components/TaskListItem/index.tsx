@@ -10,6 +10,7 @@ import { TaskListItemProps } from 'components/TaskListItem/types'
 import TaskView from 'containers/dialogs/TaskView'
 import { openDialog } from 'store/actions/dialogs'
 import { selectedTags } from 'store/selectors/tags'
+import { selectedRepeatableStatus } from 'store/selectors/tasks'
 import { TaskStatus } from 'types/tasks'
 import { getDueDateColor, getDueDateText, getPriority } from './helpers'
 import * as st from './style.module.css'
@@ -28,6 +29,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 		return [...(statsTags.length > 0 ? statsTags : itemStoredTags)].slice(0, 3)
 	}, [itemStoredTags])
 	const dialogName = useMemo(() => 'task'+item.id+index, [index, item.id])
+	const status = useSelector(selectedRepeatableStatus(item.date?.toString()))
 
 	const handleItemClick = () => {
 		dispatch(openDialog(dialogName))
@@ -39,7 +41,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 		return t(`repeat.${repeatType}`, { count: repeatEvery })
 	}, [item.repeatable, t])
 
-	return <List.Item className={cn(className, st.container, { [st.completed]: item.status === TaskStatus.Done })} {...props} >
+	return <List.Item className={cn(className, st.container, { [st.completed]: status === TaskStatus.Done })} {...props} >
 		<div className={cn(st.item, st[priority])}>
 			<div className={st.priority} />
 			<Typography.Text

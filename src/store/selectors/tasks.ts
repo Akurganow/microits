@@ -69,6 +69,10 @@ export const selectedTasksWithRepeatable = createSelector(
 
 				return {
 					...item,
+					repeatable: {
+						...item.repeatable,
+						repeatIndex: i,
+					},
 					date,
 				} as typeof item
 			}
@@ -84,6 +88,18 @@ export const selectedTasksWithRepeatable = createSelector(
 			.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)))
 	}
 )
+
+export const selectedRepeatableStatus = memoize((date: string) =>
+	createSelector(
+		selectedTasksWithRepeatable,
+		(tasks) => {
+			const task = tasks.find((task) => dayjs(task.date).isSame(date, 'day'))
+			const statuses = task?.repeatStatuses ?? []
+
+			return statuses[task?.repeatable?.repeatIndex] ?? task?.status ?? TaskStatus.Init
+		}
+	))
+
 
 export const selectedTasksWithTitles = createSelector(
 	selectedTasksWithRepeatable,
