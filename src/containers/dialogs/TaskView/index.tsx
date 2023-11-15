@@ -2,18 +2,24 @@ import { Task, TaskFormValues, TaskPriority, TaskStatus } from 'types/tasks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	Button,
-	Checkbox, Col,
-	DatePicker, Flex,
+	Checkbox,
+	Col,
+	DatePicker,
+	Flex,
 	Form,
 	Input,
 	InputNumber,
 	Modal,
-	ModalProps, Popconfirm,
+	ModalProps,
+	Popconfirm,
 	Select,
-	Switch, Tag,
+	Switch,
+	Tag,
 	TimePicker
 } from 'antd'
 import { addTask, removeTask, updateTask } from 'store/actions/tasks'
+import { selectedLastItemId, selectedRepeatableStatus, selectedTaskDate } from 'store/selectors/tasks'
+import { selectedAllTags, selectedTags } from 'store/selectors/tags'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { closeDialog } from 'store/actions/dialogs'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,16 +28,14 @@ import { isEmpty } from '@plq/is'
 import * as st from './styles.module.css'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { selectedAllTags, selectedTags } from 'store/selectors/tags'
-import { selectedRepeatableStatus } from 'store/selectors/tasks'
-
-dayjs.extend(localizedFormat)
-
+import { valuesToTask } from 'utils/tasks'
 import { grey } from '@ant-design/colors'
 import frLocale from 'antd/es/date-picker/locale/fr_FR'
 import esLocale from 'antd/es/date-picker/locale/es_ES'
 import ruLocale from 'antd/es/date-picker/locale/ru_RU'
 import enLocale from 'antd/es/date-picker/locale/en_US'
+
+dayjs.extend(localizedFormat)
 
 const locales = {
 	en: enLocale,
@@ -46,34 +50,19 @@ interface TaskViewProperties extends ModalProps {
 	index: number
 }
 
-function valuesToTask(values: TaskFormValues, task: Task): Task {
-	const checkList = values.checkList?.map((checkListItem, index) => {
-		const itemChecklist = task.checkList[index]
-
-		return {
-			...itemChecklist,
-			...checkListItem,
-		}
-	})
-
-	return {
-		...task,
-		...values,
-		checkList,
-		dueDate: values.dueDate?.toISOString(),
-		date: values.date?.toISOString(),
-		time: values.time?.toISOString(),
-	}
-}
-
 export default function TaskView({ item, name, index, ...props }: TaskViewProperties) {
 	const dispatch = useDispatch()
 	const { t, i18n } = useTranslation()
 	const isDialogOpened = useSelector(selectedDialog(name))
+	if (isDialogOpened) console.log('item', item)
 	const tags = useSelector(selectedAllTags)
 	const storedTags = useSelector(selectedTags)
-	const repeatableStatus = useSelector(selectedRepeatableStatus(item.date?.toString()))
+	const lastItemId = useSelector(selectedLastItemId)
+	const originalDate = useSelector(selectedTaskDate(item.id))
+	const repeatableStatus = useSelector(selectedRepeatableStatus(item.id, item.date?.toString()))
+	if (isDialogOpened) console.log('repeatableStatus', repeatableStatus)
 	const status = repeatableStatus ?? item.status
+	if (isDialogOpened) console.log('status', status)
 	const tagsOptions = useMemo(() => tags.map((tag) => ({ label: tag, value: tag })), [tags])
 	const locale = useMemo(() => locales[i18n.resolvedLanguage.split('-')[0]], [i18n.resolvedLanguage])
 	const initialValues: TaskFormValues = useMemo(() => ({
@@ -103,30 +92,37 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	}, [dispatch, item.id, name])
 
 	const handleSubmit = useCallback((values: TaskFormValues) => {
+		const status = values.status
 		const repeatable = isRepeatable ? values.repeatable : null
 		const repeatStatuses = item.repeatStatuses || []
-		const isFirstRepeat = item.repeatable.repeatIndex === 0
+		const isFirstRepeat = item.repeatable ? item.repeatable.repeatIndex === 0 : false
 
 		if (repeatable) {
-			repeatStatuses[item.repeatable.repeatIndex] = values.status
-			values.status = item.status
+			repeatStatuses[item.repeatable ? item.repeatable.repeatIndex : 0] = values.status
+			values.status = item.status ?? TaskStatus.Init
 			values.repeatStatuses = repeatStatuses
+			values.date = dayjs(originalDate)
 		}
 
-		if (repeatable && isFirstRepeat && values.status === TaskStatus.Done) {
+		if (repeatable && isFirstRepeat && status === TaskStatus.Done) {
 			const itemDuplicate = { ...item }
-			const nextRepeatDate = dayjs(item.date).add(repeatable.repeatEvery, repeatable.repeatType)
+			const nextRepeatDate = values.date.add(repeatable.repeatEvery, repeatable.repeatType)
 
-			delete itemDuplicate.id
+			itemDuplicate.id = lastItemId + 1
+			itemDuplicate.repeatable = null
 
 			dispatch(addTask(itemDuplicate))
 
 			values.date = nextRepeatDate
+			repeatStatuses.shift()
+			values.repeatStatuses = repeatStatuses
 		}
+
+		console.log('values', valuesToTask({ ...values, repeatable }, item))
 
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
 		dispatch(closeDialog(name))
-	}, [dispatch, isRepeatable, item, name])
+	}, [dispatch, isRepeatable, item, lastItemId, name, originalDate])
 
 	const tagRenderer = useCallback(props => {
 		const { label, closable, onClose } = props

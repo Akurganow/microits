@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 import capitalize from 'lodash/capitalize'
 import i18n from 'src/i18n'
+import { Task, TaskFormValues } from 'types/tasks'
 
 export function getDayTitle(date?: string) {
 	const isToday = dayjs(date).isSame(dayjs(), 'day')
@@ -71,4 +72,24 @@ export function splitByDays<T extends { date: string | number | Date | Dayjs }>(
 	}
 
 	return result
+}
+
+export function valuesToTask(values: TaskFormValues, task: Task): Task {
+	const checkList = values.checkList?.map((checkListItem, index) => {
+		const itemChecklist = task.checkList[index]
+
+		return {
+			...itemChecklist,
+			...checkListItem,
+		}
+	})
+
+	return {
+		...task,
+		...values,
+		checkList,
+		dueDate: values.dueDate?.toISOString(),
+		date: values.date?.toISOString(),
+		time: values.time?.toISOString(),
+	}
 }

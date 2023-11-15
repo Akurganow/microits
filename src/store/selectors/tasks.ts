@@ -7,7 +7,6 @@ import { WithRequired } from 'types/common'
 import minMax from 'dayjs/plugin/minMax'
 import { getDayTitle, splitByDays, splitByTime } from 'utils/tasks'
 import { ListTitle } from 'components/TasksList'
-import memoize from 'lodash/memoize'
 
 dayjs.extend(minMax)
 
@@ -16,6 +15,17 @@ export const selectedTasks = createSelector(
 	rawSelectedTasks,
 	(state) => state.tasks
 )
+
+export const selectedLastItemId = createSelector(
+	selectedTasks,
+	(tasks) => Math.max(...tasks.map((task) => task.id))
+)
+
+export const selectedTaskDate = (id: Task['id']) =>
+	createSelector(
+		selectedTasks,
+		(tasks) => tasks.find((task) => task.id === id)?.date
+	)
 
 export const selectedTasksWithDate = createSelector(
 	selectedTasks,
@@ -55,24 +65,35 @@ export const selectedTasksWithRepeatable = createSelector(
 	(tasks, datesRange) => {
 		if (tasks.length === 0) return []
 
-		const repeatable = tasks.filter((item) => item.repeatable)
+		const repeatable = tasks
+			.filter((item) => item.repeatable)
+			.map((item) => ({
+				...item,
+				repeatable: {
+					...item.repeatable,
+					repeatIndex: 0
+				},
+			} as typeof item))
 		const nonRepeatable = tasks.filter((item) => !item.repeatable)
 		const repeatTasks = repeatable.flatMap((item) => {
 			const addItemsFn = (_: unknown, i: number) => {
+				if (i === 0) return null
+
 				const addCount = i * item.repeatable.repeatEvery
 				const date = dayjs(item.date)
 					.add(addCount, item.repeatable.repeatType)
 					.toISOString()
 
 				if (dayjs(date).isAfter(datesRange?.lastDate)) return null
-				if (dayjs(date).isSame(item.date)) return null
+
+				const repeatable = {
+					...item.repeatable,
+					repeatIndex: i
+				}
 
 				return {
 					...item,
-					repeatable: {
-						...item.repeatable,
-						repeatIndex: i,
-					},
+					repeatable,
 					date,
 				} as typeof item
 			}
@@ -89,17 +110,17 @@ export const selectedTasksWithRepeatable = createSelector(
 	}
 )
 
-export const selectedRepeatableStatus = memoize((date?: string) =>
+export const selectedRepeatableStatus = (id: Task['id'], date?: string) =>
 	createSelector(
 		selectedTasksWithRepeatable,
 		(tasks) => {
 			if (!date) return null
-			const task = tasks.find((task) => dayjs(task.date).isSame(date, 'day'))
+			const task = tasks.find((task) => task.id === id && task.date === date)
 			const statuses = task?.repeatStatuses ?? []
 
-			return statuses[task?.repeatable?.repeatIndex] ?? task?.status ?? TaskStatus.Init
+			return statuses[task?.repeatable?.repeatIndex] ?? task?.status
 		}
-	))
+	)
 
 
 export const selectedTasksWithTitles = createSelector(
@@ -147,11 +168,11 @@ export const selectedExpiredTasks = createSelector(
 	)
 )
 
-export const selectedTasksByDate = memoize((date: string) =>
+export const selectedTasksByDate = (date: string) =>
 	createSelector(
 		selectedTasksWithRepeatable,
 		tasks => tasks.filter((task) =>
 			dayjs(task.date).isSame(dayjs(date), 'day')
 		)
-	))
+	)
 

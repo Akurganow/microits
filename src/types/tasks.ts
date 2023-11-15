@@ -42,10 +42,11 @@ export type Task = {
     repeatStatuses?: TaskStatus[]
 }
 
-export type TaskFormValues = Omit<Task, 'id' | 'date' | 'time' | 'dueDate'> & {
+export type TaskFormValues = Omit<Task, 'id' | 'date' | 'time' | 'dueDate' | 'repeatable'> & {
     date?: Dayjs
     time?: Dayjs
     dueDate?: Dayjs
+    repeatable?: TaskRepeatable
 }
 
 export type TasksState = {

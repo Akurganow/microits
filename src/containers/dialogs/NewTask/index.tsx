@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Modal } from 'antd'
 import { closeDialog } from 'store/actions/dialogs'
 import TaskForm from 'components/TaskForm'
@@ -13,7 +13,7 @@ export default function NewTask() {
 	const dispatch = useDispatch()
 	const isDialogOpened = useSelector(selectedDialog('new-task'))
 	const { t } = useTranslation()
-	const initialForm: TaskFormValues = {
+	const initialForm = useMemo(() => ({
 		title: '',
 		estimate: 1,
 		timeSpent: 0,
@@ -21,8 +21,7 @@ export default function NewTask() {
 		status: TaskStatus.Init,
 		priority: TaskPriority.Normal,
 		checkList: [],
-		repeatable: null,
-	}
+	} as TaskFormValues), [])
 
 	const handleFormSubmit = useCallback((values: Task) => {
 		const checkList = values.checkList.map((checkListItem, index) => ({
@@ -30,10 +29,13 @@ export default function NewTask() {
 			id: index,
 			completed: false,
 		}))
-		values.repeatable = isEmpty(values.repeatable) ? null : values.repeatable
-		dispatch(addTask({ ...values, checkList } as unknown as Task))
+		values.repeatable = isEmpty(values.repeatable) ? null : {
+			...values.repeatable,
+			repeatIndex: 0,
+		}
+		dispatch(addTask({ ...initialForm, ...values, checkList } as unknown as Task))
 		dispatch(closeDialog('new-task'))
-	}, [dispatch])
+	}, [dispatch, initialForm])
 
 	const handleClose = useCallback(() => {
 		dispatch(closeDialog('new-task'))
