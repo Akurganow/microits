@@ -24,10 +24,10 @@ export function getDayTitle(date?: string) {
 		return capitalize(new Date(date).toLocaleString(currentLanguage, { weekday: 'long' }))
 	}
 	case isSameYear: {
-		return capitalize(new Date(date).toLocaleString(currentLanguage, { day: 'numeric', month: 'long' }))
+		return capitalize(new Date(date).toLocaleString(currentLanguage, { weekday: 'long', day: 'numeric', month: 'long' }))
 	}
 	default: {
-		return capitalize(new Date(date).toLocaleString(currentLanguage, { day: 'numeric', month: 'long', year: 'numeric' }))
+		return capitalize(new Date(date).toLocaleString(currentLanguage, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))
 	}
 	}
 }
