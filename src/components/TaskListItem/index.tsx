@@ -29,7 +29,8 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 		return [...(statsTags.length > 0 ? statsTags : itemStoredTags)].slice(0, 3)
 	}, [itemStoredTags])
 	const dialogName = useMemo(() => 'task'+item.id+index, [index, item.id])
-	const status = useSelector(selectedRepeatableStatus(item.date?.toString()))
+	const repeatableStatus = useSelector(selectedRepeatableStatus(item.date?.toString()))
+	const status = repeatableStatus ?? item.status
 
 	const handleItemClick = () => {
 		dispatch(openDialog(dialogName))

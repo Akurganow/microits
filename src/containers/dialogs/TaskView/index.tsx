@@ -13,7 +13,7 @@ import {
 	Switch, Tag,
 	TimePicker
 } from 'antd'
-import { removeTask, updateTask } from 'store/actions/tasks'
+import { addTask, removeTask, updateTask } from 'store/actions/tasks'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { closeDialog } from 'store/actions/dialogs'
 import { useDispatch, useSelector } from 'react-redux'
@@ -72,7 +72,8 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	const isDialogOpened = useSelector(selectedDialog(name))
 	const tags = useSelector(selectedAllTags)
 	const storedTags = useSelector(selectedTags)
-	const status = useSelector(selectedRepeatableStatus(item.date?.toString()))
+	const repeatableStatus = useSelector(selectedRepeatableStatus(item.date?.toString()))
+	const status = repeatableStatus ?? item.status
 	const tagsOptions = useMemo(() => tags.map((tag) => ({ label: tag, value: tag })), [tags])
 	const locale = useMemo(() => locales[i18n.resolvedLanguage.split('-')[0]], [i18n.resolvedLanguage])
 	const initialValues: TaskFormValues = useMemo(() => ({
@@ -104,6 +105,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	const handleSubmit = useCallback((values: TaskFormValues) => {
 		const repeatable = isRepeatable ? values.repeatable : null
 		const repeatStatuses = item.repeatStatuses || []
+		const isFirstRepeat = item.repeatable.repeatIndex === 0
 
 		if (repeatable) {
 			repeatStatuses[item.repeatable.repeatIndex] = values.status
@@ -111,9 +113,20 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			values.repeatStatuses = repeatStatuses
 		}
 
+		if (repeatable && isFirstRepeat && values.status === TaskStatus.Done) {
+			const itemDuplicate = { ...item }
+			const nextRepeatDate = dayjs(item.date).add(repeatable.repeatEvery, repeatable.repeatType)
+
+			delete itemDuplicate.id
+
+			dispatch(addTask(itemDuplicate))
+
+			values.date = nextRepeatDate
+		}
+
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
-		// dispatch(closeDialog(name))
-	}, [dispatch, isRepeatable, item])
+		dispatch(closeDialog(name))
+	}, [dispatch, isRepeatable, item, name])
 
 	const tagRenderer = useCallback(props => {
 		const { label, closable, onClose } = props

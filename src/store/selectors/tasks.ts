@@ -89,10 +89,11 @@ export const selectedTasksWithRepeatable = createSelector(
 	}
 )
 
-export const selectedRepeatableStatus = memoize((date: string) =>
+export const selectedRepeatableStatus = memoize((date?: string) =>
 	createSelector(
 		selectedTasksWithRepeatable,
 		(tasks) => {
+			if (!date) return null
 			const task = tasks.find((task) => dayjs(task.date).isSame(date, 'day'))
 			const statuses = task?.repeatStatuses ?? []
 

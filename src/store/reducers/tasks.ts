@@ -15,10 +15,12 @@ const createReducer = (initialState: TasksState) => reducerWithInitialState(init
 		...state,
 		tasks: state.tasks.filter(task => task.id !== id),
 	}))
-	.case(updateTask, (state, task) => ({
-		...state,
-		tasks: state.tasks.map(t => t.id === task.id ? task : t),
-	}))
+	.case(updateTask, (state, task) => {
+		return {
+			...state,
+			tasks: state.tasks.map(t => t.id === task.id ? task : t),
+		}
+	})
 	.case(setTaskField, (state, { id, field, value }) => ({
 		...state,
 		tasks: state.tasks.map(task => task.id === id ? { ...task, [field]: value } : task),
