@@ -137,7 +137,11 @@ export const selectedTasksWithTitles = createSelector(
 			})
 			const withoutTime = group
 				.filter((item) => !item.time)
-				.sort((a, b) => a.priority - b.priority)
+				.sort((a, b) => {
+					if (a.status === TaskStatus.Done && b.status !== TaskStatus.Done) return 1
+					if (a.status !== TaskStatus.Done && b.status === TaskStatus.Done) return -1
+					return a.priority - b.priority
+				})
 
 			return [
 				{ type: 'date', title: getDayTitle(group[0].date), date: group[0].date },

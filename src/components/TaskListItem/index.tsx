@@ -14,6 +14,7 @@ import { selectedRepeatableStatus } from 'store/selectors/tasks'
 import { TaskStatus } from 'types/tasks'
 import { getDueDateColor, getDueDateText, getPriority } from './helpers'
 import * as st from './style.module.css'
+import { grey } from '@ant-design/colors'
 
 export default function TaskListItem({ index, item, className, ...props }: TaskListItemProps) {
 	const dispatch = useDispatch()
@@ -31,6 +32,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 	const dialogName = useMemo(() => 'task'+item.id+index, [index, item.id])
 	const repeatableStatus = useSelector(selectedRepeatableStatus(item.id, item.date?.toString()))
 	const status = repeatableStatus ?? item.status
+	const isCompleted = status === TaskStatus.Done
 
 	const handleItemClick = () => {
 		dispatch(openDialog(dialogName))
@@ -42,7 +44,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 		return t(`repeat.${repeatType}`, { count: repeatEvery })
 	}, [item.repeatable, t])
 
-	return <List.Item className={cn(className, st.container, { [st.completed]: status === TaskStatus.Done })} {...props} >
+	return <List.Item className={cn(className, st.container, { [st.completed]: isCompleted })} {...props} >
 		<div className={cn(st.item, st[priority])}>
 			<div className={st.priority} />
 			<Typography.Text
@@ -50,7 +52,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 				ellipsis={{ tooltip: item.title }}
 				style={{ margin: 0 }}
 			>
-				<Button type="link" onClick={handleItemClick}>
+				<Button type="link" onClick={handleItemClick} style={{ color: isCompleted && grey[0] }}>
 					<span className={st.titleText}>
 						{!isEmpty(item.repeatable) && <Tooltip title={repeatableTooltipTitle}>
 							<SyncOutlined />
