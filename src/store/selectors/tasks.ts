@@ -39,10 +39,15 @@ export const selectedTasksWithoutDate = createSelector(
 	(tasks) => tasks
 		.filter((task) => !task.date)
 		.sort((a, b) => {
-			if (!a.dueDate) return -1
-			if (!b.dueDate) return 1
+			if (!a.dueDate && !b.dueDate) return a.priority - b.priority
+			if (!a.dueDate) return 1
+			if (!b.dueDate) return -1
 
-			return dayjs(a.dueDate).diff(dayjs(b.dueDate))
+			const daydiff = dayjs(a.dueDate).diff(dayjs(b.dueDate))
+
+			if (daydiff === 0) return a.priority - b.priority
+
+			return daydiff
 		})
 )
 
