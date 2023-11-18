@@ -5,6 +5,7 @@ import { addChecklistItem, removeChecklistItem, updateChecklistItem } from 'stor
 import { Task } from 'types/tasks'
 import { DeleteOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
+import { grey } from '@ant-design/colors'
 
 export type CheckListItem = {
     id: number;
@@ -73,6 +74,10 @@ const CheckList: FC<CheckListProps> = ({ task }) => {
 				dataSource={task.checkList}
 				renderItem={(item) => (
 					<List.Item
+						style={{
+							textDecoration: item.completed ? 'line-through' : 'none',
+							color: item.completed ? grey[0] : 'inherit',
+						}}
 						actions={[
 							<Button
 								key={item.id}
@@ -89,6 +94,7 @@ const CheckList: FC<CheckListProps> = ({ task }) => {
 							<Checkbox checked={item.completed} onChange={() => handleCheck(item)} />
 							{editingItemId === item.id ? (
 								<Input
+									placeholder={t('checklist.addItem')}
 									value={tempTitle}
 									onChange={(e) => setTempTitle(e.target.value)}
 									onKeyDown={(e) => handleKeyDown(e, item)}
@@ -96,7 +102,11 @@ const CheckList: FC<CheckListProps> = ({ task }) => {
 									autoFocus
 								/>
 							) : (
-								<Typography.Text ellipsis onClick={() => startEditing(item)}>
+								<Typography.Text
+									style={{ color: 'currentcolor' }}
+									ellipsis
+									onClick={() => startEditing(item)}
+								>
 									{item.title}
 								</Typography.Text>
 							)}

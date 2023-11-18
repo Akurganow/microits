@@ -116,6 +116,8 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			values.repeatStatuses = repeatStatuses
 		}
 
+		values.checkList = item.checkList
+
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
 		dispatch(closeDialog(name))
 	}, [dispatch, isRepeatable, item, lastItemId, name, originalDate])

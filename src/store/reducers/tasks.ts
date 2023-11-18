@@ -9,7 +9,6 @@ import {
 	updateChecklistItem,
 	updateTask
 } from 'store/actions/tasks'
-import { DEFAULT_CHECKLIST_ITEM_TITLE } from 'store/constants/tasks'
 
 const createReducer = (initialState: TasksState) => reducerWithInitialState(initialState)
 	.case(addTask, (state, task) => {
@@ -50,7 +49,7 @@ const createReducer = (initialState: TasksState) => reducerWithInitialState(init
 				...task,
 				checkList: [...(task.checkList || []), {
 					id: (task.checkList || []).length,
-					title: DEFAULT_CHECKLIST_ITEM_TITLE,
+					title: '',
 					completed: false
 				}],
 			}
