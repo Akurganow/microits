@@ -107,7 +107,7 @@ const CheckList: FC<CheckListProps> = ({ task }) => {
 									ellipsis
 									onClick={() => startEditing(item)}
 								>
-									{item.title || t('checklist.addItem')}
+									{item.title || t('checklist.defaultTitle')}
 								</Typography.Text>
 							)}
 						</Flex>
