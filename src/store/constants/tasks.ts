@@ -1,4 +1,5 @@
 import { TasksState } from 'types/tasks'
+import i18n from 'src/i18n'
 // import { Task, TasksState, TaskStatus } from 'types/tasks'
 // import { faker } from '@faker-js/faker'
 // import dayjs from 'dayjs'
@@ -9,6 +10,8 @@ export const storeKey = 'tasks'
 export const initialState: TasksState = {
 	tasks: [],
 }
+
+export const DEFAULT_CHECKLIST_ITEM_TITLE = i18n.t('checklist.defaultTitle')
 
 // function initialTags() {
 // 	return faker.helpers.multiple(faker.lorem.word, { count: 10 })

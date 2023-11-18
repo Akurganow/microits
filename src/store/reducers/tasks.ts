@@ -1,6 +1,15 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers'
 import { Task, TasksState } from 'types/tasks'
-import { addTask, removeTask, setTaskField, updateTask } from 'store/actions/tasks'
+import {
+	addChecklistItem,
+	addTask,
+	removeChecklistItem,
+	removeTask,
+	setTaskField,
+	updateChecklistItem,
+	updateTask
+} from 'store/actions/tasks'
+import { DEFAULT_CHECKLIST_ITEM_TITLE } from 'store/constants/tasks'
 
 const createReducer = (initialState: TasksState) => reducerWithInitialState(initialState)
 	.case(addTask, (state, task) => {
@@ -24,5 +33,38 @@ const createReducer = (initialState: TasksState) => reducerWithInitialState(init
 	.case(setTaskField, (state, { id, field, value }) => ({
 		...state,
 		tasks: state.tasks.map(task => task.id === id ? { ...task, [field]: value } : task),
+	}))
+	.case(updateChecklistItem, (state, { taskId, item }) => ({
+		...state,
+		tasks: state.tasks.map(task => task.id === taskId
+			? {
+				...task,
+				checkList: (task.checkList || []).map(i => i.id === item.id ? item : i) }
+			: task
+		),
+	}))
+	.case(addChecklistItem, (state, taskId) => ({
+		...state,
+		tasks: state.tasks.map(task => task.id === taskId
+			? {
+				...task,
+				checkList: [...(task.checkList || []), {
+					id: (task.checkList || []).length,
+					title: DEFAULT_CHECKLIST_ITEM_TITLE,
+					completed: false
+				}],
+			}
+			: task
+		),
+	}))
+	.case(removeChecklistItem, (state, { taskId, itemId }) => ({
+		...state,
+		tasks: state.tasks.map(task => task.id === taskId
+			? {
+				...task,
+				checkList: (task.checkList || []).filter(item => item.id !== itemId),
+			}
+			: task
+		),
 	}))
 export default createReducer

@@ -2,8 +2,6 @@ import { Task, TaskFormValues, TaskPriority, TaskStatus } from 'types/tasks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	Button,
-	Checkbox,
-	Col,
 	DatePicker,
 	Flex,
 	Form,
@@ -34,6 +32,7 @@ import frLocale from 'antd/es/date-picker/locale/fr_FR'
 import esLocale from 'antd/es/date-picker/locale/es_ES'
 import ruLocale from 'antd/es/date-picker/locale/ru_RU'
 import enLocale from 'antd/es/date-picker/locale/en_US'
+import Checklist from 'components/Checklist'
 
 dayjs.extend(localizedFormat)
 
@@ -238,19 +237,10 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			<Form.Item<Task> name="tags" label={t('tags')} className={st.formItem}>
 				<Select bordered={false} mode="tags" options={tagsOptions} tagRender={tagRenderer} />
 			</Form.Item>
-
-			{item.checkList && <Col offset={6} span={18}>
-				{item.checkList.map((checkListItem, index) => (
-					<Form.Item<Task>
-						key={item.id + checkListItem.id}
-						valuePropName="checked"
-						name={['checkList', index, 'completed']}
-						className={st.formItem}
-					>
-						<Checkbox>{checkListItem.title}</Checkbox>
-					</Form.Item>
-				))}
-			</Col>}
+			
+			<Form.Item<Task> label={t('checkList')} className={st.formItem}>
+				<Checklist task={item} />
+			</Form.Item>
 		</Form>
 	</Modal>
 }

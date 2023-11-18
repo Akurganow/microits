@@ -77,6 +77,10 @@
     "deleteTaskConfirm": "Are you sure you want to delete task #{{id}}?",
     "expired": "Expired",
     "unsorted": "Unsorted",
-    "estimateSum": "Sum"
+    "estimateSum": "Sum",
+    "checklist": {
+      "addItem": "Add item",
+      "defaultTitle": "Click here to change item title"
+    }
   }
 }

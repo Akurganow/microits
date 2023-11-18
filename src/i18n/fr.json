@@ -77,6 +77,10 @@
     "deleteTaskConfirm": "Êtes-vous sûr de vouloir supprimer la tâche n°{{id}}?",
     "expired": "Expiré",
     "unsorted": "Non trié",
-    "estimateSum": "Somme"
+    "estimateSum": "Somme",
+    "checklist": {
+      "addItem": "Ajouter un élément",
+      "defaultTitle": "Cliquez ici pour changer le titre de l'élément"
+    }
   }
 }
