@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 
 interface TaskListTitleProps extends HTMLAttributes<HTMLDivElement> {
     item: ListTitle
+	index: number
 }
 
 function Stats ({ date }: { date: string }) {
