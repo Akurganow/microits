@@ -33,6 +33,7 @@ import esLocale from 'antd/es/date-picker/locale/es_ES'
 import ruLocale from 'antd/es/date-picker/locale/ru_RU'
 import enLocale from 'antd/es/date-picker/locale/en_US'
 import Checklist from 'components/Checklist'
+import ReactQuill from 'react-quill'
 
 dayjs.extend(localizedFormat)
 
@@ -52,6 +53,7 @@ interface TaskViewProperties extends ModalProps {
 export default function TaskView({ item, name, index, ...props }: TaskViewProperties) {
 	const dispatch = useDispatch()
 	const { t, i18n } = useTranslation()
+	const [isDescriptionEditing, setIsDescriptionEditing] = useState(false)
 	const isDialogOpened = useSelector(selectedDialog(name))
 	const tags = useSelector(selectedAllTags)
 	const storedTags = useSelector(selectedTags)
@@ -120,7 +122,14 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
 		dispatch(closeDialog(name))
+		setIsDescriptionEditing(false)
 	}, [dispatch, isRepeatable, item, lastItemId, name, originalDate])
+
+	const handleApply = useCallback(() => {
+		const values = form.getFieldsValue()
+		dispatch(updateTask(valuesToTask(values, item)))
+		setIsDescriptionEditing(false)
+	}, [dispatch, form, item])
 
 	const tagRenderer = useCallback(props => {
 		const { label, closable, onClose } = props
@@ -157,6 +166,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 				</Flex>
 				<Flex>
 					<Button htmlType="submit" type="primary" form={'task-form'+item.id+index}>{t('save')}</Button>
+					<Button type="primary" ghost onClick={handleApply}>{t('apply')}</Button>
 					<Button onClick={handleClose}>{t('close')}</Button>
 				</Flex>
 			</Flex>
@@ -172,6 +182,33 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		>
 			<Form.Item<TaskFormValues> name="title" label={t('title')} className={st.formItem}>
 				<Input bordered={false} />
+			</Form.Item>
+
+			<Form.Item<TaskFormValues> name="description" label={t('description')} className={st.formItem}>
+				{isDescriptionEditing
+					? <ReactQuill
+						theme="snow"
+						modules={{
+							toolbar: [
+								['bold', 'italic', 'underline', 'strike', 'blockquote'],
+								[{ list: 'ordered' }, { list: 'bullet' }],
+								['link'],
+							],
+						}}
+						onKeyDown={event => {
+							if (event.key === 'Escape') {
+								setIsDescriptionEditing(false)
+							}
+						}}
+					/>
+					: <div
+						style={{ padding: '4px 11px' }}
+						onClick={() => setIsDescriptionEditing(true)}
+						dangerouslySetInnerHTML={{
+							__html: item.description || `<span style="color: ${grey[0]}">${t('clickToAddDescription')}</span>`
+						}}
+					/>
+				}
 			</Form.Item>
 
 			<Form.Item<TaskFormValues> name="estimate" label={t('estimate')} className={st.formItem}>

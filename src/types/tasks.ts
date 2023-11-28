@@ -29,6 +29,7 @@ export type TaskRepeatable = {
 export type Task = {
     id: number
     title: string
+    description: string
     repeatable: TaskRepeatable
     estimate: number
     timeSpent?: number

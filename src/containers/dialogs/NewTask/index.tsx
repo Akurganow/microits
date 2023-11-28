@@ -15,6 +15,7 @@ export default function NewTask() {
 	const { t } = useTranslation()
 	const initialForm = useMemo(() => ({
 		title: '',
+		description: '',
 		estimate: 1,
 		timeSpent: 0,
 		tags: [],

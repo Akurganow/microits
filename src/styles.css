@@ -13,3 +13,7 @@
     text-align: start;
     width: 100%;
 }
+
+.ql-tooltip {
+    z-index: 100000;
+}

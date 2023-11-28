@@ -29,7 +29,7 @@ module.exports = {
 		'quotes': ['error', 'single'],
 		'indent': [2, 'tab'],
 		'react/jsx-indent': [2, 'tab', { indentLogicalExpressions: true }],
-		'react/jsx-indent-props': [2, 'tab'],
+		'react/jsx-indent-props': [0],
 		'react/display-name': [0, 0],
 		'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
 		'react/react-in-jsx-scope': [0],
