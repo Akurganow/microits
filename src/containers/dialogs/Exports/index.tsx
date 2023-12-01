@@ -5,14 +5,14 @@ import { selectedDialog } from 'store/selectors/dialogs'
 import { useCallback, useMemo } from 'react'
 import { closeDialog } from 'store/actions/dialogs'
 import { DownloadOutlined } from '@ant-design/icons'
-import { selectedTasksForExport } from 'store/selectors/tasks'
+import { selectedTasks } from 'store/selectors/tasks'
 import { downloadArrayAsCSV } from 'utils/files'
 
 export default function Exports() {
 	const dispatch = useDispatch()
 	const { t } = useTranslation()
 	const isDialogOpened = useSelector(selectedDialog('export'))
-	const tasks = useSelector(selectedTasksForExport)
+	const tasks = useSelector(selectedTasks)
 	const fileName = useMemo(() => `Alexenda-tasks-${new Date().toISOString()}`, [])
 
 	const handleClose = useCallback(() => {

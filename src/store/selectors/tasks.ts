@@ -184,15 +184,3 @@ export const selectedTasksByDate = (date: string) =>
 			dayjs(task.date).isSame(dayjs(date), 'day')
 		)
 	)
-
-export const selectedTasksForExport = createSelector(
-	selectedTasksWithRepeatable,
-	selectedExpiredTasks,
-	selectedTasksWithoutDate,
-	(tasks, expired, withoutDate) =>
-		[
-			...tasks,
-			...expired,
-			...withoutDate,
-		]
-)
