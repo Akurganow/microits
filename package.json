@@ -25,9 +25,12 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-unicorn": "^49.0.0",
+    "events": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript-plugin-css-modules": "^5.0.2"
+    "stream-browserify": "^3.0.0",
+    "typescript-plugin-css-modules": "^5.0.2",
+    "util": "^0.12.5"
   },
   "dependencies": {
     "@ant-design/colors": "^7.0.0",
@@ -41,6 +44,7 @@
     "dayjs": "^1.11.10",
     "i18next": "^23.6.0",
     "i18next-browser-languagedetector": "^7.1.0",
+    "json-2-csv": "^5.0.1",
     "lodash": "^4.17.21",
     "modern-css-reset": "^1.4.0",
     "nanoid": "^5.0.2",

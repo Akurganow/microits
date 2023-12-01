@@ -40,6 +40,8 @@ module.exports = {
 		'unicorn/consistent-function-scoping': [0],
 		'unicorn/no-array-reduce': [0],
 		'unicorn/prefer-export-from': [0],
+		'unicorn/prefer-dom-node-append': [0],
+		'unicorn/prefer-dom-node-remove': [0],
 	},
 	'settings': {
 		'react': {

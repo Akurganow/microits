@@ -185,3 +185,14 @@ export const selectedTasksByDate = (date: string) =>
 		)
 	)
 
+export const selectedTasksForExport = createSelector(
+	selectedTasksWithRepeatable,
+	selectedExpiredTasks,
+	selectedTasksWithoutDate,
+	(tasks, expired, withoutDate) =>
+		[
+			...tasks,
+			...expired,
+			...withoutDate,
+		]
+)

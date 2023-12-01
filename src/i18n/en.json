@@ -84,6 +84,9 @@
     "checklist": {
       "addItem": "Add item",
       "defaultTitle": "Click here to change item title"
-    }
+    },
+    "export": "Export",
+    "import": "Import",
+    "downloadTasks": "Download tasks"
   }
 }

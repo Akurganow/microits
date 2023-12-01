@@ -42,7 +42,7 @@ export function splitByTime<T extends { time: string | number | Date | Dayjs }>(
 	for (const item of array) {
 		const time = dayjs(item.time).format('HH:mm')
 
-		if (time === currentTime) {
+		if (currentTime && time === currentTime) {
 			result.at(-1).push(item)
 		} else {
 			result.push([item])
@@ -63,7 +63,7 @@ export function splitByDays<T extends { date: string | number | Date | Dayjs }>(
 	for (const item of array) {
 		const day = dayjs(item.date).format('YYYY-MM-DD')
 
-		if (day === currentDay) {
+		if (currentDay && day === currentDay) {
 			result.at(-1).push(item)
 		} else {
 			result.push([item])

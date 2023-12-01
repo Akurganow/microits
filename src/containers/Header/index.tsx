@@ -18,16 +18,22 @@ export default function Header() {
 	return <Layout.Header className={st.header}>
 		<Flex justify="space-between" align="center">
 			<Logo />
-			<Tooltip title={t('addNewTask')}>
-				<Flex align="flex-start" gap="small" wrap="wrap" >
-					<Button size="middle" onClick={handleOpenDialog(TAGS_MODAL_NAME)}>
-						{t('tags')}
-					</Button>
+
+			<Flex align="flex-start" gap="small" wrap="wrap" >
+				<Button size="middle" onClick={handleOpenDialog('export')}>
+					{t('export')}
+				</Button>
+
+				<Button size="middle" onClick={handleOpenDialog(TAGS_MODAL_NAME)}>
+					{t('tags')}
+				</Button>
+
+				<Tooltip title={t('addNewTask')}>
 					<Button type="primary" size="middle" onClick={handleOpenDialog('new-task')}>
 						{t('add')}
 					</Button>
-				</Flex>
-			</Tooltip>
+				</Tooltip>
+			</Flex>
 		</Flex>
 	</Layout.Header>
 }
