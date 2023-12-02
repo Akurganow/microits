@@ -18,6 +18,8 @@ Improvement Opportunities: Highlight areas for improvement in task planning and 
 
 Strategic Project Management Advice: Offer strategic advice for the overall project management approach, considering the nature and interdependencies of the tasks.
 
+Clarity and Simplicity: Ensure your analysis is clear and simple, suitable for an inexperienced manager. Avoid detailed analysis of individual tasks and focus on the broader picture and general recommendations.
+
 Provide a comprehensive and structured response with actionable recommendations for effective project management. The analysis should be clear, concise, and tailored for users who may not be familiar with technical project management terms.
 
 In your response, don't use level 1 and level 2 headings

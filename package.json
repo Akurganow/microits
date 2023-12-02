@@ -62,6 +62,7 @@
     "redux-persist": "^6.0.0",
     "redux-persist-indexeddb-storage": "^1.0.4",
     "reselect": "^4.1.8",
+    "socket.io": "^4.7.2",
     "typescript-fsa-reducers": "^1.2.2"
   }
 }

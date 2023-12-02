@@ -10,7 +10,6 @@ import { selectedTasks } from 'store/selectors/tasks'
 import { downloadArrayAsCSV } from 'utils/files'
 import { selectedOpenAI } from 'store/selectors/settings'
 import { setOpenAIApiKey, setOpenAIUserId } from 'store/actions/settings'
-import { getTasksAnalysis } from './server-actions'
 
 export default function Exports() {
 	const dispatch = useDispatch()
@@ -55,8 +54,15 @@ export default function Exports() {
 		console.log('message', { message, length: message.length, apiKey, userId })
 
 		try {
-			const resp = await getTasksAnalysis({ message, apiKey, userId }, translation)
-			setAnalysis(resp.text)
+			const resp = await fetch('/api/analyzer', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ message, apiKey, userId, translation }),
+			}).then((r) => r.json())
+			console.log('resp', resp.message)
+			setAnalysis(resp.message)
 			setIsAnalyzing(false)
 		} catch (error) {
 			messageApi.error(error.message)
