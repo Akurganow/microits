@@ -21,7 +21,7 @@ export default async function handler(
 			systemMessage: createSystemMessage(translation),
 		})
 		const result = await api.sendMessage(message, {
-			timeoutMs: 5 * 60 * 1000,
+			timeoutMs: 299 * 1000,
 			onProgress: (partialResponse) => {
 				console.log(partialResponse.delta)
 			}
@@ -32,4 +32,8 @@ export default async function handler(
 	} else {
 		res.status(200).json({ message: 'Hello from Next.js!' })
 	}
+}
+
+export const config = {
+	maxDuration: 300,
 }
