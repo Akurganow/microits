@@ -1,12 +1,12 @@
 import { DetailedHTMLProps, HTMLAttributes } from 'react'
 import cn from 'classnames'
-import * as st from './styles.module.css'
+import st from './styles.module.css'
 
 interface DialogFooterProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 
 }
 
-export default function (props: DialogFooterProps) {
+export default function DialogFooter(props: DialogFooterProps) {
 	return (
 		<div className={cn(st.footer)}>
 			{props.children}

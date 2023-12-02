@@ -1,3 +1,4 @@
+'use client'
 import { Task, TaskFormValues, TaskPriority, TaskStatus } from 'types/tasks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
@@ -10,7 +11,7 @@ import {
 	Modal,
 	ModalProps,
 	Popconfirm,
-	Select,
+	Select, Space,
 	Switch,
 	Tag,
 	TimePicker
@@ -23,7 +24,7 @@ import { closeDialog } from 'store/actions/dialogs'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { isEmpty } from '@plq/is'
-import * as st from './styles.module.css'
+import st from './styles.module.css'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { valuesToTask } from 'utils/tasks'
@@ -33,7 +34,21 @@ import esLocale from 'antd/es/date-picker/locale/es_ES'
 import ruLocale from 'antd/es/date-picker/locale/ru_RU'
 import enLocale from 'antd/es/date-picker/locale/en_US'
 import Checklist from 'components/Checklist'
-import ReactQuill from 'react-quill'
+import '@uiw/react-md-editor/markdown-editor.css'
+import '@uiw/react-markdown-preview/markdown.css'
+import dynamic from 'next/dynamic'
+
+import { EditTwoTone } from '@ant-design/icons'
+
+const MDEditor = dynamic(
+	() => import('@uiw/react-md-editor'),
+	{ ssr: false }
+)
+
+const Markdown = dynamic(
+	() => import('@uiw/react-markdown-preview'),
+	{ ssr: false }
+)
 
 dayjs.extend(localizedFormat)
 
@@ -62,9 +77,11 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	const repeatableStatus = useSelector(selectedRepeatableStatus(item.id, item.date?.toString()))
 	const status = repeatableStatus ?? item.status
 	const tagsOptions = useMemo(() => tags.map((tag) => ({ label: tag, value: tag })), [tags])
-	const locale = useMemo(() =>
-		locales[i18n.resolvedLanguage.split('-')[0]] ?? enLocale,
-	[i18n.resolvedLanguage])
+	const locale = useMemo(() => {
+		const currentLocale = i18n.resolvedLanguage?.split('-')?.[0] as keyof typeof locales
+
+		return locales[currentLocale] ?? enLocale
+	}, [i18n.resolvedLanguage])
 	const initialValues: TaskFormValues = useMemo(() => ({
 		...item,
 		status,
@@ -93,7 +110,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 
 	const handleSubmit = useCallback((values: TaskFormValues) => {
 		const status = values.status
-		const repeatable = isRepeatable ? values.repeatable : null
+		const repeatable = isRepeatable ? values.repeatable : undefined
 		const repeatStatuses = item.repeatStatuses || []
 		const isFirstRepeat = item.repeatable ? item.repeatable.repeatIndex === 0 : false
 
@@ -106,10 +123,10 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 
 		if (repeatable && isFirstRepeat && status === TaskStatus.Done) {
 			const itemDuplicate = { ...item }
-			const nextRepeatDate = values.date.add(repeatable.repeatEvery, repeatable.repeatType)
+			const nextRepeatDate = values.date?.add(repeatable.repeatEvery, repeatable.repeatType)
 
 			itemDuplicate.id = lastItemId + 1
-			itemDuplicate.repeatable = null
+			itemDuplicate.repeatable = undefined
 
 			dispatch(addTask(itemDuplicate))
 
@@ -186,28 +203,22 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 
 			<Form.Item<TaskFormValues> name="description" label={t('description')} className={st.formItem}>
 				{isDescriptionEditing
-					? <ReactQuill
-						theme="snow"
-						modules={{
-							toolbar: [
-								['bold', 'italic', 'underline', 'strike', 'blockquote'],
-								[{ list: 'ordered' }, { list: 'bullet' }],
-								['link'],
-							],
-						}}
+					? <MDEditor
 						onKeyDown={event => {
 							if (event.key === 'Escape') {
 								setIsDescriptionEditing(false)
 							}
 						}}
 					/>
-					: <div
-						style={{ padding: '4px 11px' }}
-						onClick={() => setIsDescriptionEditing(true)}
-						dangerouslySetInnerHTML={{
-							__html: item.description || `<span style="color: ${grey[0]}">${t('clickToAddDescription')}</span>`
-						}}
-					/>
+					: <Space>
+						<Markdown
+							source={item.description}
+							style={{ whiteSpace: 'pre-wrap', padding: '4px 11px' }}
+						/>
+						<Button size="small" onClick={() => setIsDescriptionEditing(true)}>
+							<EditTwoTone />
+						</Button>
+					</Space>
 				}
 			</Form.Item>
 

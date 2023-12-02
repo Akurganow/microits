@@ -84,6 +84,13 @@
     "checklist": {
       "addItem": "Añadir elemento",
       "defaultTitle": "Haz clic aquí para cambiar el título del elemento"
-    }
+    },
+    "export": "Exportar",
+    "import": "Importar",
+    "downloadTasks": "Descargar tareas",
+    "analyzeTasks": "Analizar tareas",
+    "apiKeySaved": "¡Clave API guardada!",
+    "apiKeyNotSet": "¡Clave API no establecida!",
+    "currentLanguage": "Español"
   }
 }

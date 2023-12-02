@@ -1,12 +1,12 @@
+'use client'
 import 'modern-css-reset'
 import 'react-virtualized/styles.css'
-import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import i18n from 'src/i18n'
 import { I18nextProvider, useTranslation } from 'react-i18next'
 import { persistor, store } from 'src/store'
-import HomePage from 'pages/HomePage'
+import HomePage from 'src/containers/HomePage'
 import Dialogs from 'containers/dialogs'
 import { ConfigProvider } from 'antd'
 import { useEffect } from 'react'
@@ -22,7 +22,7 @@ const theme = {
 	},
 }
 
-export default function App() {
+export default function Page() {
 	const { i18n: i18nInst, ready } = useTranslation()
 
 	useEffect(() => {
@@ -42,7 +42,3 @@ export default function App() {
 		</Provider>
 	</I18nextProvider>
 }
-
-const container = document.querySelector('#app')
-const root = createRoot(container)
-root.render(<App />)

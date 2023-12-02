@@ -58,8 +58,8 @@ export const selectedTasksDateRange = createSelector(
 
 		const dates = tasks.map((task) => dayjs(task.date))
 		return {
-			firstDate: dayjs.min(dates).startOf('day'),
-			lastDate: dayjs.max(dates).endOf('day'),
+			firstDate: (dayjs.min(dates) as dayjs.Dayjs).startOf('day'),
+			lastDate: (dayjs.max(dates) as dayjs.Dayjs).endOf('day'),
 		}
 	}
 )
@@ -78,7 +78,7 @@ export const selectedTasksWithRepeatable = createSelector(
 					...item.repeatable,
 					repeatIndex: 0
 				},
-			} as typeof item))
+			} as WithRequired<typeof item, 'repeatable'>))
 		const nonRepeatable = tasks.filter((item) => !item.repeatable)
 		const repeatTasks = repeatable.flatMap((item) => {
 			const addItemsFn = (_: unknown, i: number) => {
@@ -102,12 +102,13 @@ export const selectedTasksWithRepeatable = createSelector(
 					date,
 				} as typeof item
 			}
-			const itemsCount = Math.floor(datesRange?.lastDate.diff(datesRange?.firstDate, item.repeatable.repeatType) / item.repeatable.repeatEvery)
+			const diff = datesRange?.lastDate.diff(datesRange?.firstDate, item.repeatable.repeatType) ?? 0
+			const itemsCount = Math.floor(diff / item.repeatable.repeatEvery)
 
 			return Array.from({ length: itemsCount }, addItemsFn)
 		})
 
-		const final = [...repeatTasks, ...repeatable, ...nonRepeatable]
+		const final = [...repeatTasks, ...repeatable, ...nonRepeatable] as WithRequired<Task, 'date'>[]
 
 		return final
 			.filter(Boolean)
@@ -122,8 +123,9 @@ export const selectedRepeatableStatus = (id: Task['id'], date?: string) =>
 			if (!date) return null
 			const task = tasks.find((task) => task.id === id && task.date === date)
 			const statuses = task?.repeatStatuses ?? []
+			const index = task?.repeatable?.repeatIndex ?? 0
 
-			return statuses[task?.repeatable?.repeatIndex] ?? task?.status
+			return statuses[index] ?? task?.status
 		}
 	)
 
@@ -135,11 +137,13 @@ export const selectedTasksWithTitles = createSelector(
 			const withTime = group
 				.filter(item => item.time)
 				.sort((a, b) => dayjs(a.time).diff(dayjs(b.time))) as unknown as WithRequired<Task, 'date' | 'time'>[]
-			const withTimeSplit = splitByTime(withTime).flatMap(group => {
-				const time = dayjs(group[0].time).format('HH:mm')
+			const withTimeSplit = splitByTime(withTime)
+				.filter(group => group.length > 0)
+				.flatMap(group => {
+					const time = dayjs(group[0].time).format('HH:mm')
 
-				return [{ type: 'time', title: time }, ...group] as (Task | ListTitle)[]
-			})
+					return [{ type: 'time', title: time }, ...group] as (Task | ListTitle)[]
+				})
 			const withoutTime = group
 				.filter((item) => !item.time)
 				.sort((a, b) => {

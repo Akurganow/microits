@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { closeDialog } from 'store/actions/dialogs'
-import * as st from './styles.module.css'
+import st from './styles.module.css'
 
 export interface DialogProperties extends DetailedHTMLProps<HTMLAttributes<HTMLDialogElement>, HTMLDialogElement> {
 	name: string

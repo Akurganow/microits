@@ -30,10 +30,10 @@ export default function NewTask() {
 			id: index,
 			completed: false,
 		}))
-		values.repeatable = isEmpty(values.repeatable) ? null : {
+		values.repeatable = isEmpty(values.repeatable) ? undefined : {
 			...values.repeatable,
 			repeatIndex: 0,
-		}
+		} as Task['repeatable']
 		dispatch(addTask({ ...initialForm, ...values, checkList } as unknown as Task))
 		dispatch(closeDialog('new-task'))
 	}, [dispatch, initialForm])

@@ -3,7 +3,7 @@ import { AutoSizer, List } from 'react-virtualized'
 import TaskListItem from 'components/TaskListItem'
 import TaskListTitle from 'components/TaskListTitle'
 import { Task } from 'types/tasks'
-import * as st from './styles.module.css'
+import st from './styles.module.css'
 
 export interface ListTitle<T = 'date' | 'time'> {
 	type: T
@@ -36,15 +36,14 @@ export default function TasksList({ items, ...props }: TasksListProps) {
 	const rowRenderer = useCallback(({ key, index, style }) => {
 		const item = getItem(index)
 		const itemProps = {
-			key,
 			style,
 			item,
 			index,
 		}
 
 		return isTitle(item)
-			? <TaskListTitle {...itemProps as ComponentProps<typeof TaskListTitle>} />
-			: <TaskListItem {...itemProps as ComponentProps<typeof TaskListItem>} />
+			? <TaskListTitle key={key} {...itemProps as ComponentProps<typeof TaskListTitle>} />
+			: <TaskListItem key={key} {...itemProps as ComponentProps<typeof TaskListItem>} />
 	}, [getItem])
 
 	return <ul className={st.list} {...props}>

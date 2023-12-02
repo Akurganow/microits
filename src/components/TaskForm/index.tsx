@@ -1,13 +1,11 @@
-/* eslint-disable unicorn/prefer-module */
 import { DatePicker, Form, FormProps, Input, InputNumber, Select, Switch, TimePicker } from 'antd'
-import ReactQuill from 'react-quill'
+import MDEditor from '@uiw/react-md-editor'
 import { Task, TaskPriority } from 'types/tasks'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { selectedTags } from 'store/selectors/tasks'
 import { useMemo, useState } from 'react'
 import { isEmpty } from '@plq/is'
-import 'react-quill/dist/quill.snow.css'
 
 import frLocale from 'antd/es/date-picker/locale/fr_FR'
 import esLocale from 'antd/es/date-picker/locale/es_ES'
@@ -31,7 +29,8 @@ interface TaskFormProperties extends FormProps<Task> {}
 export default function TaskForm({ initialValues, name, onFinish }: TaskFormProperties) {
 	const { i18n, t } = useTranslation()
 	const [form] = Form.useForm<Task>()
-	const locale = useMemo(() => locales[i18n.resolvedLanguage.split('-')[0]], [i18n.resolvedLanguage])
+	const resolvedLanguage = useMemo(() => i18n.resolvedLanguage || 'en', [i18n.resolvedLanguage])
+	const locale = useMemo(() => locales[resolvedLanguage], [resolvedLanguage])
 	const tags = useSelector(selectedTags)
 	const tagsOptions = tags.map((tag) => ({ label: tag, value: tag }))
 	const [isRepeatable, setIsRepeatable] = useState(!isEmpty(initialValues?.repeatable))
@@ -50,7 +49,7 @@ export default function TaskForm({ initialValues, name, onFinish }: TaskFormProp
 		</Form.Item>
 
 		<Form.Item<Task> name="description" label={t('description')}>
-			<ReactQuill />
+			<MDEditor />
 		</Form.Item>
 
 		<Form.Item<Task> name="estimate" label={t('estimate')} rules={[{ required: true }]}>

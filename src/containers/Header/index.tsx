@@ -5,7 +5,7 @@ import { Button, Flex, Layout, Tooltip } from 'antd'
 import Logo from 'components/Logo'
 import { openDialog } from 'store/actions/dialogs'
 import { TAGS_MODAL_NAME } from 'store/constants/tags'
-import * as st from './styles.module.css'
+import st from './styles.module.css'
 
 export default function Header() {
 	const dispatch = useDispatch()

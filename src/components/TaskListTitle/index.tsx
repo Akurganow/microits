@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { List, Tag, Typography } from 'antd'
 import { ListTitle } from 'components/TasksList'
 import cn from 'classnames'
-import * as st from './styles.module.css'
+import st from './styles.module.css'
 import { isEmpty } from '@plq/is'
 import { selectedTasksByDate } from 'store/selectors/tasks'
 import { selectedStatsTags } from 'store/selectors/tags'
@@ -19,15 +19,15 @@ function Stats ({ date }: { date: string }) {
 	const { t } = useTranslation()
 	const tasksByDate = useSelector(selectedTasksByDate(date))
 	const statsTags = useSelector(selectedStatsTags)
-	const estimateSum = useMemo(() => tasksByDate.reduce((acc, t) => acc + t.estimate, 0), [tasksByDate])
+	const estimateSum = useMemo(() => tasksByDate.reduce((acc, t) => acc + (t?.estimate || 0), 0), [tasksByDate])
 	const stats = useMemo(() => {
 		const stats = statsTags.map(tag => {
-			const tasks = tasksByDate.filter(t => t.tags.includes(tag.id))
+			const tasks = tasksByDate.filter(t => t?.tags.includes(tag.id))
 
 			return {
 				...tag,
 				count: tasks.length,
-				estimate: tasks.reduce((acc, t) => acc + t.estimate, 0),
+				estimate: tasks.reduce((acc, t) => acc + (t?.estimate || 0), 0),
 			}
 		})
 
@@ -56,7 +56,7 @@ export default function TaskListTitle({ item, className, ...props }: TaskListTit
 			style={{ margin: 0 }}
 		>
 			{item.title}
-			{isDate && <Stats date={item.date} />}
+			{isDate && <Stats date={item.date as string} />}
 		</Typography.Title>
 	</List.Item>
 }

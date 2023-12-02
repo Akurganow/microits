@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 module.exports = {
 	parser: '@typescript-eslint/parser',
 	plugins: [
@@ -8,11 +7,11 @@ module.exports = {
 		'formatjs',
 	],
 	extends: [
+		'next/core-web-vitals',
 		'eslint:recommended',
 		'plugin:react/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:react-hooks/recommended',
-		'plugin:unicorn/recommended',
 	],
 	root: true,
 	env: {
@@ -33,15 +32,6 @@ module.exports = {
 		'react/display-name': [0, 0],
 		'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
 		'react/react-in-jsx-scope': [0],
-		'unicorn/no-keyword-prefix': [0],
-		'unicorn/no-null': [0],
-		'unicorn/filename-case': [0],
-		'unicorn/prevent-abbreviations': [0],
-		'unicorn/consistent-function-scoping': [0],
-		'unicorn/no-array-reduce': [0],
-		'unicorn/prefer-export-from': [0],
-		'unicorn/prefer-dom-node-append': [0],
-		'unicorn/prefer-dom-node-remove': [0],
 	},
 	'settings': {
 		'react': {

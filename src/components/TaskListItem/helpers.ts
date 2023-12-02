@@ -50,16 +50,16 @@ export function getDueDateColor(dueDate: Task['dueDate'], date?: Task['date']): 
 
 	switch (true) {
 	case isOverdue: {
-		return red.primary
+		return red.primary as string
 	}
 	case daysLeft < 3: {
-		return red.primary
+		return red.primary as string
 	}
 	case daysLeft < 7: {
-		return orange.primary
+		return orange.primary as string
 	}
 	default: {
-		return grey.primary
+		return grey.primary as string
 	}
 	}
 }

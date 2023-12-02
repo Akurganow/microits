@@ -1,3 +1,4 @@
+'use client'
 import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -11,9 +12,9 @@ import TaskView from 'containers/dialogs/TaskView'
 import { openDialog } from 'store/actions/dialogs'
 import { selectedTags } from 'store/selectors/tags'
 import { selectedRepeatableStatus } from 'store/selectors/tasks'
-import { TaskStatus } from 'types/tasks'
+import { TaskRepeatable, TaskStatus } from 'types/tasks'
 import { getDueDateColor, getDueDateText, getPriority } from './helpers'
-import * as st from './style.module.css'
+import st from './style.module.css'
 import { grey } from '@ant-design/colors'
 
 export default function TaskListItem({ index, item, className, ...props }: TaskListItemProps) {
@@ -27,7 +28,9 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 	const visibleTags = useMemo(() => {
 		const statsTags = itemStoredTags.filter(t => t?.showStats)
 
-		return [...(statsTags.length > 0 ? statsTags : itemStoredTags)].slice(0, 3)
+		return [...(statsTags.length > 0 ? statsTags : itemStoredTags)]
+			.filter(Boolean)
+			.slice(0, 3) as typeof storedTags
 	}, [itemStoredTags])
 	const dialogName = useMemo(() => 'task'+item.id+index, [index, item.id])
 	const repeatableStatus = useSelector(selectedRepeatableStatus(item.id, item.date?.toString()))
@@ -40,7 +43,9 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 
 	const repeatableTooltipTitle = useMemo(() => {
 		if (isEmpty(item.repeatable)) return ''
-		const { repeatType, repeatEvery } = item.repeatable
+
+		const { repeatType, repeatEvery } = item.repeatable as TaskRepeatable
+		
 		return t(`repeat.${repeatType}`, { count: repeatEvery })
 	}, [item.repeatable, t])
 
@@ -52,7 +57,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 				ellipsis={{ tooltip: item.title }}
 				style={{ margin: 0 }}
 			>
-				<Button type="link" onClick={handleItemClick} style={{ color: isCompleted && grey[0] }}>
+				<Button type="link" onClick={handleItemClick} style={{ color: isCompleted ? grey[0] : undefined }}>
 					<span className={st.titleText}>
 						{!isEmpty(item.repeatable) && <Tooltip title={repeatableTooltipTitle}>
 							<SyncOutlined />
@@ -74,7 +79,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 
 			{visibleTags.length > 0 && <div className={st.tags}>
 				{visibleTags.map(tag =>
-					<Tag key={tag.id} color={tag.color}>{tag.name}</Tag>
+					<Tag key={tag.id} color={tag?.color || grey.primary}>{tag.name}</Tag>
 				)}
 			</div>}
 

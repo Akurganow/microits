@@ -10,7 +10,7 @@ export const initialState: TagsState = {
 export const TAGS_MODAL_NAME = 'tags'
 export const INITIAL_TAG_FORM: Omit<Tag, 'id'> = {
 	name: '',
-	color: grey.primary,
+	color: grey.primary as string,
 	showStats: false,
 }
 

@@ -9,7 +9,7 @@ import { selectedAllTags, selectedTag } from 'store/selectors/tags'
 import { COLOR_PRESETS, INITIAL_TAG_FORM, TAGS_MODAL_NAME } from 'store/constants/tags'
 import { addTag, editTag, removeTag } from 'store/actions/tags'
 import { DeleteOutlined } from '@ant-design/icons'
-import * as st from './styles.module.css'
+import st from './styles.module.css'
 import { nanoid } from 'nanoid'
 
 interface TagItemProperties {

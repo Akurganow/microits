@@ -92,6 +92,13 @@
     "checklist": {
       "addItem": "Добавить элемент",
       "defaultTitle": "Нажмите сюда, чтобы изменить название элемента"
-    }
+    },
+    "export": "Экспорт",
+    "import": "Импорт",
+    "downloadTasks": "Скачать задачи",
+    "analyzeTasks": "Анализировать задачи",
+    "apiKeySaved": "Ключ API сохранен!",
+    "apiKeyNotSet": "Ключ API не установлен!",
+    "currentLanguage": "Русский"
   }
 }

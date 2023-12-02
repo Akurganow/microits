@@ -1,3 +1,4 @@
+'use client'
 import { useSelector } from 'react-redux'
 import { Flex, Layout } from 'antd'
 import { selectedExpiredTasks, selectedTasksWithoutDate, selectedTasksWithTitles } from 'store/selectors/tasks'

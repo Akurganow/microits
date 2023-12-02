@@ -1,5 +1,9 @@
 export interface SettingsState {
     showUnsorted: boolean;
+    openAI: {
+        apiKey: string;
+        userId: string; // nanoid
+    };
 }
 
 export type SettingsKey = keyof SettingsState

@@ -24,13 +24,13 @@ export type TaskRepeatable = {
     repeatType: 'day' | 'week' | 'month' | 'year'
     repeatEvery: number
     repeatIndex: number
-} | null
+}
 
 export type Task = {
     id: number
     title: string
     description: string
-    repeatable: TaskRepeatable
+    repeatable?: TaskRepeatable
     estimate: number
     timeSpent?: number
     date?: string

@@ -2,17 +2,38 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "i18n/*": ["src/i18n/*"],
-      "store/*": ["src/store/*"],
-      "components/*": ["src/components/*"],
-      "containers/*": ["src/containers/*"],
-      "pages/*": ["src/pages/*"],
-      "utils/*": ["src/utils/*"],
-      "types/*": ["src/types/*"],
-      "src/*": ["src/*"],
-      "*": ["*"]
+      "i18n/*": [
+        "src/i18n/*"
+      ],
+      "store/*": [
+        "src/store/*"
+      ],
+      "components/*": [
+        "src/components/*"
+      ],
+      "containers/*": [
+        "src/containers/*"
+      ],
+      "pages/*": [
+        "src/pages/*"
+      ],
+      "utils/*": [
+        "src/utils/*"
+      ],
+      "types/*": [
+        "src/types/*"
+      ],
+      "app/*": [
+        "src/app/*"
+      ],
+      "src/*": [
+        "src/*"
+      ],
+      "*": [
+        "*"
+      ]
     },
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "module": "commonjs",
     "target": "esnext",
     "lib": [
@@ -29,11 +50,23 @@
     "plugins": [
       {
         "name": "typescript-plugin-css-modules"
+      },
+      {
+        "name": "next"
       }
-    ]
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "strictNullChecks": true
   },
   "include": [
-    "./**/*"
+    "./**/*",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "./node_modules",

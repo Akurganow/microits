@@ -87,6 +87,10 @@
     },
     "export": "Export",
     "import": "Import",
-    "downloadTasks": "Download tasks"
+    "downloadTasks": "Download tasks",
+    "analyzeTasks": "Analyze tasks",
+    "apiKeySaved": "API key saved!",
+    "apiKeyNotSet": "API key not set!",
+    "currentLanguage": "English"
   }
 }

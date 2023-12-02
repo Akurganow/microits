@@ -1,3 +1,4 @@
+'use client'
 import { AnyAction, Store } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk'

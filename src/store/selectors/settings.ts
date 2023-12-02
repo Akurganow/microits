@@ -10,6 +10,11 @@ const selectedSettings = createSelector(
 	(settings) => settings
 )
 
+export const selectedOpenAI = createSelector(
+	selectedSettings,
+	(settings) => settings.openAI
+)
+
 export const selectedSettingValue = (key: SettingsKey) =>
 	(state: SettingsState) => createSelector(
 		[

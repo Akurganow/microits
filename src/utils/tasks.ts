@@ -3,7 +3,7 @@ import capitalize from 'lodash/capitalize'
 import i18n from 'src/i18n'
 import { Task, TaskFormValues } from 'types/tasks'
 
-export function getDayTitle(date?: string) {
+export function getDayTitle(date: string) {
 	const isToday = dayjs(date).isSame(dayjs(), 'day')
 	const isTomorrow = dayjs(date).isSame(dayjs().add(1, 'day'), 'day')
 	const isSameWeek = dayjs(date).isSame(dayjs(), 'week')
@@ -36,14 +36,14 @@ export function getDayTitle(date?: string) {
 	Splits an array of elements with the time property into arrays with elements with the same dates, field time is ignore actual date
  */
 export function splitByTime<T extends { time: string | number | Date | Dayjs }>(array: T[]) {
-	const result: T[][] = []
+	const result: T[][] = [[]]
 	let currentTime: string | undefined
 
 	for (const item of array) {
 		const time = dayjs(item.time).format('HH:mm')
 
 		if (currentTime && time === currentTime) {
-			result.at(-1).push(item)
+			(result.at(-1) as T[]).push(item)
 		} else {
 			result.push([item])
 			currentTime = time
@@ -64,7 +64,7 @@ export function splitByDays<T extends { date: string | number | Date | Dayjs }>(
 		const day = dayjs(item.date).format('YYYY-MM-DD')
 
 		if (currentDay && day === currentDay) {
-			result.at(-1).push(item)
+			(result.at(-1) as T[]).push(item)
 		} else {
 			result.push([item])
 			currentDay = day
