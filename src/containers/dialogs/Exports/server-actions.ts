@@ -1,6 +1,7 @@
 'use server'
 import { ChatGPTAPI } from 'chatgpt'
-import { SYSTEM_MESSAGE } from 'containers/dialogs/Exports/constants'
+import { createSystemMessage } from 'containers/dialogs/Exports/constants'
+import { ResourceKey } from 'i18next'
 
 type Params = {
 	message: string,
@@ -8,7 +9,7 @@ type Params = {
 	userId: string,
 }
 
-export async function getTasksAnalysis(params: Params) {
+export async function getTasksAnalysis(params: Params, translation: ResourceKey) {
 	const { message, apiKey, userId } = params
 
 	const api = new ChatGPTAPI({
@@ -17,7 +18,7 @@ export async function getTasksAnalysis(params: Params) {
 			model: 'gpt-4',
 			user: userId,
 		},
-		systemMessage: SYSTEM_MESSAGE,
+		systemMessage: createSystemMessage(translation),
 	})
 
 	return await api.sendMessage(message, {

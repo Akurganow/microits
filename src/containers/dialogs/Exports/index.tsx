@@ -14,7 +14,7 @@ import { getTasksAnalysis } from './server-actions'
 
 export default function Exports() {
 	const dispatch = useDispatch()
-	const { t } = useTranslation()
+	const { t, i18n } = useTranslation()
 	const [messageApi, contextHolder] = message.useMessage()
 	const isDialogOpened = useSelector(selectedDialog('export'))
 	const tasks = useSelector(selectedTasks)
@@ -50,12 +50,12 @@ export default function Exports() {
 			return
 		}
 
-		const message = `Please analyze next stringified json of tasks array "${JSON.stringify(tasks)}". For answer please use "${t('currentLanguage')}" language`
-
+		const message = `Please analyze next stringified json of tasks array "${JSON.stringify(tasks)}". For answer please use only "${t('currentLanguage')}" language`
+		const { translation } = i18n.store.data[i18n.resolvedLanguage || i18n.language]
 		console.log('message', { message, length: message.length, apiKey, userId })
 
 		try {
-			const resp = await getTasksAnalysis({ message, apiKey, userId })
+			const resp = await getTasksAnalysis({ message, apiKey, userId }, translation)
 			setAnalysis(resp.text)
 			setIsAnalyzing(false)
 		} catch (error) {
