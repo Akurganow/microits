@@ -29,9 +29,12 @@ export const selectedTaskDate = (id: Task['id']) =>
 
 export const selectedTasksWithDate = createSelector(
 	selectedTasks,
-	(tasks) => tasks.filter(task =>
-		task.date && dayjs(task.date).isAfter(dayjs().subtract(1, 'day'), 'day')
-	) as WithRequired<Task, 'date'>[]
+	(tasks) => {
+		console.log(tasks)
+		return tasks.filter(task =>
+			task.date && dayjs(task.date).isAfter(dayjs().subtract(1, 'day'), 'day')
+		) as WithRequired<Task, 'date'>[]
+	}
 )
 
 export const selectedTasksWithoutDate = createSelector(
@@ -164,6 +167,9 @@ export const selectedTags = createSelector(
 	selectedTasks,
 	(tasks) => {
 		const tags = new Set<string>()
+
+		if (tags.size === 0) return []
+
 		for (const task of tasks) {
 			for (const tag of task.tags) {
 				tags.add(tag)

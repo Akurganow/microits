@@ -88,6 +88,7 @@
     "export": "Exporter",
     "import": "Importer",
     "downloadTasks": "Télécharger les tâches",
+    "uploadTasks": "Télécharger les tâches",
     "analyzeTasks": "Analyser les tâches",
     "apiKeySaved": "Clé API sauvegardée !",
     "apiKeyNotSet": "La clé API n'est pas définie !",

@@ -96,6 +96,7 @@
     "export": "Экспорт",
     "import": "Импорт",
     "downloadTasks": "Скачать задачи",
+    "uploadTasks": "Загрузить задачи",
     "analyzeTasks": "Анализировать задачи",
     "apiKeySaved": "Ключ API сохранен!",
     "apiKeyNotSet": "Ключ API не установлен!",

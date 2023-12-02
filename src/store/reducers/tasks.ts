@@ -2,7 +2,7 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers'
 import { Task, TasksState } from 'types/tasks'
 import {
 	addChecklistItem,
-	addTask,
+	addTask, importTasks,
 	removeChecklistItem,
 	removeTask,
 	setTaskField,
@@ -65,5 +65,12 @@ const createReducer = (initialState: TasksState) => reducerWithInitialState(init
 			}
 			: task
 		),
+	}))
+	.case(importTasks, (state, tasks) => ({
+		...state,
+		tasks: [
+			...state.tasks,
+			...tasks.filter(task => !state.tasks.find(t => t.id === task.id)),
+		],
 	}))
 export default createReducer

@@ -13,7 +13,17 @@ export function downloadCSV(csv: string, filename: string) {
 	downloadFile(csvData, `${filename}.csv`)
 }
 
+export function downloadJSON(json: string, filename: string) {
+	const jsonFile = new Blob([json], { type: 'application/json' })
+	downloadFile(jsonFile, `${filename}.json`)
+}
+
 export function downloadArrayAsCSV(array: object[], filename: string) {
 	const csvData = json2csv(array)
 	downloadCSV(csvData, filename)
+}
+
+export function downloadArrayAsJSON(array: object[], filename: string) {
+	const json = JSON.stringify(array)
+	downloadJSON(json, filename)
 }

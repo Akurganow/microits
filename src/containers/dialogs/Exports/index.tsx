@@ -7,9 +7,10 @@ import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { closeDialog } from 'store/actions/dialogs'
 import { ApiTwoTone, FileExcelTwoTone, FundTwoTone, SaveTwoTone } from '@ant-design/icons'
 import { selectedTasks } from 'store/selectors/tasks'
-import { downloadArrayAsCSV } from 'utils/files'
+import { downloadArrayAsJSON } from 'utils/files'
 import { selectedOpenAI } from 'store/selectors/settings'
 import { setOpenAIApiKey, setOpenAIUserId } from 'store/actions/settings'
+import { importTasks } from 'store/actions/tasks'
 
 export default function Exports() {
 	const dispatch = useDispatch()
@@ -28,8 +29,28 @@ export default function Exports() {
 	}, [dispatch])
 
 	const handleDownload = useCallback(() => {
-		downloadArrayAsCSV(tasks, fileName)
+		downloadArrayAsJSON(tasks, fileName)
 	}, [fileName, tasks])
+
+	const handleUpload = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+		if (!event.target.files?.length) return
+
+		const fileReader = new FileReader()
+		fileReader.readAsText(event.target.files[0], 'UTF-8')
+		fileReader.onload = e => {
+			const { result } = e.target as FileReader
+
+			if (!result) return
+
+			try {
+				const tasks = JSON.parse(result.toString())
+				dispatch(importTasks(tasks))
+				messageApi.success(t('tasksImported'))
+			} catch (error) {
+				messageApi.error(error.message)
+			}
+		}
+	}, [dispatch, messageApi, t])
 
 	const handleAPIKeySave = useCallback(() => {
 		dispatch(setOpenAIApiKey(apiKeyValue))
@@ -104,14 +125,24 @@ export default function Exports() {
 
 			<Space.Compact>
 				<Button
+					icon={<FundTwoTone />}
 					onClick={handleAnalyze}
 					loading={isAnalyzing}
 				>
-					<FundTwoTone /> {t('analyzeTasks')}
+					{t('analyzeTasks')}
 				</Button>
-				<Button onClick={handleDownload}>
-					<FileExcelTwoTone /> {t('downloadTasks')}
+				<Button
+					icon={<FileExcelTwoTone />}
+					onClick={handleDownload}
+				>
+					{t('downloadTasks')}
 				</Button>
+
+				<Input
+					type="file"
+					accept="application/json"
+					onChange={handleUpload}
+				/>
 			</Space.Compact>
 		</Space>
 
