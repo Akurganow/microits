@@ -68,7 +68,7 @@ export default function Exports() {
 			messageApi.error(error.message)
 			setIsAnalyzing(false)
 		}
-	}, [apiKey, messageApi, t, tasks, userId])
+	}, [apiKey, i18n.language, i18n.resolvedLanguage, i18n.store.data, messageApi, t, tasks, userId])
 
 	useEffect(() => {
 		if (!userId) {
@@ -115,6 +115,6 @@ export default function Exports() {
 			</Space.Compact>
 		</Space>
 
-		{analysis.length > 0 && <Markdown>{analysis}</Markdown>}
+		{analysis && analysis.length > 0 && <Markdown>{analysis}</Markdown>}
 	</Modal>
 }
