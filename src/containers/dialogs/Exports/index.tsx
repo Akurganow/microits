@@ -52,10 +52,16 @@ export default function Exports() {
 
 		const message = `Please analyze next stringified json of tasks array "${JSON.stringify(tasks)}". For answer please use "${t('currentLanguage')}" language`
 
-		const resp = await getTasksAnalysis({ message, apiKey, userId })
+		console.log('message', { message, length: message.length, apiKey, userId })
 
-		setAnalysis(resp.text)
-		setIsAnalyzing(false)
+		try {
+			const resp = await getTasksAnalysis({ message, apiKey, userId })
+			setAnalysis(resp.text)
+			setIsAnalyzing(false)
+		} catch (error) {
+			messageApi.error(error.message)
+			setIsAnalyzing(false)
+		}
 	}, [apiKey, messageApi, t, tasks, userId])
 
 	useEffect(() => {

@@ -16,13 +16,12 @@ export async function getTasksAnalysis(params: Params) {
 		completionParams: {
 			model: 'gpt-4',
 			user: userId,
-			max_tokens: 4000,
 		},
 		systemMessage: SYSTEM_MESSAGE,
 	})
 
 	return await api.sendMessage(message, {
-		timeoutMs: 2 * 60 * 1000,
+		timeoutMs: 5 * 60 * 1000,
 		onProgress: (partialResponse) => {
 			console.log(partialResponse.delta)
 		}
