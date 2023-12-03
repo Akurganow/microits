@@ -9,7 +9,7 @@ const createReducer = (initialState: TagsState) => reducerWithInitialState(initi
 	}))
 	.case(removeTag, (state, id) => ({
 		...state,
-		tags: state.tags.filter((tag) => tag.id !== id),
+		tags: state.tags.filter((tag) => tag.id !== id && tag.name !== id),
 	}))
 	.case(editTag, (state, tag) => {
 		const storedTag = state.tags.find((t) => t.id === tag.id)
