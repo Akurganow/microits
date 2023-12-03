@@ -123,7 +123,9 @@ export default function Tags() {
 	}, [dispatch])
 
 	const handleAddTag = useCallback(() => {
-		dispatch(addTag({ ...INITIAL_TAG_FORM, name: 'New tag', id: nanoid() }))
+		const newTag = { ...INITIAL_TAG_FORM, name: 'New tag', id: nanoid() }
+
+		dispatch(addTag(newTag))
 	}, [dispatch])
 
 	return <Modal
