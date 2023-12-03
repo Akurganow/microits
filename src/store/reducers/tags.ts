@@ -5,7 +5,7 @@ import { addTag, editTag, removeTag } from 'store/actions/tags'
 const createReducer = (initialState: TagsState) => reducerWithInitialState(initialState)
 	.case(addTag, (state, tag) => ({
 		...state,
-		tags: [...state.tags, { ...tag, id: tag.id }],
+		tags: [...state.tags, tag],
 	}))
 	.case(removeTag, (state, id) => ({
 		...state,

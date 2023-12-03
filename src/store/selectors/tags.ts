@@ -4,6 +4,8 @@ import { storeKey } from 'store/constants/tags'
 import { selectedTags as selectedTasksTags } from 'store/selectors/tasks'
 import { Tag } from 'types/tags'
 import memoize from 'lodash/memoize'
+import { grey } from '@ant-design/colors'
+import { filterBySameKeyValue } from '@plq/array-functions'
 
 const rawTags = (state: RootState) => state[storeKey]
 
@@ -16,10 +18,17 @@ export const selectedAllTags = createSelector(
 	selectedTags,
 	selectedTasksTags,
 	(tags, tasks) => {
-		const tasksTags = new Set(tasks)
-		const tagsIds = new Set(tags.map((tag) => tag.name))
+		const tasksTags = tasks.map((tag) => ({
+			id: tag,
+			name: tag,
+			showStats: false,
+			color: grey.primary,
+		}))
 
-		return [...new Set([...tagsIds, ...tasksTags])]
+		return [...tags, ...tasksTags]
+			.filter((tag, index, array) =>
+				filterBySameKeyValue(tag, index, array, 'id')
+			) as Tag[]
 	}
 )
 

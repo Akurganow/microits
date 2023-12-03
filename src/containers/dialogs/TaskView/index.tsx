@@ -75,7 +75,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	const originalDate = useSelector(selectedTaskDate(item.id))
 	const repeatableStatus = useSelector(selectedRepeatableStatus(item.id, item.date?.toString()))
 	const status = repeatableStatus ?? item.status
-	const tagsOptions = useMemo(() => tags.map((tag) => ({ label: tag, value: tag })), [tags])
+	const tagsOptions = useMemo(() => tags.map((tag) => ({ label: tag.name, value: tag.id })), [tags])
 	const locale = useMemo(() => {
 		const currentLocale = i18n.resolvedLanguage?.split('-')?.[0] as keyof typeof locales
 

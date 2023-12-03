@@ -12,9 +12,7 @@ import { DeleteOutlined } from '@ant-design/icons'
 import st from './styles.module.css'
 import { nanoid } from 'nanoid'
 
-interface TagItemProperties {
-	id: Tag['id']
-}
+interface TagItemProperties extends Tag {}
 
 const TagItem = ({ id }: TagItemProperties) => {
 	const dispatch = useDispatch()
@@ -115,7 +113,6 @@ const TagItem = ({ id }: TagItemProperties) => {
 export default function Tags() {
 	const { t } = useTranslation()
 	const tags = useSelector(selectedAllTags)
-	console.log('tags', tags)
 	const isDialogOpened = useSelector(selectedDialog(TAGS_MODAL_NAME))
 	const dispatch = useDispatch()
 
@@ -141,7 +138,7 @@ export default function Tags() {
 		<List>
 			{
 				tags.length > 0
-					? tags.map((tag) => <TagItem key={tag} id={tag} />)
+					? tags.map((tag) => <TagItem key={tag.id} {...tag} />)
 					: <Empty description={t('noTags')} />
 			}
 			<List.Item>
