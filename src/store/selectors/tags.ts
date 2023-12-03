@@ -17,7 +17,7 @@ export const selectedAllTags = createSelector(
 	selectedTasksTags,
 	(tags, tasks) => {
 		const tasksTags = new Set(tasks)
-		const tagsIds = new Set(tags.map((tag) => tag.id))
+		const tagsIds = new Set(tags.map((tag) => tag.name))
 
 		return [...new Set([...tagsIds, ...tasksTags])]
 	}

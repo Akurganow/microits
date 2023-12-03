@@ -115,6 +115,7 @@ const TagItem = ({ id }: TagItemProperties) => {
 export default function Tags() {
 	const { t } = useTranslation()
 	const tags = useSelector(selectedAllTags)
+	console.log('tags', tags)
 	const isDialogOpened = useSelector(selectedDialog(TAGS_MODAL_NAME))
 	const dispatch = useDispatch()
 
