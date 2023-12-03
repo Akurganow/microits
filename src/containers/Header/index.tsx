@@ -6,6 +6,7 @@ import Logo from 'components/Logo'
 import { openDialog } from 'store/actions/dialogs'
 import { TAGS_MODAL_NAME } from 'store/constants/tags'
 import st from './styles.module.css'
+import DevMode from 'components/DevMode'
 
 export default function Header() {
 	const dispatch = useDispatch()
@@ -20,9 +21,11 @@ export default function Header() {
 			<Logo />
 
 			<Flex align="flex-start" gap="small" wrap="wrap" >
-				<Button size="middle" onClick={handleOpenDialog('export')}>
-					{t('export')}
-				</Button>
+				<DevMode>
+					<Button size="middle" onClick={handleOpenDialog('export')}>
+						{t('export')}
+					</Button>
+				</DevMode>
 
 				<Button size="middle" onClick={handleOpenDialog(TAGS_MODAL_NAME)}>
 					{t('tags')}
