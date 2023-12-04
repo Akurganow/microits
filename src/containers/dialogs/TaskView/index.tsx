@@ -107,17 +107,32 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		dispatch(closeDialog(name))
 	}, [dispatch, item.id, name])
 
-	const handleSubmit = useCallback((values: TaskFormValues) => {
+	const handleSubmit = useCallback(async (values: TaskFormValues) => {
 		const status = values.status
 		const repeatable = isRepeatable ? values.repeatable : undefined
-		const repeatStatuses = item.repeatStatuses || []
-		const isFirstRepeat = item.repeatable ? item.repeatable.repeatIndex === 0 : false
+		const repeatStatuses = [...(item.repeatStatuses || [])]
+		const repeatIndex = repeatable ? repeatable.repeatIndex || 0 : 0
+		const isFirstRepeat = item.repeatable ? repeatIndex === 0 : false
+
+		console.log('start', {
+			repeatable,
+			repeatStatuses,
+			repeatIndex,
+			isFirstRepeat,
+			status,
+			itemStatus: item.status,
+		})
 
 		if (repeatable) {
-			repeatStatuses[item.repeatable ? item.repeatable.repeatIndex : 0] = values.status
+			repeatStatuses[repeatIndex] = values.status
 			values.status = item.status ?? TaskStatus.Init
 			values.repeatStatuses = repeatStatuses
 			values.date = dayjs(originalDate)
+			console.log('repeatable', {
+				status: values.status,
+				repeatStatuses: values.repeatStatuses,
+				date: values.date?.toString(),
+			})
 		}
 
 		if (repeatable && isFirstRepeat && status === TaskStatus.Done) {
@@ -126,12 +141,17 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 
 			itemDuplicate.id = lastItemId + 1
 			itemDuplicate.repeatable = undefined
-
+			itemDuplicate.status = TaskStatus.Done
+			console.log('itemDuplicate', itemDuplicate)
 			dispatch(addTask(itemDuplicate))
 
 			values.date = nextRepeatDate
 			repeatStatuses.shift()
 			values.repeatStatuses = repeatStatuses
+			console.log('repeatable first', {
+				date: values.date?.toString(),
+				repeatStatuses: values.repeatStatuses,
+			})
 		}
 
 		values.checkList = item.checkList

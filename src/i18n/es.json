@@ -92,6 +92,7 @@
     "analyzeTasks": "Analizar tareas",
     "apiKeySaved": "¡Clave API guardada!",
     "apiKeyNotSet": "¡Clave API no establecida!",
-    "currentLanguage": "Español"
+    "currentLanguage": "Español",
+    "analyzerMessage": "Por favor, analice la siguiente cadena json del array de tareas \"{{tasks}}\". Por favor, conteste en español."
   }
 }

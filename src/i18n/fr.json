@@ -92,6 +92,7 @@
     "analyzeTasks": "Analyser les tâches",
     "apiKeySaved": "Clé API sauvegardée !",
     "apiKeyNotSet": "La clé API n'est pas définie !",
-    "currentLanguage": "Français"
+    "currentLanguage": "Français",
+    "analyzerMessage": "Veuillez analyser le json suivant du tableau des tâches \"{{tasks}}\". Merci de répondre en français."
   }
 }

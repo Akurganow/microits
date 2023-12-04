@@ -70,7 +70,7 @@ export default function Exports() {
 			return
 		}
 
-		const message = `Please analyze next stringified json of tasks array "${JSON.stringify(tasks)}". For answer please use only "${t('currentLanguage')}" language`
+		const message = t('analyzerMessage', { tasks: JSON.stringify(tasks) })
 		const { translation } = i18n.store.data[i18n.resolvedLanguage || i18n.language]
 		console.log('message', { message, length: message.length, apiKey, userId })
 

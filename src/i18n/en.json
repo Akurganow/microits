@@ -92,6 +92,7 @@
     "analyzeTasks": "Analyze tasks",
     "apiKeySaved": "API key saved!",
     "apiKeyNotSet": "API key not set!",
-    "currentLanguage": "English"
+    "currentLanguage": "English",
+    "analyzerMessage": "Please analyze next stringified json of tasks array \"{{tasks}}\". Please answer in english."
   }
 }

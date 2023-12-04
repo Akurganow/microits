@@ -2,7 +2,8 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers'
 import { Task, TasksState } from 'types/tasks'
 import {
 	addChecklistItem,
-	addTask, importTasks,
+	addTask,
+	importTasks,
 	removeChecklistItem,
 	removeTask,
 	setTaskField,
