@@ -38,6 +38,7 @@ import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
 import dynamic from 'next/dynamic'
 import { EditTwoTone } from '@ant-design/icons'
+import { CustomTagProps } from 'rc-select/lib/BaseSelect'
 
 const MDEditor = dynamic(
 	() => import('@uiw/react-md-editor'),
@@ -114,25 +115,11 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		const repeatIndex = repeatable ? repeatable.repeatIndex || 0 : 0
 		const isFirstRepeat = item.repeatable ? repeatIndex === 0 : false
 
-		console.log('start', {
-			repeatable,
-			repeatStatuses,
-			repeatIndex,
-			isFirstRepeat,
-			status,
-			itemStatus: item.status,
-		})
-
 		if (repeatable) {
 			repeatStatuses[repeatIndex] = values.status
 			values.status = item.status ?? TaskStatus.Init
 			values.repeatStatuses = repeatStatuses
 			values.date = dayjs(originalDate)
-			console.log('repeatable', {
-				status: values.status,
-				repeatStatuses: values.repeatStatuses,
-				date: values.date?.toString(),
-			})
 		}
 
 		if (repeatable && isFirstRepeat && status === TaskStatus.Done) {
@@ -142,16 +129,12 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			itemDuplicate.id = lastItemId + 1
 			itemDuplicate.repeatable = undefined
 			itemDuplicate.status = TaskStatus.Done
-			console.log('itemDuplicate', itemDuplicate)
+
 			dispatch(addTask(itemDuplicate))
 
 			values.date = nextRepeatDate
 			repeatStatuses.shift()
 			values.repeatStatuses = repeatStatuses
-			console.log('repeatable first', {
-				date: values.date?.toString(),
-				repeatStatuses: values.repeatStatuses,
-			})
 		}
 
 		values.checkList = item.checkList
@@ -167,7 +150,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		setIsDescriptionEditing(false)
 	}, [dispatch, form, item])
 
-	const tagRenderer = useCallback(props => {
+	const tagRenderer = useCallback((props: CustomTagProps) => {
 		const { label, closable, onClose } = props
 		const tag = storedTags.find((tag) => tag.id === label)
 		const color = tag ? tag.color : grey.primary
