@@ -7,6 +7,7 @@ import { selectedOpenAI } from 'store/selectors/settings'
 import { selectedTasks } from 'store/selectors/tasks'
 import { blue, green } from '@ant-design/colors'
 import { useTranslation } from 'react-i18next'
+import { stringifyTasks } from 'utils/tasks'
 
 export default function AnalyzeButton() {
 	const { t, i18n } = useTranslation()
@@ -18,7 +19,7 @@ export default function AnalyzeButton() {
 	const [analysis, setAnalysis] = useState('')
 	const [isAnalyseModalOpened, setIsAnalyseModalOpened] = useState(false)
 	const analysisReady = !isAnalyzing && analysis && analysis.length > 0
-	const analyseMessage = useMemo(() => t('analyzerMessage', { tasks: JSON.stringify(tasks) }), [tasks, t])
+	const analyseMessage = useMemo(() => t('analyzerMessage', { tasks: stringifyTasks(tasks), format: 'CSV' }), [tasks, t])
 	const analyseButtonColor = useMemo(() => analysisReady ? green.primary : blue.primary, [analysisReady])
 
 	const handleOpenAnalysis = useCallback(() => {
@@ -39,7 +40,9 @@ export default function AnalyzeButton() {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ message: analyseMessage, systemMessage: t('analyzerSystemMessage', { translation }), apiKey, userId }),
+				body: JSON.stringify({
+					message: analyseMessage,
+					systemMessage: t('analyzerSystemMessage', { translation }), apiKey, userId }),
 			}).then((r) => r.json())
 
 			setAnalysis(resp.message)
