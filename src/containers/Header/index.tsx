@@ -22,7 +22,7 @@ export default function Header() {
 			<Flex justify="space-between" align="center">
 				<Logo />
 
-				<Flex align="flex-start" gap="small" wrap="wrap" >
+				<Flex align="flex-start" gap="small" wrap="wrap" style={{ padding: '8px 0' }}>
 					<DevMode>
 						<AnalyzeButton />
 					</DevMode>
