@@ -129,6 +129,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			itemDuplicate.id = lastItemId + 1
 			itemDuplicate.repeatable = undefined
 			itemDuplicate.status = TaskStatus.Done
+			itemDuplicate.repeatStatuses = undefined
 
 			dispatch(addTask(itemDuplicate))
 
