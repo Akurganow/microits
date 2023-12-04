@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { ChatGPTAPI } from 'chatgpt'
-import { createSystemMessage } from 'containers/dialogs/Exports/constants'
 
 type ResponseData = {
     message: string
@@ -11,14 +10,14 @@ export default async function handler(
 	res: NextApiResponse<ResponseData>
 ) {
 	if (req.method === 'POST') {
-		const { message, apiKey, userId, translation } = req.body
+		const { message, apiKey, userId, systemMessage } = req.body
 		const api = new ChatGPTAPI({
 			apiKey,
 			completionParams: {
 				model: 'gpt-4',
 				user: userId,
 			},
-			systemMessage: createSystemMessage(translation),
+			systemMessage,
 		})
 		const result = await api.sendMessage(message, {
 			timeoutMs: 299 * 1000,
@@ -27,7 +26,7 @@ export default async function handler(
 			}
 		})
 
-		console.log(message, apiKey, userId, translation)
+		console.log(message, apiKey, userId, systemMessage)
 		res.status(200).json({ message: result.text })
 	} else {
 		res.status(200).json({ message: 'Hello from Next.js!' })

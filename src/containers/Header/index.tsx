@@ -7,36 +7,45 @@ import { openDialog } from 'store/actions/dialogs'
 import { TAGS_MODAL_NAME } from 'store/constants/tags'
 import st from './styles.module.css'
 import DevMode from 'components/DevMode'
+import AnalyzeButton from 'components/AnalyzeButton'
 
 export default function Header() {
 	const dispatch = useDispatch()
 	const { t } = useTranslation()
-
+	
 	const handleOpenDialog = useCallback((name: string) => () => {
 		dispatch(openDialog(name))
 	}, [dispatch])
 
-	return <Layout.Header className={st.header}>
-		<Flex justify="space-between" align="center">
-			<Logo />
 
-			<Flex align="flex-start" gap="small" wrap="wrap" >
-				<DevMode>
-					<Button size="middle" onClick={handleOpenDialog('export')}>
-						{t('export')}
+
+	return <>
+		<Layout.Header className={st.header}>
+			<Flex justify="space-between" align="center">
+				<Logo />
+
+				<Flex align="flex-start" gap="small" wrap="wrap" >
+					<DevMode>
+						<AnalyzeButton />
+					</DevMode>
+
+					<DevMode>
+						<Button size="middle" onClick={handleOpenDialog('export')}>
+							{t('export')}
+						</Button>
+					</DevMode>
+
+					<Button size="middle" onClick={handleOpenDialog(TAGS_MODAL_NAME)}>
+						{t('tags')}
 					</Button>
-				</DevMode>
 
-				<Button size="middle" onClick={handleOpenDialog(TAGS_MODAL_NAME)}>
-					{t('tags')}
-				</Button>
-
-				<Tooltip title={t('addNewTask')}>
-					<Button type="primary" size="middle" onClick={handleOpenDialog('new-task')}>
-						{t('add')}
-					</Button>
-				</Tooltip>
+					<Tooltip title={t('addNewTask')}>
+						<Button type="primary" size="middle" onClick={handleOpenDialog('new-task')}>
+							{t('add')}
+						</Button>
+					</Tooltip>
+				</Flex>
 			</Flex>
-		</Flex>
-	</Layout.Header>
+		</Layout.Header>
+	</>
 }

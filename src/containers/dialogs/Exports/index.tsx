@@ -1,11 +1,10 @@
 import { Button, Input, message, Modal, Space } from 'antd'
-import Markdown from 'react-markdown'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { closeDialog } from 'store/actions/dialogs'
-import { ApiTwoTone, FileExcelTwoTone, FundTwoTone, SaveTwoTone } from '@ant-design/icons'
+import { ApiTwoTone, FileExcelTwoTone, SaveTwoTone } from '@ant-design/icons'
 import { selectedTasks } from 'store/selectors/tasks'
 import { downloadArrayAsJSON } from 'utils/files'
 import { selectedOpenAI } from 'store/selectors/settings'
@@ -14,15 +13,13 @@ import { importTasks } from 'store/actions/tasks'
 
 export default function Exports() {
 	const dispatch = useDispatch()
-	const { t, i18n } = useTranslation()
-	const [messageApi, contextHolder] = message.useMessage()
+	const { t } = useTranslation()
+	const [messageApi] = message.useMessage()
 	const isDialogOpened = useSelector(selectedDialog('export'))
 	const tasks = useSelector(selectedTasks)
 	const { apiKey, userId } = useSelector(selectedOpenAI)
 	const fileName = useMemo(() => `Alexenda-tasks-${new Date().toISOString()}`, [])
-	const [isAnalyzing, setIsAnalyzing] = useState(false)
 	const [apiKeyValue, setAPIKeyValue] = useState(apiKey)
-	const [analysis, setAnalysis] = useState('')
 
 	const handleClose = useCallback(() => {
 		dispatch(closeDialog('export'))
@@ -32,7 +29,7 @@ export default function Exports() {
 		downloadArrayAsJSON(tasks, fileName)
 	}, [fileName, tasks])
 
-	const handleUpload = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+	const handleUpload = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
 		if (!event.target.files?.length) return
 
 		const fileReader = new FileReader()
@@ -52,7 +49,7 @@ export default function Exports() {
 		}
 	}, [dispatch, messageApi, t])
 
-	const handleAPIKeySave = useCallback(() => {
+	const handleAPIKeySave = useCallback(async () => {
 		dispatch(setOpenAIApiKey(apiKeyValue))
 		messageApi.success(t('apiKeySaved'))
 	}, [apiKeyValue, dispatch, messageApi, t])
@@ -60,36 +57,6 @@ export default function Exports() {
 	const handleAPIKeyChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
 		setAPIKeyValue(event.target.value)
 	}, [])
-
-	const handleAnalyze = useCallback(async () => {
-		setIsAnalyzing(true)
-
-		if (!apiKey) {
-			messageApi.error(t('apiKeyNotSet'))
-			setIsAnalyzing(false)
-			return
-		}
-
-		const message = t('analyzerMessage', { tasks: JSON.stringify(tasks) })
-		const { translation } = i18n.store.data[i18n.resolvedLanguage || i18n.language]
-		console.log('message', { message, length: message.length, apiKey, userId })
-
-		try {
-			const resp = await fetch('/api/analyzer', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ message, apiKey, userId, translation }),
-			}).then((r) => r.json())
-			console.log('resp', resp.message)
-			setAnalysis(resp.message)
-			setIsAnalyzing(false)
-		} catch (error) {
-			messageApi.error(error.message)
-			setIsAnalyzing(false)
-		}
-	}, [apiKey, i18n.language, i18n.resolvedLanguage, i18n.store.data, messageApi, t, tasks, userId])
 
 	useEffect(() => {
 		if (!userId) {
@@ -107,7 +74,6 @@ export default function Exports() {
 		destroyOnClose={true}
 		footer={null}
 	>
-		{contextHolder}
 		<Space direction="vertical">
 			<Space.Compact>
 				<Input
@@ -125,13 +91,6 @@ export default function Exports() {
 
 			<Space.Compact>
 				<Button
-					icon={<FundTwoTone />}
-					onClick={handleAnalyze}
-					loading={isAnalyzing}
-				>
-					{t('analyzeTasks')}
-				</Button>
-				<Button
 					icon={<FileExcelTwoTone />}
 					onClick={handleDownload}
 				>
@@ -145,7 +104,5 @@ export default function Exports() {
 				/>
 			</Space.Compact>
 		</Space>
-
-		{analysis && analysis.length > 0 && <Markdown>{analysis}</Markdown>}
 	</Modal>
 }
