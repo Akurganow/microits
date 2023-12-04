@@ -17,8 +17,6 @@ export default function Header() {
 		dispatch(openDialog(name))
 	}, [dispatch])
 
-
-
 	return <>
 		<Layout.Header className={st.header}>
 			<Flex justify="space-between" align="center">
@@ -32,6 +30,12 @@ export default function Header() {
 					<DevMode>
 						<Button size="middle" onClick={handleOpenDialog('export')}>
 							{t('export')}
+						</Button>
+					</DevMode>
+
+					<DevMode>
+						<Button size="middle" onClick={handleOpenDialog('settings')}>
+							{t('settings')}
 						</Button>
 					</DevMode>
 

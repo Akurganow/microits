@@ -2,13 +2,11 @@ import { Button, Input, message, Modal, Space } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectedDialog } from 'store/selectors/dialogs'
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useMemo } from 'react'
 import { closeDialog } from 'store/actions/dialogs'
-import { ApiTwoTone, FileExcelTwoTone, SaveTwoTone } from '@ant-design/icons'
+import { FileExcelTwoTone } from '@ant-design/icons'
 import { selectedTasks } from 'store/selectors/tasks'
 import { downloadArrayAsJSON } from 'utils/files'
-import { selectedOpenAI } from 'store/selectors/settings'
-import { setOpenAIApiKey, setOpenAIUserId } from 'store/actions/settings'
 import { importTasks } from 'store/actions/tasks'
 
 export default function Exports() {
@@ -17,9 +15,7 @@ export default function Exports() {
 	const [messageApi] = message.useMessage()
 	const isDialogOpened = useSelector(selectedDialog('export'))
 	const tasks = useSelector(selectedTasks)
-	const { apiKey, userId } = useSelector(selectedOpenAI)
 	const fileName = useMemo(() => `Alexenda-tasks-${new Date().toISOString()}`, [])
-	const [apiKeyValue, setAPIKeyValue] = useState(apiKey)
 
 	const handleClose = useCallback(() => {
 		dispatch(closeDialog('export'))
@@ -48,24 +44,9 @@ export default function Exports() {
 			}
 		}
 	}, [dispatch, messageApi, t])
-
-	const handleAPIKeySave = useCallback(async () => {
-		dispatch(setOpenAIApiKey(apiKeyValue))
-		messageApi.success(t('apiKeySaved'))
-	}, [apiKeyValue, dispatch, messageApi, t])
-
-	const handleAPIKeyChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-		setAPIKeyValue(event.target.value)
-	}, [])
-
-	useEffect(() => {
-		if (!userId) {
-			dispatch(setOpenAIUserId())
-		}
-	}, [dispatch, userId])
     
 	return <Modal
-		width="60vw"
+		width="50vw"
 		open={isDialogOpened}
 		title={t('export')}
 		onCancel={handleClose}
@@ -75,20 +56,6 @@ export default function Exports() {
 		footer={null}
 	>
 		<Space direction="vertical">
-			<Space.Compact>
-				<Input
-					name="apiKey"
-					onChange={handleAPIKeyChange}
-					placeholder={t('apiKey')}
-					prefix={<ApiTwoTone />}
-					value={apiKeyValue}
-					onPressEnter={handleAPIKeySave}
-				/>
-				<Button onClick={handleAPIKeySave}>
-					<SaveTwoTone />
-				</Button>
-			</Space.Compact>
-
 			<Space.Compact>
 				<Button
 					icon={<FileExcelTwoTone />}

@@ -8,10 +8,15 @@ const createReducer = (initialState: SettingsState) => reducerWithInitialState(i
 		...state,
 		[key]: value,
 	}))
-	.case(setSettings, (state, settings) => ({
-		...state,
-		...settings,
-	}))
+	.case(setSettings, (state, settings) => {
+		const newState = { ...state }
+
+		for (const key in settings) {
+			newState[key] = settings[key]
+		}
+
+		return newState
+	})
 	.case(setOpenAIApiKey, (state, apiKey) => ({
 		...state,
 		openAI: {
