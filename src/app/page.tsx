@@ -20,6 +20,11 @@ const theme = {
 			headerHeight: 48,
 		},
 	},
+	token: {
+		colorPrimary: '#663399',
+		colorInfo: '#663399',
+		colorLink: '#663399',
+	}
 }
 
 export default function Page() {

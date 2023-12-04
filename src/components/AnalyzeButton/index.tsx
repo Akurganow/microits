@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux'
 import { selectedOpenAI } from 'store/selectors/settings'
 import { selectedTasks } from 'store/selectors/tasks'
 import { selectedAllTags } from 'store/selectors/tags'
-import { blue, green } from '@ant-design/colors'
 import { useTranslation } from 'react-i18next'
 import { json2csv } from 'json-2-csv'
+import { green } from '@ant-design/colors'
 
 export default function AnalyzeButton() {
 	const { t, i18n } = useTranslation()
@@ -22,7 +22,7 @@ export default function AnalyzeButton() {
 	const [isAnalyseModalOpened, setIsAnalyseModalOpened] = useState(false)
 	const analysisReady = !isAnalyzing && analysis && analysis.length > 0
 	const analyseMessage = useMemo(() => t('analyzerMessage', { tasks: json2csv(tasks), tags: json2csv(tags), format: 'CSV' }), [t, tasks, tags])
-	const analyseButtonColor = useMemo(() => analysisReady ? green.primary : blue.primary, [analysisReady])
+	const analyseButtonColor = useMemo(() => analysisReady ? green.primary : '#663399', [analysisReady])
 
 	const handleOpenAnalysis = useCallback(() => {
 		setIsAnalyseModalOpened(true)
