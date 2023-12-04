@@ -2,11 +2,6 @@ import dayjs, { Dayjs } from 'dayjs'
 import capitalize from 'lodash/capitalize'
 import i18n from 'src/i18n'
 import { Task, TaskFormValues } from 'types/tasks'
-import { json2csv } from 'json-2-csv'
-
-export function stringifyTasks(tasks: Task[]): string {
-	return json2csv(tasks)
-}
 
 export function getDayTitle(date: string) {
 	const isToday = dayjs(date).isSame(dayjs(), 'day')
