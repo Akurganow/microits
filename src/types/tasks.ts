@@ -50,7 +50,9 @@ export type TaskFormValues = Omit<Task, 'id' | 'date' | 'time' | 'dueDate' | 'ch
     checkList: string[]
 }
 
+export type NewTaskValues = Partial<Omit<Task, 'checkList'>> & Pick<TaskFormValues, 'checkList'>
+
 export type TasksState = {
     tasks: Task[]
-    newTask: Partial<Task> | null
+    newTask: NewTaskValues | null
 }

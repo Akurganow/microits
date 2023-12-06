@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
-import { Task, TaskFormValues } from 'types/tasks'
+import { NewTaskValues } from 'types/tasks'
 
-export type HintFields = Partial<Omit<Task, 'checkList'>> & Pick<TaskFormValues, 'checkList'>
+export type HintFields = NewTaskValues
 export type Localized<T> = {
 	ru: T
 	en: T

@@ -1,10 +1,10 @@
 import { actionCreatorFactory } from 'typescript-fsa'
 import { storeKey } from 'store/constants/tasks'
-import { CheckListItem, Task, TaskFormValues } from 'types/tasks'
+import { CheckListItem, NewTaskValues, Task } from 'types/tasks'
 
 const createAction = actionCreatorFactory(storeKey)
 
-export const setNewTask = createAction<Partial<Omit<Task, 'checkList'>> & Pick<TaskFormValues, 'checkList'> | null>('SET_NEW_TASK')
+export const setNewTask = createAction<NewTaskValues | null>('SET_NEW_TASK')
 export const addTask = createAction<Task>('ADD_TASK')
 export const removeTask = createAction<Task['id']>('REMOVE_TASK')
 export const updateTask = createAction<Task>('UPDATE_TASK')
