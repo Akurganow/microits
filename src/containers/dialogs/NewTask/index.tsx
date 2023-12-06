@@ -3,11 +3,10 @@ import { useCallback, useMemo } from 'react'
 import { Modal } from 'antd'
 import { closeDialog } from 'store/actions/dialogs'
 import TaskForm from 'components/TaskForm'
-import { Task, TaskFormValues, TaskPriority, TaskStatus } from 'types/tasks'
+import { NewTaskValues, Task, TaskPriority, TaskStatus } from 'types/tasks'
 import { addTask, setNewTask } from 'store/actions/tasks'
 import { useTranslation } from 'react-i18next'
 import { selectedDialog } from 'store/selectors/dialogs'
-import { isEmpty } from '@plq/is'
 import { selectedNewTask } from 'store/selectors/tasks'
 import dayjs from 'dayjs'
 
@@ -28,20 +27,20 @@ export default function NewTask() {
 		repeatable: newTask?.repeatable,
 		date: newTask?.date ? dayjs(newTask.date) : undefined,
 		dueDate: newTask?.dueDate ? dayjs(newTask.dueDate) : undefined,
-	} as TaskFormValues), [newTask])
+	} as NewTaskValues), [newTask])
 
 	const handleClose = useCallback(() => {
 		dispatch(closeDialog('new-task'))
 		dispatch(setNewTask(null))
 	}, [dispatch])
 
-	const handleFormSubmit = useCallback((values: Task) => {
-		const checkList = values.checkList.map((checkListItem, index) => ({
+	const handleFormSubmit = useCallback((values: NewTaskValues) => {
+		const checkList = values?.checkList.map((checkListItem, index) => ({
 			title: checkListItem,
 			id: index,
 			completed: false,
 		}))
-		values.repeatable = isEmpty(values.repeatable) ? undefined : {
+		values.repeatable = !values?.repeatable ? undefined : {
 			...values.repeatable,
 			repeatIndex: 0,
 		} as Task['repeatable']

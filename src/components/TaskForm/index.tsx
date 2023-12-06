@@ -1,6 +1,6 @@
 import { DatePicker, Form, FormProps, Input, InputNumber, Select, Switch, TimePicker } from 'antd'
 import MDEditor from '@uiw/react-md-editor'
-import { Task, TaskPriority } from 'types/tasks'
+import { NewTaskValues, Task, TaskPriority } from 'types/tasks'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { selectedTags } from 'store/selectors/tasks'
@@ -25,11 +25,11 @@ const locales = {
 	fr: frLocale,
 }
 
-interface TaskFormProperties extends FormProps<Task> {}
+interface TaskFormProperties extends FormProps<NewTaskValues> {}
 
 export default function TaskForm({ initialValues, name, onFinish }: TaskFormProperties) {
 	const { i18n, t } = useTranslation()
-	const [form] = Form.useForm<Task>()
+	const [form] = Form.useForm<NewTaskValues>()
 	const resolvedLanguage = useMemo(() => i18n.resolvedLanguage || 'en', [i18n.resolvedLanguage])
 	const locale = useMemo(() => locales[resolvedLanguage], [resolvedLanguage])
 	const tags = useSelector(selectedTags)
