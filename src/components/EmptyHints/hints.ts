@@ -156,6 +156,64 @@ const hints: Hint[] = [
 				checkList: ['List of products', 'Product order', 'Stocks']
 			}
 		}
+	},
+	{
+		images: [
+			'/images/empty-hints/2-0.png',
+			'/images/empty-hints/2-1.png',
+			'/images/empty-hints/2-2.png',
+			'/images/empty-hints/2-3.png',
+		],
+		text: {
+			ru: 'Alexenda поможет тебе организовать идеальное утро для продуктивного дня',
+			en: 'Alexenda will help you organize the perfect morning for a productive day',
+			fr: 'Alexenda vous aidera à organiser le matin parfait pour une journée productive',
+			es: 'Alexenda te ayudará a organizar la mañana perfecta para un día productivo',
+		},
+		button: {
+			ru: 'Запланируй идеальное утро',
+			en: 'Plan your perfect morning',
+			fr: 'Planifiez votre matinée parfaite',
+			es: 'Planifica tu mañana perfecta',
+		},
+		fields: {
+			ru: {
+				title: 'Утренний план',
+				description: 'Утренняя рутина для хорошего начала дня',
+				estimate: 1,
+				date: dayjs().add(1, 'day').toString(),
+				dueDate: dayjs().add(1, 'day').toString(),
+				tags: ['Личное', 'Рутина'],
+				checkList: ['Медитация', 'Завтрак', 'План на день']
+			},
+			fr: {
+				title: 'Plan du matin',
+				description: 'Routine du matin pour bien commencer la journée',
+				estimate: 1,
+				date: dayjs().add(1, 'day').toString(),
+				dueDate: dayjs().add(1, 'day').toString(),
+				tags: ['Personnel', 'Routine'],
+				checkList: ['Méditation', 'Petit déjeuner', 'Plan de la journée']
+			},
+			es: {
+				title: 'Plan de la mañana',
+				description: 'Rutina de la mañana para empezar bien el día',
+				estimate: 1,
+				date: dayjs().add(1, 'day').toString(),
+				dueDate: dayjs().add(1, 'day').toString(),
+				tags: ['Personal', 'Rutina'],
+				checkList: ['Meditación', 'Desayuno', 'Plan del día']
+			},
+			en: {
+				title: 'Morning plan',
+				description: 'Morning routine for a good start to the day',
+				estimate: 1,
+				date: dayjs().add(1, 'day').toString(),
+				dueDate: dayjs().add(1, 'day').toString(),
+				tags: ['Personal', 'Routine'],
+				checkList: ['Meditation', 'Breakfast', 'Plan for the day']
+			}
+		}
 	}
 ]
 
