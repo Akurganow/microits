@@ -8,6 +8,7 @@ export const storeKey = 'tasks'
 
 export const initialState: TasksState = {
 	tasks: [],
+	newTask: null,
 }
 
 // function initialTags() {

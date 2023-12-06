@@ -5,13 +5,17 @@ import {
 	addTask,
 	importTasks,
 	removeChecklistItem,
-	removeTask,
+	removeTask, setNewTask,
 	setTaskField,
 	updateChecklistItem,
 	updateTask
 } from 'store/actions/tasks'
 
 const createReducer = (initialState: TasksState) => reducerWithInitialState(initialState)
+	.case(setNewTask, (state, newTask) => ({
+		...state,
+		newTask,
+	}))
 	.case(addTask, (state, task) => {
 		const highestId = state.tasks.reduce((acc, task) => Math.max(acc, task.id), 0)
 

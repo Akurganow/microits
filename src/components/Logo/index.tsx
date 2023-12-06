@@ -1,8 +1,16 @@
-import st from './styles.module.css'
+import { useCallback } from 'react'
 import Image from 'next/image'
+import { getUsers } from './server'
+import st from './styles.module.css'
 
 export default function Logo() {
-	return <div className={st.logo} title="Alexenda">
+	const handleClick = useCallback(async () => {
+		const users = await getUsers()
+
+		console.log(users)
+	}, [])
+
+	return <div className={st.logo} title="Alexenda" onClick={handleClick}>
 		<Image src="/logo.png" alt="Alexenda" width={48} height={48} />
 	</div>
 }

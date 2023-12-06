@@ -4,25 +4,36 @@ import { Modal } from 'antd'
 import { closeDialog } from 'store/actions/dialogs'
 import TaskForm from 'components/TaskForm'
 import { Task, TaskFormValues, TaskPriority, TaskStatus } from 'types/tasks'
-import { addTask } from 'store/actions/tasks'
+import { addTask, setNewTask } from 'store/actions/tasks'
 import { useTranslation } from 'react-i18next'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { isEmpty } from '@plq/is'
+import { selectedNewTask } from 'store/selectors/tasks'
+import dayjs from 'dayjs'
 
 export default function NewTask() {
 	const dispatch = useDispatch()
 	const isDialogOpened = useSelector(selectedDialog('new-task'))
+	const newTask = useSelector(selectedNewTask)
 	const { t } = useTranslation()
 	const initialForm = useMemo(() => ({
-		title: '',
-		description: '',
-		estimate: 1,
-		timeSpent: 0,
-		tags: [],
-		status: TaskStatus.Init,
-		priority: TaskPriority.Normal,
-		checkList: [],
-	} as TaskFormValues), [])
+		title: newTask?.title || '',
+		description: newTask?.description || '',
+		estimate: newTask?.estimate || 0,
+		timeSpent: newTask?.timeSpent || 0,
+		tags: newTask?.tags || [],
+		status: newTask?.status || TaskStatus.Init,
+		priority: newTask?.priority || TaskPriority.Normal,
+		checkList: newTask?.checkList || [],
+		repeatable: newTask?.repeatable,
+		date: newTask?.date ? dayjs(newTask.date) : undefined,
+		dueDate: newTask?.dueDate ? dayjs(newTask.dueDate) : undefined,
+	} as TaskFormValues), [newTask])
+
+	const handleClose = useCallback(() => {
+		dispatch(closeDialog('new-task'))
+		dispatch(setNewTask(null))
+	}, [dispatch])
 
 	const handleFormSubmit = useCallback((values: Task) => {
 		const checkList = values.checkList.map((checkListItem, index) => ({
@@ -35,12 +46,9 @@ export default function NewTask() {
 			repeatIndex: 0,
 		} as Task['repeatable']
 		dispatch(addTask({ ...initialForm, ...values, checkList } as unknown as Task))
-		dispatch(closeDialog('new-task'))
-	}, [dispatch, initialForm])
+		handleClose()
+	}, [dispatch, handleClose, initialForm])
 
-	const handleClose = useCallback(() => {
-		dispatch(closeDialog('new-task'))
-	}, [dispatch])
 
 	return <Modal
 		width="60vw"

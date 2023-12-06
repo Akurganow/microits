@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { selectedTags } from 'store/selectors/tasks'
 import { useMemo, useState } from 'react'
 import { isEmpty } from '@plq/is'
+import rehypeSanitize from 'rehype-sanitize'
 
 import frLocale from 'antd/es/date-picker/locale/fr_FR'
 import esLocale from 'antd/es/date-picker/locale/es_ES'
@@ -49,7 +50,7 @@ export default function TaskForm({ initialValues, name, onFinish }: TaskFormProp
 		</Form.Item>
 
 		<Form.Item<Task> name="description" label={t('description')}>
-			<MDEditor />
+			<MDEditor preview="edit" previewOptions={{ rehypePlugins: [[rehypeSanitize]], }} />
 		</Form.Item>
 
 		<Form.Item<Task> name="estimate" label={t('estimate')} rules={[{ required: true }]}>

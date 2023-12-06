@@ -16,6 +16,11 @@ export const selectedTasks = createSelector(
 	(state) => state.tasks
 )
 
+export const selectedNewTask = createSelector(
+	rawSelectedTasks,
+	(state) => state.newTask
+)
+
 export const selectedLastItemId = createSelector(
 	selectedTasks,
 	(tasks) => Math.max(...tasks.map((task) => task.id))
