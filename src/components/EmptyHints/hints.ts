@@ -1,22 +1,6 @@
 import dayjs from 'dayjs'
-import { NewTaskValues } from 'types/tasks'
 
-export type HintFields = NewTaskValues
-export type Localized<T> = {
-	ru: T
-	en: T
-	fr: T
-	es: T
-}
-
-export type Hint = {
-	images: string[]
-	text: Localized<string>
-	button: Localized<string>
-	fields: Localized<HintFields>
-}
-
-const hints: Hint[] = [
+const hints = [
 	{
 		images: [
 			'/images/empty-hints/0-0.png',
