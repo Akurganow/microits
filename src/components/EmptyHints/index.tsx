@@ -1,13 +1,13 @@
 import { HTMLAttributes, useCallback, useEffect, useMemo, useState } from 'react'
 import cn from 'classnames'
-import st from './styles.module.css'
-import { Image } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { Button, message, Typography } from 'antd'
 import { useDispatch } from 'react-redux'
+import { Button, message, Typography } from 'antd'
+import ContentfulImage from 'components/ContentfulImage'
 import { openDialog } from 'store/actions/dialogs'
 import { setNewTask } from 'store/actions/tasks'
 import { getHint, Hint } from './server'
+import st from './styles.module.css'
 
 const imageSize = 300
 
@@ -51,7 +51,7 @@ export default function EmptyHints({ className, ...props }: HTMLAttributes<HTMLD
 	return hint ? <div {...props} className={cn(className, st.container)}>
 		<style>{`:root { --empty-hint-image-width: {${imageSize}px}`}</style>
 		<div className={st.empty}>
-			<Image
+			<ContentfulImage
 				preview={false}
 				src={hint.image}
 				alt={hint.imageAlt}
