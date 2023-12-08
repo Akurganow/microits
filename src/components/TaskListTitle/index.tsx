@@ -19,7 +19,7 @@ function Stats ({ date }: { date: string }) {
 	const { t } = useTranslation()
 	const tasksByDate = useSelector(selectedTasksByDate(date))
 	const statsTags = useSelector(selectedStatsTags)
-	const estimateSum = useMemo(() => tasksByDate.reduce((acc, t) => acc + (t?.estimate || 0), 0), [tasksByDate])
+	const estimateSum = useMemo(() => tasksByDate.reduce((acc, t) => Math.round(acc + (t?.estimate || 0) as number), 0), [tasksByDate])
 	const stats = useMemo(() => {
 		const stats = statsTags.map(tag => {
 			const tasks = tasksByDate.filter(t => t?.tags.includes(tag.id))

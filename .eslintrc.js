@@ -27,6 +27,7 @@ module.exports = {
 		'semi': [2, 'never'],
 		'quotes': ['error', 'single'],
 		'indent': [2, 'tab'],
+		'react/prop-types': [0],
 		'react/jsx-indent': [2, 'tab', { indentLogicalExpressions: true }],
 		'react/jsx-indent-props': [0],
 		'react/display-name': [0, 0],

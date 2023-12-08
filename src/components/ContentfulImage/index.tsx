@@ -20,9 +20,7 @@ const DEFAULT_QUALITY = 75
 const DEFAULT_PROGRESSIVE = true
 
 function getImageUrl(imageProps: ContentfulImageProps) {
-	console.log('getImageUrl', imageProps)
-	const protocol = window.location.protocol
-	const url = new URL(protocol + imageProps.src)
+	const url = new URL('https:' + imageProps.src)
 	const params = new URLSearchParams(url.search)
 
 	if (imageProps.format) params.set('fm', imageProps.format)
