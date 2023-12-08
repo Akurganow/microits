@@ -1,0 +1,31 @@
+.messages {
+    max-height: 75vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-block-end: 1rem;
+    border-radius: 6px;
+}
+
+.message {
+    background-color: rgba(102, 51, 153, 0.1);
+    border-radius: 6px;
+    width: fit-content;
+    max-width: 90%;
+}
+
+.user {
+    text-align: end;
+    align-self: end;
+}
+
+.bot {
+    text-align: start;
+    align-self: start;
+}
+
+.message + .message {
+    margin-block-start: 1rem;
+}
+
+.form {}

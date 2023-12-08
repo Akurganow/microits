@@ -17,12 +17,3 @@
 .ql-tooltip {
     z-index: 100000;
 }
-
-.rce-mbox {
-    border-radius: 6px !important;
-    box-shadow: 0 0 !important;
-}
-
-.rce-mbox-text:after {
-    content: none !important;
-}

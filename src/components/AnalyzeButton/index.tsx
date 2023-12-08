@@ -1,5 +1,4 @@
-import 'react-chat-elements/dist/main.css'
-import { Button, Form, Input, Modal, Tooltip } from 'antd'
+import { Button, Card, Form, Input, Modal, Tooltip } from 'antd'
 import { FundTwoTone } from '@ant-design/icons'
 import { useCallback, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -8,7 +7,8 @@ import { selectedTasks } from 'store/selectors/tasks'
 import { selectedAllTags } from 'store/selectors/tags'
 import { useTranslation } from 'react-i18next'
 import { useChat } from 'ai/react'
-import { MessageBox } from 'react-chat-elements'
+import st from './styles.module.css'
+import cn from 'classnames'
 
 export default function AnalyzeButton() {
 	const { t, i18n } = useTranslation()
@@ -49,27 +49,22 @@ export default function AnalyzeButton() {
 			title={t('analysisModalTitle')}
 			footer={null}
 		>
-			{messages.map(m => (
-				<MessageBox
-					key={m.id}
-					id={m.id}
-					focus={false}
-					forwarded={false}
-					notch={false}
-					retracted={false}
-					status={m.role === 'user' ? 'sent' : 'received'}
-					date={m.createdAt as Date}
-					titleColor="rebeccapurple"
-					removeButton={false}
-					replyButton={false}
-					type="text"
-					position={m.role === 'user' ? 'right' : 'left'}
-					text={m.content}
-					title={m.role === 'user' ? t('chat.you') : t('chat.bot')}
-				/>
-			))}
+			<div className={st.messages}>
+				{messages.map(m => (
+					<Card
+						key={m.id}
+						size="small"
+						className={cn(st.message, {
+							[st.user]: m.role === 'user',
+							[st.bot]: m.role !== 'user',
+						})}
+					>
+						{m.content}
+					</Card>
+				))}
+			</div>
 
-			<form id="analyzerForm" onSubmit={handleSubmit}>
+			<form id="analyzerForm" onSubmit={handleSubmit} className={st.form}>
 				<Form.Item>
 					<Input value={input} onChange={handleInputChange} />
 				</Form.Item>
