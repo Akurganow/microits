@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useChat } from 'ai/react'
 import st from './styles.module.css'
 import cn from 'classnames'
+import Markdown from 'react-markdown'
 
 export default function AnalyzeButton() {
 	const { t, i18n } = useTranslation()
@@ -59,7 +60,7 @@ export default function AnalyzeButton() {
 							[st.bot]: m.role !== 'user',
 						})}
 					>
-						{m.content}
+						<Markdown>{m.content}</Markdown>
 					</Card>
 				))}
 			</div>

@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
+import { OpenAIStream } from 'ai'
 import { systemMessage } from './constants'
 import { json2csv } from 'json-2-csv'
 
@@ -27,5 +27,5 @@ export async function POST(req: Request) {
 
 	const stream = OpenAIStream(response)
 
-	return new StreamingTextResponse(stream)
+	return new Response(stream)
 }
