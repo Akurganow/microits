@@ -2,7 +2,6 @@ import OpenAI from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { systemMessage } from './constants'
 import { json2csv } from 'json-2-csv'
-import { ChatCompletionCreateParamsStreaming } from 'openai/src/resources/chat/completions'
 
 export const runtime = 'edge'
 
@@ -24,7 +23,7 @@ export async function POST(req: Request) {
 			},
 		],
 		user: userId as string,
-	} as ChatCompletionCreateParamsStreaming)
+	})
 
 	const stream = OpenAIStream(response)
 
