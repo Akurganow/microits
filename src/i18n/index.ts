@@ -9,12 +9,6 @@ dayjs.extend(localizedFormat)
 import en from './en.json'
 import 'dayjs/locale/en'
 
-import es from './es.json'
-import 'dayjs/locale/es'
-
-import fr from './fr.json'
-import 'dayjs/locale/fr'
-
 import ru from './ru.json'
 import 'dayjs/locale/ru'
 
@@ -24,8 +18,6 @@ i18n
 	.init({
 		resources: {
 			en,
-			es,
-			fr,
 			ru,
 		},
 		fallbackLng: 'en',

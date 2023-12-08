@@ -109,6 +109,15 @@
       "apiKey": "OpenAI API key",
       "apiKeyTooltip": "You can get the OpenAI API key",
       "apiKeyLink": "on the site"
+    },
+    "analyzer": {
+      "askBot": "Ask something",
+      "send": "Send",
+      "hello": "Say hello"
+    },
+    "chat": {
+      "you": "You",
+      "bot": "Bot"
     }
   }
 }

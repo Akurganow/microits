@@ -1,5 +1,5 @@
-import Markdown from 'react-markdown'
-import { Button, message, Modal, Tooltip } from 'antd'
+import 'react-chat-elements/dist/main.css'
+import { Button, Form, Input, Modal, Tooltip } from 'antd'
 import { FundTwoTone } from '@ant-design/icons'
 import { useCallback, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -7,72 +7,77 @@ import { selectedOpenAI } from 'store/selectors/settings'
 import { selectedTasks } from 'store/selectors/tasks'
 import { selectedAllTags } from 'store/selectors/tags'
 import { useTranslation } from 'react-i18next'
-import { json2csv } from 'json-2-csv'
-import { green } from '@ant-design/colors'
+import { useChat } from 'ai/react'
+import { MessageBox } from 'react-chat-elements'
 
 export default function AnalyzeButton() {
 	const { t, i18n } = useTranslation()
-	const translation = useMemo(() => i18n.store.data[i18n.resolvedLanguage || i18n.language].translation, [i18n.language, i18n.resolvedLanguage, i18n.store.data])
-	const [messageApi, contextHolder] = message.useMessage()
-	const { apiKey, userId } = useSelector(selectedOpenAI)
+	const locale = useMemo(() => i18n.resolvedLanguage || i18n.language,[i18n.language, i18n.resolvedLanguage])
+	const { userId } = useSelector(selectedOpenAI)
 	const tasks = useSelector(selectedTasks)
 	const tags = useSelector(selectedAllTags)
-	const [isAnalyzing, setIsAnalyzing] = useState(false)
-	const [analysis, setAnalysis] = useState('')
 	const [isAnalyseModalOpened, setIsAnalyseModalOpened] = useState(false)
-	const analysisReady = !isAnalyzing && analysis && analysis.length > 0
-	const analyseMessage = useMemo(() => t('analyzerMessage', { tasks: json2csv(tasks), tags: json2csv(tags), format: 'CSV' }), [t, tasks, tags])
-	const analyseButtonColor = useMemo(() => analysisReady ? green.primary : '#663399', [analysisReady])
+	const { messages, handleInputChange, handleSubmit, input, isLoading } = useChat({
+		api: '/api/analyze',
+		body: {
+			locale,
+			userId,
+			tasks,
+			tags,
+		},
+		initialInput: '',
+		onResponse: res => {
+			console.info('AnalyzeButton.onResponse', res)
+		},
+		onFinish: message => {
+			console.info('AnalyzeButton.onFinish', message)
+		},
+		onError: error => {
+			console.error(error)
+		}
+	})
 
 	const handleOpenAnalysis = useCallback(() => {
 		setIsAnalyseModalOpened(true)
 	}, [])
-
-	const handleStartAnalysis = useCallback(async () => {
-		if (!apiKey) {
-			messageApi.error(t('apiKeyNotSet'))
-			return
-		}
-
-		setIsAnalyzing(true)
-
-		try {
-			const resp = await fetch('/api/analyzer', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					message: analyseMessage,
-					systemMessage: t('analyzerSystemMessage', { translation }), apiKey, userId }),
-			}).then((r) => r.json())
-
-			setAnalysis(resp.message)
-			messageApi.success(t('analysisReady'))
-			setIsAnalyzing(false)
-		} catch (error) {
-			messageApi.error(error.message)
-			setIsAnalyzing(false)
-		}
-	}, [analyseMessage, apiKey, messageApi, t, translation, userId])
-
-	const handleRestartAnalysis = useCallback(() => {
-		setIsAnalyseModalOpened(false)
-		setAnalysis('')
-		handleStartAnalysis()
-	}, [handleStartAnalysis])
     
 	return <>
-		{contextHolder}
-
 		<Modal
+			width="40%"
 			open={isAnalyseModalOpened}
 			onCancel={() => setIsAnalyseModalOpened(false)}
-			onOk={handleRestartAnalysis}
 			title={t('analysisModalTitle')}
-			okText={t('restartAnalyze')}
+			footer={null}
 		>
-			<Markdown>{analysis}</Markdown>
+			{messages.map(m => (
+				<MessageBox
+					key={m.id}
+					id={m.id}
+					focus={false}
+					forwarded={false}
+					notch={false}
+					retracted={false}
+					status={m.role === 'user' ? 'sent' : 'received'}
+					date={m.createdAt as Date}
+					titleColor="rebeccapurple"
+					removeButton={false}
+					replyButton={false}
+					type="text"
+					position={m.role === 'user' ? 'right' : 'left'}
+					text={m.content}
+					title={m.role === 'user' ? t('chat.you') : t('chat.bot')}
+				/>
+			))}
+
+			<form id="analyzerForm" onSubmit={handleSubmit}>
+				<Form.Item>
+					<Input value={input} onChange={handleInputChange} />
+				</Form.Item>
+
+				<Button type="primary" htmlType="submit">
+					{t('analyzer.send')}
+				</Button>
+			</form>
 		</Modal>
 
 		<Tooltip title={t('analyzeTooltip')}>
@@ -80,19 +85,11 @@ export default function AnalyzeButton() {
 				ghost
 				type="primary"
 				size="middle"
-				style={{
-					borderColor: analyseButtonColor,
-					color: analyseButtonColor,
-				}}
-				onClick={analysisReady ? handleOpenAnalysis : handleStartAnalysis}
-				loading={isAnalyzing}
-				icon={<FundTwoTone twoToneColor={analyseButtonColor} />}
+				onClick={handleOpenAnalysis}
+				loading={isLoading}
+				icon={<FundTwoTone/>}
 			>
-				{analysisReady
-					? t('openAnalysis')
-					: isAnalyzing
-						? t('analyzeInProgress')
-						: t('startAnalyze')}
+				{t('startAnalyze')}
 			</Button>
 		</Tooltip>
 	</>

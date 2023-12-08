@@ -117,6 +117,15 @@
       "apiKey": "Ключ API OpenAI",
       "apiKeyTooltip": "Вы можете получить ключ API OpenAI",
       "apiKeyLink": "на сайте"
+    },
+    "analyzer": {
+      "askBot": "Спросите что-нибудь",
+      "send": "Отправить",
+      "hello": "Скажи привет"
+    },
+    "chat": {
+      "you": "Вы",
+      "bot": "Бот"
     }
   }
 }
