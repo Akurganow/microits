@@ -12,16 +12,23 @@ const openai = new OpenAI({
 
 export async function POST(req: NextRequest) {
 	const { tasks, tags, locale, userId } = await req.json()
+
 	const response = await openai.chat.completions.create({
 		stream: true,
-		model: 'gpt-4',
+		model: 'gpt-4-1106-preview',
 		messages: [
 			{
 				role: 'system',
-				content: `${(systemMessage[locale.split(/[-_]/i)[0]] || systemMessage.en)}
-				Here the serialized into csv list of tasks ${json2csv(tasks)}
-				Here the serialized into csv list of tags ${json2csv(tags)}`
+				content: (systemMessage[locale.split(/[-_]/i)[0]] || systemMessage.en),
 			},
+			{
+				role: 'user',
+				content: `Here the serialized into csv list of tasks ${json2csv(tasks)}`,
+			},
+			{
+				role: 'user',
+				content: `Here the serialized into csv list of tags ${json2csv(tags)}`,
+			}
 		],
 		user: userId as string,
 	})

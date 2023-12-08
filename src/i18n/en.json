@@ -113,7 +113,8 @@
     "analyzer": {
       "askBot": "Ask something",
       "send": "Send",
-      "hello": "Say hello"
+      "hello": "Say hello",
+      "buttonText": "Open chat"
     },
     "chat": {
       "you": "You",

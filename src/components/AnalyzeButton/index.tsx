@@ -1,5 +1,5 @@
-import { Button, Card, Form, Input, Modal, Tooltip } from 'antd'
-import { FundTwoTone } from '@ant-design/icons'
+import { Button, Card, Form, Input, Modal } from 'antd'
+import { MessageTwoTone } from '@ant-design/icons'
 import { useCallback, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectedOpenAI } from 'store/selectors/settings'
@@ -75,18 +75,16 @@ export default function AnalyzeButton() {
 				</Button>
 			</form>
 		</Modal>
-
-		<Tooltip title={t('analyzeTooltip')}>
-			<Button
-				ghost
-				type="primary"
-				size="middle"
-				onClick={handleOpenAnalysis}
-				loading={isLoading}
-				icon={<FundTwoTone/>}
-			>
-				{t('startAnalyze')}
-			</Button>
-		</Tooltip>
+		
+		<Button
+			ghost
+			type="primary"
+			size="middle"
+			onClick={handleOpenAnalysis}
+			loading={isLoading}
+			icon={<MessageTwoTone twoToneColor="#663399" />}
+		>
+			{t('analyzer.buttonText')}
+		</Button>
 	</>
 }
