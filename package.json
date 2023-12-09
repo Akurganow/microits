@@ -46,6 +46,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@uiw/react-md-editor": "^4.0.1",
     "@vercel/postgres": "^0.5.1",
+    "@vercel/speed-insights": "^1.0.1",
     "ai": "^2.2.28",
     "antd": "^5.10.2",
     "chatgpt": "^5.2.5",
