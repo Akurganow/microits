@@ -9,6 +9,20 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
 	title: 'Alexenda',
 	description: 'Tiny planner for your daily tasks',
+	openGraph: {
+		type: 'website',
+		url: 'https://alexenda.vercel.app/',
+		siteName: 'Alexenda',
+		locale: 'en',
+		images: [
+			{
+				url: 'https://alexenda.vercel.app/logo.png',
+				width: 429,
+				height: 429,
+				alt: 'Alexenda',
+			},
+		]
+	}
 }
 
 export default function RootLayout({
