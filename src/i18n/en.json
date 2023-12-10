@@ -20,6 +20,7 @@
     "noTime": "Time not specified",
     "estimate": "Estimation",
     "dueDate": "Due Date",
+    "dueDateSoon": "Due date is soon",
     "noDueDate": "Due date not specified",
     "timeSpent": "Time Spent",
     "checkList": "Check List",
@@ -119,6 +120,13 @@
     "chat": {
       "you": "You",
       "bot": "Bot"
+    },
+    "deadline": {
+      "overdue": "The deadline later than the date",
+      "soon": "The deadline is soon",
+      "week": "The deadline is in a week",
+      "month": "The deadline this month",
+      "default": "The deadline isn't soon"
     }
   }
 }

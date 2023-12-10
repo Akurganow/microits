@@ -20,7 +20,7 @@ export function getPriority(priority: TaskPriority) {
 	}
 }
 
-export function getDueDateText(dueDate: Task['dueDate'], date?: Task['date']): string {
+export function getDueDateToken(dueDate: Task['dueDate'], date?: Task['date']): string {
 	const now = dayjs()
 	const currentDueDate = dayjs(dueDate)
 	const daysLeft = currentDueDate.diff(now, 'day')
@@ -28,16 +28,19 @@ export function getDueDateText(dueDate: Task['dueDate'], date?: Task['date']): s
 
 	switch (true) {
 	case isOverdue: {
-		return 'The deadline later than the date'
+		return 'overdue'
 	}
 	case daysLeft < 3: {
-		return 'The deadline soon'
+		return 'soon'
 	}
 	case daysLeft < 7: {
-		return 'The deadline in a week'
+		return 'week'
+	}
+	case dayjs(dueDate).isSame(now, 'month'): {
+		return 'month'
 	}
 	default: {
-		return 'The deadline isn\'t soon'
+		return 'default'
 	}
 	}
 }
