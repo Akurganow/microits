@@ -48,18 +48,21 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 	}, [item.repeatable, t])
 
 	const icon = useMemo(() => {
+		const isCompleted = status === TaskStatus.Done
+		const daysLeft = item.dueDate ? dayjs(item.dueDate).diff(dayjs(), 'day') : undefined
+
 		switch (true) {
 		case (!isEmpty(item.repeatable)): {
 			return <Tooltip title={repeatableTooltipTitle}>
 				<SyncOutlined />
 			</Tooltip>
 		}
-		case (dayjs(item.date).isBefore()): {
+		case (!isCompleted && item.date && dayjs(item.date).isBefore()): {
 			return <Tooltip title={t('expiredTask')}>
 				<FrownOutlined style={{ color: red.primary }}/>
 			</Tooltip>
 		}
-		case (dayjs(item.dueDate).isAfter(dayjs().subtract(3, 'day'))): {
+		case (!isCompleted && Number.isFinite(daysLeft) && daysLeft! < 3): {
 			return <Tooltip title={t(`deadline.${getDueDateToken(item.dueDate)}`)}>
 				<FireOutlined style={{ color: red.primary }}/>
 			</Tooltip>
@@ -68,7 +71,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 			return null
 		}
 		}
-	}, [item.date, item.dueDate, item.repeatable, repeatableTooltipTitle, t])
+	}, [item.date, item.dueDate, item.repeatable, repeatableTooltipTitle, status, t])
 
 	return <>
 		<List.Item
