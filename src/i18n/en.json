@@ -127,6 +127,7 @@
       "week": "The deadline is in a week",
       "month": "The deadline this month",
       "default": "The deadline isn't soon"
-    }
+    },
+    "expiredTask": "Task  is expired!"
   }
 }

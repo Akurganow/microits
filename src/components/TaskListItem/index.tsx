@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Badge, List, Tag, Tooltip, Typography } from 'antd'
-import { FireOutlined, SyncOutlined } from '@ant-design/icons'
+import { FireOutlined, FrownOutlined, SyncOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import cn from 'classnames'
 import { isEmpty } from '@plq/is'
@@ -47,6 +47,29 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 		return t(`repeat.${repeatType}`, { count: repeatEvery })
 	}, [item.repeatable, t])
 
+	const icon = useMemo(() => {
+		switch (true) {
+		case (!isEmpty(item.repeatable)): {
+			return <Tooltip title={repeatableTooltipTitle}>
+				<SyncOutlined />
+			</Tooltip>
+		}
+		case (dayjs(item.date).isBefore()): {
+			return <Tooltip title={t('expiredTask')}>
+				<FrownOutlined style={{ color: red.primary }}/>
+			</Tooltip>
+		}
+		case (dayjs(item.dueDate).isAfter(dayjs().subtract(3, 'day'))): {
+			return <Tooltip title={t(`deadline.${getDueDateToken(item.dueDate)}`)}>
+				<FireOutlined style={{ color: red.primary }}/>
+			</Tooltip>
+		}
+		default: {
+			return null
+		}
+		}
+	}, [item.date, item.dueDate, item.repeatable, repeatableTooltipTitle, t])
+
 	return <>
 		<List.Item
 			onClick={handleItemClick}
@@ -65,17 +88,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 						className={st.titleText}
 						style={{ color: isCompleted ? grey[0] : undefined }}
 					>
-						{
-							!isEmpty(item.repeatable)
-								? <Tooltip title={repeatableTooltipTitle}>
-									<SyncOutlined />
-								</Tooltip>
-								: dayjs(item.dueDate)
-									.isAfter(dayjs().subtract(3, 'day'))
-								&& <Tooltip title={t(`deadline.${getDueDateToken(item.dueDate)}`)}>
-									<FireOutlined style={{ color: red.primary }} />
-								</Tooltip>
-						} {item.title}
+						{icon} {item.title}
 					</Typography.Link>
 				</Typography.Text>
 

@@ -17,3 +17,8 @@
 .ql-tooltip {
     z-index: 100000;
 }
+
+.wmde-markdown {
+    font-size: 14px !important;
+    padding: 4px 11px !important;
+}
