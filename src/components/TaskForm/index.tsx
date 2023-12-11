@@ -1,3 +1,4 @@
+'use client'
 import { DatePicker, Form, FormProps, Input, InputNumber, Select, Switch, TimePicker } from 'antd'
 import MDEditor from '@uiw/react-md-editor'
 import { NewTaskValues, Task, TaskPriority } from 'types/tasks'

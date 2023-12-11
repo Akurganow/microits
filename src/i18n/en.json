@@ -128,6 +128,9 @@
       "month": "The deadline this month",
       "default": "The deadline isn't soon"
     },
-    "expiredTask": "Task  is expired!"
+    "expiredTask": "Task  is expired!",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "signout": "Sign out"
   }
 }

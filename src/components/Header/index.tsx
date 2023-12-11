@@ -8,6 +8,7 @@ import { TAGS_MODAL_NAME } from 'store/constants/tags'
 import st from './styles.module.css'
 import DevMode from 'components/DevMode'
 import AnalyzeButton from 'components/AnalyzeButton'
+import LoginButton from 'components/LoginButton'
 
 export default function Header() {
 	const dispatch = useDispatch()
@@ -48,6 +49,10 @@ export default function Header() {
 							{t('add')}
 						</Button>
 					</Tooltip>
+
+					<DevMode>
+						<LoginButton />
+					</DevMode>
 				</Flex>
 			</Flex>
 		</Layout.Header>

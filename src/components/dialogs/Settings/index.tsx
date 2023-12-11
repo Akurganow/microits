@@ -1,3 +1,4 @@
+'use client'
 import { Form, Input, message, Modal } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'

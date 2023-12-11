@@ -2,7 +2,7 @@
 import { useSelector } from 'react-redux'
 import { Flex, Layout } from 'antd'
 import { selectedExpiredTasks, selectedTasksWithoutDate, selectedTasksWithTitles } from 'store/selectors/tasks'
-import Header from 'containers/Header'
+import Header from 'components/Header'
 import TasksList, { ListTitle } from 'components/TasksList'
 import HiddenTasks from 'components/HiddenTasks'
 import EmptyHints from 'components/EmptyHints'

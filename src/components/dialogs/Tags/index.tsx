@@ -1,3 +1,4 @@
+'use client'
 import { Button, Checkbox, ColorPicker, Empty, Flex, Form, Input, List, Modal, Popconfirm } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectedDialog } from 'store/selectors/dialogs'

@@ -7,21 +7,25 @@ import 'app/globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+	metadataBase: new URL('https://alexenda.vercel.app'),
+	alternates: {
+		canonical: '/',
+	},
 	title: 'Alexenda',
 	description: 'Tiny planner for your daily tasks',
 	openGraph: {
 		type: 'website',
-		url: 'https://alexenda.vercel.app/',
+		url: 'https://alexenda.vercel.app',
 		siteName: 'Alexenda',
 		locale: 'en',
 		images: [
 			{
-				url: 'https://alexenda.vercel.app/logo.png',
+				url: '/logo.png',
 				width: 429,
 				height: 429,
 				alt: 'Alexenda',
 			},
-		]
+		],
 	}
 }
 
