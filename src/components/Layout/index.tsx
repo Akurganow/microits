@@ -25,7 +25,11 @@ const theme = {
 	}
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+type LayoutProps = {
+	children: React.ReactNode,
+}
+
+export default function Layout({ children }: LayoutProps) {
 	const { i18n: i18nInst, ready } = useTranslation()
 
 	useEffect(() => {

@@ -29,7 +29,6 @@ export default function EmptyHints({ className, ...props }: HTMLAttributes<HTMLD
 
 	const getRandomHint = useCallback(async () => {
 		try {
-			console.log('getRandomHint try', locale)
 			const hint = await getHint({ locale })
 
 			setHint(hint)
@@ -37,12 +36,6 @@ export default function EmptyHints({ className, ...props }: HTMLAttributes<HTMLD
 			console.error(error)
 		}
 	}, [locale])
-
-	useEffect(() => {
-		if (hint) {
-			console.log(hint)
-		}
-	}, [hint])
 
 	useEffect(() => {
 		getRandomHint()

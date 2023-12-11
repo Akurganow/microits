@@ -9,6 +9,9 @@ export default function ProfileMenu() {
 	const image = useMemo(() => session.data?.user?.image ?? '/logo500.png', [session.data?.user?.image])
 	const menuItems: MenuProps['items'] = useMemo(() => ([
 		{
+			type: 'divider',
+		},
+		{
 			key: 'signout',
 			label: t('signout'),
 			onClick: () => signOut(),
