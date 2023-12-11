@@ -122,6 +122,7 @@
       "bot": "Bot"
     },
     "deadline": {
+      "expired": "The deadline is expired",
       "overdue": "The deadline later than the date",
       "soon": "The deadline is soon",
       "week": "The deadline is in a week",

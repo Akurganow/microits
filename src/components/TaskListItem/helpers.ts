@@ -25,8 +25,12 @@ export function getDueDateToken(dueDate: Task['dueDate'], date?: Task['date']): 
 	const currentDueDate = dayjs(dueDate)
 	const daysLeft = currentDueDate.diff(now, 'day')
 	const isOverdue = currentDueDate.isBefore(date, 'day')
+	const isExpired = currentDueDate.isBefore(now, 'day')
 
 	switch (true) {
+	case isExpired: {
+		return 'expired'
+	}
 	case isOverdue: {
 		return 'overdue'
 	}

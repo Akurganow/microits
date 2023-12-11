@@ -33,7 +33,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 	const dialogName = useMemo(() => 'task'+item.id+index, [index, item.id])
 	const repeatableStatus = useSelector(selectedRepeatableStatus(item.id, item.date?.toString()))
 	const status = repeatableStatus ?? item.status
-	const isCompleted = status === TaskStatus.Done
+	const isCompleted = useMemo(() => status === TaskStatus.Done, [status])
 
 	const handleItemClick = () => {
 		dispatch(openDialog(dialogName))
@@ -48,8 +48,14 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 	}, [item.repeatable, t])
 
 	const icon = useMemo(() => {
-		const isCompleted = status === TaskStatus.Done
 		const daysLeft = item.dueDate ? dayjs(item.dueDate).diff(dayjs(), 'day') : undefined
+
+		if (item.title.includes('Test') || item.title.match(/test/i)) {
+			console.log(item.title, {
+				isCompleted,
+				daysLeft,
+			})
+		}
 
 		switch (true) {
 		case (!isEmpty(item.repeatable)): {
@@ -71,7 +77,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 			return null
 		}
 		}
-	}, [item.date, item.dueDate, item.repeatable, repeatableTooltipTitle, status, t])
+	}, [isCompleted, item.date, item.dueDate, item.repeatable, item.title, repeatableTooltipTitle, t])
 
 	return <>
 		<List.Item
