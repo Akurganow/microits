@@ -10,6 +10,7 @@ import {
 	updateChecklistItem,
 	updateTask
 } from 'store/actions/tasks'
+import { nanoid } from 'nanoid'
 
 const createReducer = (initialState: TasksState) => reducerWithInitialState(initialState)
 	.case(setNewTask, (state, newTask) => ({
@@ -17,11 +18,15 @@ const createReducer = (initialState: TasksState) => reducerWithInitialState(init
 		newTask,
 	}))
 	.case(addTask, (state, task) => {
-		const highestId = state.tasks.reduce((acc, task) => Math.max(acc, task.id), 0)
+		const highestCount = state.tasks.reduce((acc, task) => Math.max(acc, task.count), 0)
 
 		return {
 			...state,
-			tasks: [...state.tasks, { ...task, id: highestId + 1 as Task['id'] }],
+			tasks: [...state.tasks, {
+				...task,
+				id: nanoid(),
+				count: task.count ?? highestCount + 1 as Task['count'],
+			}],
 		}
 	})
 	.case(removeTask, (state, id) => ({

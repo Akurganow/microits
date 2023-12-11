@@ -45,7 +45,7 @@ export default function RootLayout({
 				<meta name="msapplication-TileColor" content="#663399"/>
 				<meta name="theme-color" content="#ffffff"/>
 			</head>
-			<body className={inter.className}>
+			<body className={inter.className} suppressHydrationWarning={true}>
 				{children}
 				<div id="dialog"></div>
 				<SpeedInsights/>

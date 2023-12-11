@@ -17,7 +17,7 @@ import {
 	TimePicker
 } from 'antd'
 import { addTask, removeTask, updateTask } from 'store/actions/tasks'
-import { selectedLastItemId, selectedRepeatableStatus, selectedTaskDate } from 'store/selectors/tasks'
+import { selectedRepeatableStatus, selectedTaskDate } from 'store/selectors/tasks'
 import { selectedAllTags, selectedTags } from 'store/selectors/tags'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { closeDialog } from 'store/actions/dialogs'
@@ -39,6 +39,7 @@ import '@uiw/react-markdown-preview/markdown.css'
 import dynamic from 'next/dynamic'
 import { EditTwoTone } from '@ant-design/icons'
 import { CustomTagProps } from 'rc-select/lib/BaseSelect'
+import { nanoid } from 'nanoid'
 
 const MDEditor = dynamic(
 	() => import('@uiw/react-md-editor'),
@@ -72,7 +73,6 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	const isDialogOpened = useSelector(selectedDialog(name))
 	const tags = useSelector(selectedAllTags)
 	const storedTags = useSelector(selectedTags)
-	const lastItemId = useSelector(selectedLastItemId)
 	const originalDate = useSelector(selectedTaskDate(item.id))
 	const repeatableStatus = useSelector(selectedRepeatableStatus(item.id, item.date?.toString()))
 	const status = repeatableStatus ?? item.status
@@ -126,8 +126,11 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			const itemDuplicate = { ...item }
 			const nextRepeatDate = values.date?.add(repeatable.repeatEvery, repeatable.repeatType)
 
-			itemDuplicate.id = lastItemId + 1
-			itemDuplicate.repeatable = undefined
+			itemDuplicate.id = nanoid()
+			itemDuplicate.repeatable = {
+				...repeatable,
+				repeatEvery: 0,
+			}
 			itemDuplicate.status = TaskStatus.Done
 			itemDuplicate.repeatStatuses = undefined
 
@@ -143,7 +146,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
 		dispatch(closeDialog(name))
 		setIsDescriptionEditing(false)
-	}, [dispatch, isRepeatable, item, lastItemId, name, originalDate])
+	}, [dispatch, isRepeatable, item, name, originalDate])
 
 	const handleApply = useCallback(() => {
 		const values = form.getFieldsValue()
@@ -170,7 +173,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 		destroyOnClose={true}
 		width="50vw"
 		open={isDialogOpened}
-		title={`#${item.id}`}
+		title={`#${item.count}`}
 		onCancel={handleClose}
 		footer={
 			<Flex justify="space-between">

@@ -7,8 +7,6 @@ export default function LoginButton() {
 	const session = useSession()
 	const isLoading = useMemo(() => session.status === 'loading', [session.status])
 
-	console.log(session)
-
 	if (session.status === 'authenticated') {
 		return <ProfileMenu />
 	}

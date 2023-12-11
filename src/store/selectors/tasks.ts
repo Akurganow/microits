@@ -21,9 +21,9 @@ export const selectedNewTask = createSelector(
 	(state) => state.newTask
 )
 
-export const selectedLastItemId = createSelector(
+export const selectedHighestCount = createSelector(
 	selectedTasks,
-	(tasks) => Math.max(...tasks.map((task) => task.id))
+	(tasks) => Math.max(...tasks.map((task) => task.count))
 )
 
 export const selectedTaskDate = (id: Task['id']) =>
@@ -87,6 +87,8 @@ export const selectedTasksWithRepeatable = createSelector(
 			} as WithRequired<typeof item, 'repeatable'>))
 		const nonRepeatable = tasks.filter((item) => !item.repeatable)
 		const repeatTasks = repeatable.flatMap((item) => {
+			if (item.repeatable.repeatEvery <= 0) return []
+
 			const addItemsFn = (_: unknown, i: number) => {
 				if (i === 0) return null
 

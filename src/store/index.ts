@@ -2,7 +2,7 @@
 import { AnyAction, combineReducers, Store } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk'
-import { persistReducer, persistStore } from 'redux-persist'
+import { persistReducer, persistStore, MigrationManifest, createMigrate } from 'redux-persist'
 import { PersistPartial, RootState } from './types'
 import storage from 'redux-persist-indexeddb-storage'
 import { initialState as tasksInitialState, storeKey as tasksStoreKey } from 'store/constants/tasks'
@@ -13,6 +13,9 @@ import tasksReducer from 'store/reducers/tasks'
 import settingsReducer from 'store/reducers/settings'
 import tagsReducer from 'store/reducers/tags'
 import dialogsReducer from 'store/reducers/dialogs'
+import tasksMigrations from 'store/migrations/tasks'
+import settingsMigrations from 'store/migrations/settings'
+import tagsMigrations from 'store/migrations/tags'
 
 const thunk: ThunkMiddleware<RootState, AnyAction> = thunkMiddleware
 export const PERSIST_STORAGE_DB_NAME = 'nanoits'
@@ -24,10 +27,12 @@ export const initialState: RootState = {
 }
 type Storage = typeof storage
 
-function createPersistConfig(key: string, storage: Storage) {
+function createPersistConfig(key: string, storage: Storage, migrations?: MigrationManifest) {
 	return {
 		key: `nanoits/${key}`,
+		version: 1,
 		storage,
+		migrate: migrations ? createMigrate(migrations) : undefined,
 	}
 }
 
@@ -35,15 +40,15 @@ export const storeStorage = storage(PERSIST_STORAGE_DB_NAME)
 
 export const rootReducer = combineReducers({
 	[tasksStoreKey]: persistReducer(
-		createPersistConfig(tasksStoreKey, storeStorage),
+		createPersistConfig(tasksStoreKey, storeStorage, tasksMigrations),
 		tasksReducer(tasksInitialState),
 	),
 	[settingsStoreKey]: persistReducer(
-		createPersistConfig(settingsStoreKey, storeStorage),
+		createPersistConfig(settingsStoreKey, storeStorage, settingsMigrations),
 		settingsReducer(settingsInitialState),
 	),
 	[tagsStoreKey]: persistReducer(
-		createPersistConfig(tagsStoreKey, storeStorage),
+		createPersistConfig(tagsStoreKey, storeStorage, tagsMigrations),
 		tagsReducer(tagsInitialState),
 	),
 	[dialogsStoreKey]: dialogsReducer(dialogsInitialState),
