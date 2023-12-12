@@ -4,6 +4,7 @@ import { List, Tag, Typography } from 'antd'
 import { ListTitle } from 'components/TasksList'
 import cn from 'classnames'
 import st from './styles.module.css'
+import * as math from 'mathjs'
 import { isEmpty } from '@plq/is'
 import { selectedTasksByDate } from 'store/selectors/tasks'
 import { selectedStatsTags } from 'store/selectors/tags'
@@ -19,7 +20,9 @@ function Stats ({ date }: { date: string }) {
 	const { t } = useTranslation()
 	const tasksByDate = useSelector(selectedTasksByDate(date))
 	const statsTags = useSelector(selectedStatsTags)
-	const estimateSum = useMemo(() => tasksByDate.reduce((acc, t) => Math.round(acc + (t?.estimate || 0) as number), 0), [tasksByDate])
+	const estimateSum = useMemo(() =>
+		math.format(tasksByDate.reduce((acc, t) => math.add(acc, t?.estimate || 0), 0), { precision: 4 })
+	, [tasksByDate])
 	const stats = useMemo(() => {
 		const stats = statsTags.map(tag => {
 			const tasks = tasksByDate.filter(t => t?.tags.includes(tag.id))
