@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import { createSelector } from '@reduxjs/toolkit'
 import { storeKey } from 'store/constants/dialogs'
 import type { RootState } from 'store/types'
 import type { DialogsState } from 'types/dialogs'

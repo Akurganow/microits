@@ -5,6 +5,9 @@ export interface Tag {
     name: string;
     color: string;
     showStats: boolean;
+    createdAt: number;
+    updatedAt: number;
+    deletedAt?: number;
 }
 
 export interface TagForm extends Omit<Tag, 'id' | 'color'> {

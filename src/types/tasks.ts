@@ -42,6 +42,10 @@ export type Task = {
     priority: TaskPriority
     checkList: CheckListItem[]
     repeatStatuses?: TaskStatus[]
+    createdAt: string
+    updatedAt: string
+    deletedAt?: string
+    userId: string
 }
 
 export type TaskFormValues = Omit<Task, 'id' | 'date' | 'time' | 'dueDate'> & {

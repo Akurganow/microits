@@ -1,41 +1,31 @@
-import { reducerWithInitialState } from 'typescript-fsa-reducers'
+import { createReducer } from '@reduxjs/toolkit'
 import { closeDialog, openDialog, switchDialog } from 'store/actions/dialogs'
 import type { DialogsState } from 'types/dialogs'
 
-const createReducer = (initialState: DialogsState) => reducerWithInitialState(initialState)
-	.case(openDialog, (state, key) => {
-		const keys = Object.keys(state)
-		const newState = { ...state }
+const dialogsReducer = (initialState: DialogsState) => createReducer(initialState, builder =>
+	builder
+		.addCase(openDialog, (state, action) => {
+			const keys = Object.keys(state)
 
-		for (const k of keys) {
-			newState[k] = false
-		}
-
-		newState[key] = true
-
-		return newState
-	})
-	.case(closeDialog, (state, key) => ({
-		...state,
-		[key]: false,
-	}))
-	.case(switchDialog, (state, key) => {
-		const current = state[key]
-		const keys = Object.keys(state)
-		const newState = { ...state }
-
-		if (current) {
 			for (const k of keys) {
-				newState[k] = false
+				state[k] = false
 			}
-		} else {
+
+			state[action.payload] = true
+		})
+		.addCase(closeDialog, (state, action) => {
+			state[action.payload] = false
+		})
+		.addCase(switchDialog, (state, action) => {
+			const keys = Object.keys(state)
+			const current = state[action.payload]
+
 			for (const k of keys) {
-				newState[k] = false
+				state[k] = false
 			}
-			newState[key] = true
-		}
 
-		return newState
-	})
+			state[action.payload] = !current
+		})
+)
 
-export default createReducer
+export default dialogsReducer

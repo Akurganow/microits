@@ -1,5 +1,5 @@
 import { RootState } from '../types'
-import { createSelector } from 'reselect'
+import { createSelector } from '@reduxjs/toolkit'
 import { storeKey } from 'store/constants/tags'
 import { selectedTags as selectedTasksTags } from 'store/selectors/tasks'
 import { Tag } from 'types/tags'

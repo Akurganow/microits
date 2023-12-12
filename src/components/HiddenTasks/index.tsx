@@ -2,7 +2,7 @@ import { Task, TaskPriority } from 'types/tasks'
 import { CSSProperties, HTMLAttributes, useCallback, useMemo } from 'react'
 import { blue, grey, orange, red } from '@ant-design/colors'
 import { useDispatch, useSelector } from 'react-redux'
-import { setSetting } from 'store/actions/settings'
+import { setSettings } from 'store/actions/settings'
 import { selectedSettingValue } from 'store/selectors/settings'
 import { Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -36,7 +36,7 @@ export default function HiddenTasks({ items, style, ...props }: HiddenTasksProps
 	const lowPriorityPercent = lowPriorityItems.length / items.length * 100
 
 	const handleItemClick = useCallback(() => {
-		dispatch(setSetting({ key: 'showUnsorted', value: !showUnsorted }))
+		dispatch(setSettings({ showUnsorted: !showUnsorted }))
 	}, [dispatch, showUnsorted])
 
 	const commonStyle = {

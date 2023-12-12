@@ -1,5 +1,5 @@
-import { actionCreatorFactory } from 'typescript-fsa'
 import { storeKey } from 'store/constants/dialogs'
+import { actionCreatorFactory } from 'store/helpers/actions'
 
 const createAction = actionCreatorFactory(storeKey)
 export const openDialog = createAction<string>('openDialog')

@@ -1,86 +1,70 @@
-import { reducerWithInitialState } from 'typescript-fsa-reducers'
-import { Task, TasksState } from 'types/tasks'
+import { TasksState } from 'types/tasks'
 import {
 	addChecklistItem,
 	addTask,
 	importTasks,
 	removeChecklistItem,
 	removeTask, setNewTask,
-	setTaskField,
 	updateChecklistItem,
 	updateTask
 } from 'store/actions/tasks'
 import { nanoid } from 'nanoid'
+import { createReducer } from '@reduxjs/toolkit'
 
-const createReducer = (initialState: TasksState) => reducerWithInitialState(initialState)
-	.case(setNewTask, (state, newTask) => ({
-		...state,
-		newTask,
-	}))
-	.case(addTask, (state, task) => {
-		const highestCount = state.tasks.reduce((acc, task) => Math.max(acc, task.count), 0)
+const tasksReducer = (initialState: TasksState) => createReducer(initialState, builder =>
+	builder
+		.addCase(setNewTask, (state, action) => {
+			state.newTask = action.payload
+		})
+		.addCase(addTask, (state, action) => {
+			const highestCount = state.tasks.reduce((acc, task) => Math.max(acc, task.count), 0)
 
-		return {
-			...state,
-			tasks: [...state.tasks, {
-				...task,
+			state.tasks.push({
+				...action.payload,
 				id: nanoid(),
-				count: task.count ?? highestCount + 1 as Task['count'],
-			}],
-		}
-	})
-	.case(removeTask, (state, id) => ({
-		...state,
-		tasks: state.tasks.filter(task => task.id !== id),
-	}))
-	.case(updateTask, (state, task) => {
-		return {
-			...state,
-			tasks: state.tasks.map(t => t.id === task.id ? task : t),
-		}
-	})
-	.case(setTaskField, (state, { id, field, value }) => ({
-		...state,
-		tasks: state.tasks.map(task => task.id === id ? { ...task, [field]: value } : task),
-	}))
-	.case(updateChecklistItem, (state, { taskId, item }) => ({
-		...state,
-		tasks: state.tasks.map(task => task.id === taskId
-			? {
-				...task,
-				checkList: (task.checkList || []).map(i => i.id === item.id ? item : i) }
-			: task
-		),
-	}))
-	.case(addChecklistItem, (state, taskId) => ({
-		...state,
-		tasks: state.tasks.map(task => task.id === taskId
-			? {
-				...task,
-				checkList: [...(task.checkList || []), {
+				count: highestCount + 1,
+			})
+		})
+		.addCase(removeTask, (state, action) => {
+			state.tasks = state.tasks.filter(task => task.id !== action.payload)
+		})
+		.addCase(updateTask, (state, action) => {
+			const task = state.tasks.find(task => task.id === action.payload.id)
+
+			if (task) {
+				Object.assign(task, action.payload)
+			}
+		})
+		.addCase(updateChecklistItem, (state, action) => {
+			const task = state.tasks.find(task => task.id === action.payload.taskId)
+
+			if (task) {
+				task.checkList = (task.checkList || []).map(item => item.id === action.payload.item.id ? action.payload.item : item)
+			}
+		})
+		.addCase(addChecklistItem, (state, action) => {
+			const task = state.tasks.find(task => task.id === action.payload)
+
+			if (task) {
+				task.checkList = [...(task.checkList || []), {
 					id: (task.checkList || []).length,
 					title: '',
 					completed: false
-				}],
+				}]
 			}
-			: task
-		),
-	}))
-	.case(removeChecklistItem, (state, { taskId, itemId }) => ({
-		...state,
-		tasks: state.tasks.map(task => task.id === taskId
-			? {
-				...task,
-				checkList: (task.checkList || []).filter(item => item.id !== itemId),
+		})
+		.addCase(removeChecklistItem, (state, action) => {
+			const task = state.tasks.find(task => task.id === action.payload.taskId)
+
+			if (task) {
+				task.checkList = (task.checkList || []).filter(item => item.id !== action.payload.itemId)
 			}
-			: task
-		),
-	}))
-	.case(importTasks, (state, tasks) => ({
-		...state,
-		tasks: [
-			...state.tasks,
-			...tasks.filter(task => !state.tasks.find(t => t.id === task.id)),
-		],
-	}))
-export default createReducer
+		})
+		.addCase(importTasks, (state, action) => {
+			state.tasks = [
+				...state.tasks.filter(task => !action.payload.find(t => t.id === task.id)),
+				...action.payload,
+			]
+		})
+)
+export default tasksReducer

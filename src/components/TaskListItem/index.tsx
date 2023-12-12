@@ -50,13 +50,6 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 	const icon = useMemo(() => {
 		const daysLeft = item.dueDate ? dayjs(item.dueDate).diff(dayjs(), 'day') : undefined
 
-		if (item.title.includes('Test') || item.title.match(/test/i)) {
-			console.log(item.title, {
-				isCompleted,
-				daysLeft,
-			})
-		}
-
 		switch (true) {
 		case (!isEmpty(item.repeatable)): {
 			return <Tooltip title={repeatableTooltipTitle}>
@@ -77,7 +70,7 @@ export default function TaskListItem({ index, item, className, ...props }: TaskL
 			return null
 		}
 		}
-	}, [isCompleted, item.date, item.dueDate, item.repeatable, item.title, repeatableTooltipTitle, t])
+	}, [isCompleted, item.date, item.dueDate, item.repeatable, repeatableTooltipTitle, t])
 
 	return <>
 		<List.Item

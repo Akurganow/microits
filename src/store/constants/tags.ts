@@ -12,6 +12,8 @@ export const INITIAL_TAG_FORM: Omit<Tag, 'id'> = {
 	name: '',
 	color: grey.primary as string,
 	showStats: false,
+	createdAt: Date.now(),
+	updatedAt: Date.now(),
 }
 
 export const COLOR_PRESETS = [

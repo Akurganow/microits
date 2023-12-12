@@ -179,7 +179,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			<Flex justify="space-between">
 				<Flex justify="end">
 					<Popconfirm
-						title={t('deleteTaskConfirm', { id: item.id })}
+						title={t('deleteTaskConfirm', { id: item.count })}
 						onConfirm={handleDelete}
 						okText={t('yes')}
 						cancelText={t('no')}

@@ -1,32 +1,24 @@
 import { TagsState } from 'types/tags'
-import { reducerWithInitialState } from 'typescript-fsa-reducers'
 import { addTag, editTag, removeTag } from 'store/actions/tags'
+import { createReducer } from '@reduxjs/toolkit'
 
-const createReducer = (initialState: TagsState) => reducerWithInitialState(initialState)
-	.case(addTag, (state, tag) => ({
-		...state,
-		tags: [...state.tags, tag],
-	}))
-	.case(removeTag, (state, id) => ({
-		...state,
-		tags: state.tags.filter((tag) => tag.id !== id && tag.name !== id),
-	}))
-	.case(editTag, (state, tag) => {
-		const storedTag = state.tags.find((t) => t.id === tag.id)
+const tagsReducer = (initialState: TagsState) => createReducer(initialState, builder =>
+	builder
+		.addCase(addTag, (state, action) => {
+			state.tags.push(action.payload)
+		})
+		.addCase(editTag, (state, action) => {
+			const tag = state.tags.find(t => t.id === action.payload.id)
 
-		return storedTag ? {
-			...state,
-			tags: state.tags.map((t) => {
-				if (t.id === tag.id) {
-					return tag
-				}
+			if (tag) {
+				Object.assign(tag, action.payload)
+			} else {
+				state.tags.push(action.payload)
+			}
+		})
+		.addCase(removeTag, (state, action) => {
+			state.tags = state.tags.filter(tag => tag.id !== action.payload)
+		})
+)
 
-				return t
-			}),
-		} : {
-			...state,
-			tags: [...state.tags, tag],
-		}
-	})
-
-export default createReducer
+export default tagsReducer

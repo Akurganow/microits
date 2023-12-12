@@ -1,5 +1,5 @@
-import { actionCreatorFactory } from 'typescript-fsa'
 import { storeKey } from 'store/constants/tags'
+import { actionCreatorFactory } from 'store/helpers/actions'
 import { Tag } from 'types/tags'
 
 const createAction = actionCreatorFactory(storeKey)
