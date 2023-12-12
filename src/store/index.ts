@@ -59,5 +59,3 @@ const store = configureStore({
 const persistor = persistStore(store as unknown as Store)
 
 export { store, persistor }
-
-const timeouts: NodeJS.Timeout[] = []
