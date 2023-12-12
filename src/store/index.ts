@@ -55,6 +55,9 @@ const store = configureStore({
 	reducer: rootReducer,
 	preloadedState: initialState,
 	devTools: true,
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+		serializableCheck: false,
+	}),
 })
 const persistor = persistStore(store as unknown as Store)
 

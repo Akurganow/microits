@@ -4,13 +4,10 @@ import type { RootState } from 'store/types'
 import type { DialogsState } from 'types/dialogs'
 
 const rawSelectedDialogs = (state: RootState) => state[storeKey]
-export const selectedDialogs = createSelector(
-	rawSelectedDialogs,
-	(dialogs) => dialogs
-)
+
 export const createDialogSelector = createSelector(
 	[
-		selectedDialogs,
+		rawSelectedDialogs,
 		(_state, key) => key,
 	],
 	(dialogs, key) => (dialogs[key] || false) as boolean

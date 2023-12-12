@@ -5,20 +5,15 @@ import { SettingsState, SettingsKey, SettingsValue } from 'types/settings'
 
 const rawSettings = (state: RootState) => state[storeKey]
 
-const selectedSettings = createSelector(
-	rawSettings,
-	(settings) => settings
-)
-
 export const selectedOpenAI = createSelector(
-	selectedSettings,
+	rawSettings,
 	(settings) => settings.openAI
 )
 
 export const selectedSettingValue = (key: SettingsKey) =>
 	(state: SettingsState) => createSelector(
 		[
-			selectedSettings,
+			rawSettings,
 			(_state, key) => key,
 		],
 		(settings, key) =>
