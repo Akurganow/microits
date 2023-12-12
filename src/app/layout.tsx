@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 		locale: 'en',
 		images: [
 			{
-				url: '/logo.png',
+				url: '/logo.svg',
 				width: 429,
 				height: 429,
 				alt: 'Alexenda',
@@ -49,7 +49,7 @@ export default function RootLayout({
 				{children}
 				<div id="dialog"></div>
 				<SpeedInsights/>
-				<Analytics />
+				<Analytics/>
 			</body>
 		</html>
 	)

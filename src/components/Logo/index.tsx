@@ -6,6 +6,6 @@ export default function Logo() {
 	const { t } = useTranslation()
 
 	return <div className={st.logo} title="Alexenda">
-		<Image src="/logo.png" alt={t('appName')} width={48} height={48} />
+		<Image src="/logo.svg" alt={t('appName')} width={48} height={48} />
 	</div>
 }
