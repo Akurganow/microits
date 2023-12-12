@@ -1,25 +1,14 @@
 'use server'
 import { get } from '@vercel/edge-config'
-import { CanaryConfig, CanaryStatus } from 'components/CanaryBadge/types'
-import { getServerSession } from 'next-auth'
-import { authOptions } from 'app/api/auth/constants'
+import { BetaEmails, CanaryStatus } from 'components/CanaryBadge/types'
+import { DEFAULT_CANARY_STATUS } from 'components/CanaryBadge/contants'
 
-export async function getCanaryStatus(): Promise<CanaryStatus | null> {
-	const session = await getServerSession(authOptions)
+export async function getUserCanaryStatus(email: string): Promise<CanaryStatus> {
+	const betaEmails = await get<BetaEmails>('privateBetaEmails')
 
-	if (!session?.user?.email) {
-		return null
-	}
-
-	const edgeConfig = await get<CanaryConfig>('canary')
-
-	if (edgeConfig?.privateBeta?.emails?.includes(session.user.email)) {
+	if (betaEmails?.includes(email)) {
 		return CanaryStatus.privateBeta
 	}
 
-	if (edgeConfig?.publicBeta?.emails?.includes(session.user.email)) {
-		return CanaryStatus.publicBeta
-	}
-
-	return null
+	return DEFAULT_CANARY_STATUS
 }

@@ -1,11 +1,4 @@
-export type CanaryConfig = {
-    privateBeta: {
-        emails: string[]
-    }
-    publicBeta: {
-        emails: string[]
-    }
-}
+export type BetaEmails = string[]
 
 export enum CanaryStatus {
     publicBeta = 'publicBeta',
