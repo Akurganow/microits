@@ -132,6 +132,8 @@
     "expiredTask": "Task  is expired!",
     "signin": "Sign in",
     "signup": "Sign up",
-    "signout": "Sign out"
+    "signout": "Sign out",
+    "publicBeta": "Beta",
+    "privateBeta": "Private beta"
   }
 }

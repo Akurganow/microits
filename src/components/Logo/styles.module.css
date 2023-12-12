@@ -1,1 +1,6 @@
-.logo {}
+.logo {
+    gap: 1rem;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    align-items: center;
+}

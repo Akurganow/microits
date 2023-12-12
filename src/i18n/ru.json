@@ -140,6 +140,8 @@
     "expiredTask": "Задача просрочена!",
     "signin": "Войти",
     "signup": "Зарегистрироваться",
-    "signout": "Выйти"
+    "signout": "Выйти",
+    "publicBeta": "Бета",
+    "privateBeta": "Приватная бета"
   }
 }
