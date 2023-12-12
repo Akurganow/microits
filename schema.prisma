@@ -47,7 +47,6 @@ model User {
   tasks         Task[]
   teams         Team[]
   tags          Tag[]
-  logs          Log[]
 }
 
 model VerificationToken {
@@ -100,13 +99,4 @@ model Task {
   updatedAt     DateTime @updatedAt
   userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Log {
-  id        String   @id @default(cuid())
-  userId    String
-  action    String
-  payload   Json?
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
