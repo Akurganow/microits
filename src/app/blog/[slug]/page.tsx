@@ -1,16 +1,7 @@
 import { client } from 'app/contentful'
-import { Asset, EntrySkeletonType, EntryFieldTypes } from 'contentful'
+import { Asset } from 'contentful'
 import BlogPost from 'components/BlogPost'
-
-type BlogPostFields = {
-	title: EntryFieldTypes.Text
-	body: EntryFieldTypes.RichText
-	slug: EntryFieldTypes.Text
-	image: Asset
-	recommendedPosts: EntrySkeletonType<BlogPostFields>[]
-}
-
-interface BlogPostEntry extends EntrySkeletonType<BlogPostFields> {}
+import { BlogPostEntry, BlogPostFields } from 'app/blog/types'
 
 export default async function Page({ params }: { params: { slug: string } }) {
 	const entries = await client.getEntries<BlogPostEntry>({
@@ -19,17 +10,17 @@ export default async function Page({ params }: { params: { slug: string } }) {
 		'fields.slug[in]': [params.slug],
 	})
 	const entry = entries.items[0].fields
-	const img = entry.image as Asset
+	const img = entry.image as Asset | undefined
 
 	return <BlogPost
 		slug={entry.slug}
 		title={entry.title}
 		body={entry.body}
-		image={img.fields.file ? {
+		image={img && img.fields.file ? {
 			url: (img.fields.file.url) as string,
 			description: img.fields.description as string,
 		} : undefined}
-		recommendedPosts={(entry.recommendedPosts as BlogPostFields['recommendedPosts']).map((post) => ({
+		recommendedPosts={(entry.recommendedPosts as BlogPostFields['recommendedPosts'])?.map((post) => ({
 			slug: post.fields.slug as unknown as string,
 			title: post.fields.title as unknown as string,
 		}))}

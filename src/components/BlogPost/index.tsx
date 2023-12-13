@@ -12,7 +12,7 @@ interface BlogPostProps {
         url: string
         description: string
     }
-    recommendedPosts: {
+    recommendedPosts?: {
 		slug: string
 		title: string
 	}[]
@@ -36,7 +36,7 @@ const contentRendererOptions: Options = {
 
 export default function BlogPost({ body, title, image, recommendedPosts }: BlogPostProps) {
 	const content = documentToReactComponents(body, contentRendererOptions)
-	const recommended = recommendedPosts.filter((post) => post.slug)
+	const recommended = recommendedPosts?.filter((post) => post.slug)
 
 	return <>
 		<Head>
@@ -52,7 +52,7 @@ export default function BlogPost({ body, title, image, recommendedPosts }: BlogP
 				className={st.mainImage}
 			/>}
 			<div>{content}</div>
-			{recommended.length > 0 && <div>
+			{recommended?.length && recommended.length > 0 && <div>
 				<h2>Recommended Posts</h2>
 				<ul>
 					{recommended.map(({ slug, title }) =>
