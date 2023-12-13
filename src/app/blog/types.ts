@@ -7,6 +7,8 @@ export type BlogPostFields = {
     body: EntryFieldTypes.RichText
     slug: EntryFieldTypes.Text
     image?: Asset
+    icon?: EntryFieldTypes.Text
+    iconColor?: EntryFieldTypes.Text
     recommendedPosts?: EntrySkeletonType<BlogPostFields>[]
 }
 

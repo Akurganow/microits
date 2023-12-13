@@ -33,6 +33,7 @@ module.exports = {
 		'react/display-name': [0, 0],
 		'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
 		'react/react-in-jsx-scope': [0],
+		'react/no-children-prop': [0],
 	},
 	'settings': {
 		'react': {

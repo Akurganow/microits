@@ -8,6 +8,9 @@
       "store/*": [
         "src/store/*"
       ],
+      "constants/*": [
+        "src/constants/*"
+      ],
       "components/*": [
         "src/components/*"
       ],

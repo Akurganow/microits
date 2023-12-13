@@ -1,3 +1,4 @@
+'use client'
 import { HTMLAttributes, useCallback, useEffect, useMemo, useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'

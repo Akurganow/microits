@@ -2,13 +2,14 @@
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { useTranslation } from 'react-i18next'
-import { useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 import dayjs from 'dayjs'
 import { persistor, store } from 'src/store'
 import i18n from 'src/i18n'
 import { I18nextProvider } from 'react-i18next'
 import { ConfigProvider } from 'antd'
 import { SessionProvider } from 'next-auth/react'
+import { primaryColor } from 'constants/colors'
 
 const theme = {
 	components: {
@@ -19,14 +20,14 @@ const theme = {
 		},
 	},
 	token: {
-		colorPrimary: '#663399',
-		colorInfo: '#663399',
-		colorLink: '#663399',
+		colorPrimary: primaryColor,
+		colorInfo: primaryColor,
+		colorLink: primaryColor,
 	}
 }
 
 type LayoutProps = {
-	children: React.ReactNode,
+	children: ReactNode,
 }
 
 export default function Layout({ children }: LayoutProps) {

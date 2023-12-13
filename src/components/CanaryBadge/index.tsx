@@ -1,3 +1,4 @@
+'use client'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getUserCanaryStatus } from 'components/CanaryBadge/server'
 import { useTranslation } from 'react-i18next'

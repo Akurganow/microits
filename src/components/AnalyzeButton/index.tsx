@@ -1,3 +1,4 @@
+'use client'
 import { Button, Card, Form, Input, Modal } from 'antd'
 import { MessageTwoTone } from '@ant-design/icons'
 import { useCallback, useMemo, useState } from 'react'
@@ -10,6 +11,7 @@ import { useChat } from 'ai/react'
 import st from './styles.module.css'
 import cn from 'classnames'
 import Markdown from 'react-markdown'
+import { primaryColor } from 'constants/colors'
 
 export default function AnalyzeButton() {
 	const { t, i18n } = useTranslation()
@@ -82,7 +84,7 @@ export default function AnalyzeButton() {
 			size="middle"
 			onClick={handleOpenAnalysis}
 			loading={isLoading}
-			icon={<MessageTwoTone twoToneColor="#663399" />}
+			icon={<MessageTwoTone twoToneColor={primaryColor} />}
 		>
 			{t('analyzer.buttonText')}
 		</Button>

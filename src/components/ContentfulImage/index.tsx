@@ -1,3 +1,4 @@
+'use client'
 import { ComponentProps, useMemo } from 'react'
 import { Image } from 'antd'
 
