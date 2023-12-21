@@ -30,6 +30,7 @@ function clientTaskToServerTask(task: ClientTask): Omit<Prisma.TaskCreateInput, 
 }
 
 export async function createManyTasks(data: Prisma.TaskCreateManyInput[]) {
+	console.info('createManyTasks:start', data)
 	const ids: string[] = data.map(task => task.id).filter(Boolean) as string[]
 	const existingIds = (await prisma.task.findMany({
 		where: {
@@ -40,10 +41,10 @@ export async function createManyTasks(data: Prisma.TaskCreateManyInput[]) {
 		select: {
 			id: true,
 		},
-	})).map(task => task.id)
+	}))?.map(task => task.id)
 
-	const updatedTasks = data.filter(task => existingIds.includes(task.id as string))
-	const newTasks = data.filter(task => !existingIds.includes(task.id as string))
+	const updatedTasks = data.filter(task => existingIds?.includes(task.id as string))
+	const newTasks = data.filter(task => !existingIds?.includes(task.id as string))
 
 	console.info('createManyTasks:updatedTasks', { ids, existingIds, updatedTasks, newTasks })
 

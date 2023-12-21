@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from 'app/api/auth/constants'
-import { getUserTasks, performClientDiff } from 'lib/tasks/server'
-import { TaskDiff } from 'types/tasks'
+import {
+	createManyTasks,
+	getLastServerUpdate,
+	getServerTasksDiff,
+	getUserTasks,
+} from 'lib/tasks/server'
+import { Task } from 'types/tasks'
 
 export async function GET() {
 	const session = await getServerSession(authOptions)
@@ -17,7 +22,7 @@ export async function GET() {
 }
 
 interface RequestBody {
-	diff: TaskDiff
+	tasks: Task[]
 	lastServerUpdate: Date
 }
 
@@ -29,14 +34,24 @@ export async function POST(request: NextRequest) {
 	}
 
 	const body = await request.json() as RequestBody
+	console.info('sync:body', body)
 
 	try {
-		const serverDiff = await performClientDiff(body.diff, body.lastServerUpdate)
+		await createManyTasks(body.tasks)
+	} catch (error) {
+		console.error('sync:createManyTasks:error', error)
 
-		return NextResponse.json(serverDiff, { status: 200 })
+		return NextResponse.json({ error }, { status: 500 })
+	}
+
+	try {
+		const diff = await getServerTasksDiff(body.lastServerUpdate)
+		const lastServerUpdate = await getLastServerUpdate()
+
+		return NextResponse.json({ diff, lastServerUpdate }, { status: 200 })
 	} catch (error) {
 		console.error('sync:performClientDiff:error', error)
 
-		return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+		return NextResponse.json({ error }, { status: 500 })
 	}
 }

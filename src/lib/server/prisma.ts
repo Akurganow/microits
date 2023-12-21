@@ -10,4 +10,6 @@ export type PrismaModels = {
     >
 }
 
-export const prisma: PrismaClient = globalThis.prisma || new PrismaClient()
+export const prisma: PrismaClient = globalThis.prisma || new PrismaClient({
+	log: ['info'],
+})

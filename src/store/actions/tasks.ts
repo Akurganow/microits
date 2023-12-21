@@ -37,11 +37,6 @@ export const syncTasksWithServer = createThunk<
 )
 
 async function initialSync(state: TasksState): Promise<{ diff?: TaskDiff, lastServerUpdate?: Date }> {
-	const clientDiff: TaskDiff = {
-		create: state.tasks,
-		update: [],
-		delete: [],
-	}
 	const lastServerUpdate = state.lastServerUpdate ? new Date(state.lastServerUpdate) : undefined
 
 	try {
@@ -49,11 +44,11 @@ async function initialSync(state: TasksState): Promise<{ diff?: TaskDiff, lastSe
 			method: 'POST',
 			next: { revalidate: 360 },
 			body: JSON.stringify({
-				diff: clientDiff,
+				tasks: state.tasks,
 				lastServerUpdate: lastServerUpdate || new Date(0)
 			}),
 			headers: {
-
+				'Content-Type': 'application/json',
 			}
 		})
 		const result: { diff?: TaskDiff, lastServerUpdate?: Date } = await response.json()
