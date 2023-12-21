@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from 'app/api/auth/constants'
 import {
-	createManyTasks,
+	createTask,
 	getLastServerUpdate,
 	getServerTasksDiff,
 	getUserTasks,
@@ -37,7 +37,9 @@ export async function POST(request: NextRequest) {
 	console.info('sync:body', body)
 
 	try {
-		await createManyTasks(body.tasks)
+		await Promise.all(body.tasks.map(async (task) =>
+			await createTask(task)
+		))
 	} catch (error) {
 		console.error('sync:createManyTasks:error', error)
 

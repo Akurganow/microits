@@ -29,6 +29,43 @@ function clientTaskToServerTask(task: ClientTask): Omit<Prisma.TaskCreateInput, 
 	} as Omit<Prisma.TaskCreateInput, 'user'>
 }
 
+export async function createTask(data: ClientTask) {
+	const user = await getCurrentUser()
+
+	if (!user) return
+
+	const isTaskExists = await prisma.task.findUnique({
+		where: {
+			id: data.id,
+		},
+	})
+
+	if (isTaskExists) {
+		try {
+			return prisma.task.update({
+				where: {
+					id: data.id,
+				},
+				data: clientTaskToServerTask(data),
+			})
+		} catch (error) {
+			throw new Error(error)
+		}
+	} else {
+		try {
+			console.info('createTask:create:start', data)
+			return prisma.task.create({
+				data: {
+					...clientTaskToServerTask(data),
+					userId: user.id,
+				},
+			})
+		} catch (error) {
+			throw new Error(error)
+		}
+	}
+}
+
 export async function createManyTasks(data: Prisma.TaskCreateManyInput[]) {
 	console.info('createManyTasks:start', data)
 	const ids: string[] = data.map(task => task.id).filter(Boolean) as string[]
