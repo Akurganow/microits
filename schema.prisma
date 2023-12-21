@@ -82,7 +82,7 @@ model Task {
   id             String     @id @default(cuid())
   count          Int        @default(autoincrement())
   title          String
-  description    String
+  description    String?
   estimate       Int
   timeSpent      Int?
   date           String?
