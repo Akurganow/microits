@@ -2,10 +2,9 @@ import { storeKey } from 'store/constants/tasks'
 import { actionCreatorFactory, thunkCreatorFactory } from 'store/helpers/actions'
 import { performClientDiff } from 'lib/tasks/server'
 import type { CheckListItem, NewTaskValues, Task, TaskDiff, TasksState } from 'types/tasks'
-import type { RecursivePartial } from 'types/common'
 import type { RootState } from 'store/types'
 import { createLogStorage } from 'lib/syncLog/storages'
-import { SyncPayload } from 'lib/syncLog/types'
+import { PartialWithId, SyncPayload } from 'lib/syncLog/types'
 
 const createAction = actionCreatorFactory(storeKey)
 const createThunk = thunkCreatorFactory(storeKey)
@@ -13,7 +12,7 @@ const createThunk = thunkCreatorFactory(storeKey)
 export const setNewTask = createAction<NewTaskValues | null>('SET_NEW_TASK')
 export const addTask = createAction<Task>('ADD_TASK')
 export const removeTask = createAction<Task['id']>('REMOVE_TASK')
-export const updateTask = createAction<RecursivePartial<Task> & Pick<Task, 'id'>>('UPDATE_TASK')
+export const updateTask = createAction<PartialWithId<Task>>('UPDATE_TASK')
 export const updateChecklistItem = createAction<{ taskId: Task['id'], item: CheckListItem }>('UPDATE_CHECKLIST_ITEM')
 export const addChecklistItem = createAction<Task['id']>('ADD_CHECKLIST_ITEM')
 export const removeChecklistItem = createAction<{ taskId: Task['id'], itemId: CheckListItem['id'] }>('REMOVE_CHECKLIST_ITEM')

@@ -1,11 +1,12 @@
 import { UnknownAction } from 'redux'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import type { RecursivePartial } from 'types/common'
 import { RootState } from 'store/types'
+
+export type PartialWithId<T extends { id: string }> = Partial<T> & Pick<T, 'id'>
 
 export type SyncPayload<T extends { id: string }> = {
     created?: T
-    updated?: RecursivePartial<T> & Pick<T, 'id'>
+    updated?: PartialWithId<T>
     deleted?: T['id']
 }
 
