@@ -11,7 +11,7 @@
     "migrate:deploy:postgres:dev": "dotenv -e .env.development.local -- prisma migrate deploy",
     "migrate:deploy:postgres:preview": "dotenv -e .env.development.local -- prisma migrate deploy --preview-feature",
     "migrate:dev:postgres": "dotenv -e .env.development.local -- prisma migrate dev",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && prisma migrate deploy",
     "reset:postgres": "dotenv -e .env.production.local -- prisma migrate reset --force",
     "reset:postgres:dev": "dotenv -e .env.development.local -- prisma migrate reset --force",
     "studio": "dotenv -e .env.development.local -- prisma studio",
