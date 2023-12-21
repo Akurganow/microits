@@ -7,13 +7,13 @@ import type { SettingsState } from 'types/settings'
 import type { TasksState } from 'types/tasks'
 import type { TagsState } from 'types/tags'
 
-export interface PersistPartial {
+export type PersistPartial<E extends object> = E & {
     _persist: { version: number; rehydrated: boolean };
 }
 
 export type RootState = {
     [dialogsStoreKey]: DialogsState,
-    [settingsStoreKey]: SettingsState & PersistPartial
-    [tagsStoreKey]: TagsState & PersistPartial
-    [tasksStoreKey]: TasksState & PersistPartial
+    [settingsStoreKey]: PersistPartial<SettingsState>
+    [tagsStoreKey]: PersistPartial<TagsState>
+    [tasksStoreKey]: PersistPartial<TasksState>
 }

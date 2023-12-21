@@ -70,8 +70,8 @@ const CheckList: FC<CheckListProps> = ({ task }) => {
 
 	return (
 		<>
-			{task.checkList && task.checkList.length > 0 && <List
-				dataSource={task.checkList}
+			{task.checklist && task.checklist.length > 0 && <List
+				dataSource={task.checklist}
 				renderItem={(item) => (
 					<List.Item
 						style={{

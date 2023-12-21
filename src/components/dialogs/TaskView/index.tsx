@@ -27,7 +27,7 @@ import { isEmpty } from '@plq/is'
 import st from './styles.module.css'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { valuesToTask } from 'utils/tasks'
+import { valuesToTask } from 'lib/tasks/client'
 import { grey } from '@ant-design/colors'
 import frLocale from 'antd/es/date-picker/locale/fr_FR'
 import esLocale from 'antd/es/date-picker/locale/es_ES'
@@ -141,7 +141,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 			values.repeatStatuses = repeatStatuses
 		}
 
-		values.checkList = item.checkList
+		values.checklist = item.checklist
 
 		dispatch(updateTask(valuesToTask({ ...values, repeatable }, item)))
 		dispatch(closeDialog(name))
@@ -294,7 +294,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 				<Select bordered={false} mode="tags" options={tagsOptions} tagRender={tagRenderer} />
 			</Form.Item>
 			
-			<Form.Item<Task> label={t('checkList')} className={st.formItem}>
+			<Form.Item<Task> name="checklist" label={t('checkList')} className={st.formItem}>
 				<Checklist task={item} />
 			</Form.Item>
 		</Form>

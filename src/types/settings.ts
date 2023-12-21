@@ -1,5 +1,6 @@
-export interface SettingsState {
+export type SettingsState = {
     showUnsorted: boolean;
+    autoSync: boolean;
     openAI: {
         apiKey: string;
         userId: string; // nanoid

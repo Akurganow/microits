@@ -1,0 +1,45 @@
+.menu {
+    padding: 0;
+    border: none;
+    position: relative;
+}
+
+.image {
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid transparent;
+}
+
+.loader {
+    stroke: transparent;
+    stroke-width: 2;
+    stroke-dasharray: 0, 100%, 0;
+    animation: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: stroke 0.3s ease-in-out, stroke-dasharray 0.3s ease-in-out;
+}
+
+.syncing .loader {
+    stroke: rebeccapurple;
+    animation: rotating 3s linear infinite;
+}
+
+@keyframes rotating {
+    0% {
+        stroke-dasharray: 0, 100%, 0;
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    50% {
+        stroke-dasharray: 50%, 0, 50%;
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+
+    100% {
+        stroke-dasharray: 0, 100%, 0;
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}

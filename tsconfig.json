@@ -20,8 +20,8 @@
       "pages/*": [
         "src/pages/*"
       ],
-      "utils/*": [
-        "src/utils/*"
+      "lib/*": [
+        "src/lib/*"
       ],
       "types/*": [
         "src/types/*"

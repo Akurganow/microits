@@ -6,4 +6,5 @@ import { RecursivePartial } from 'types/common'
 const createAction = actionCreatorFactory(storeKey)
 
 export const setSettings = createAction<RecursivePartial<SettingsState>>('setSettings')
+export const setAutoSync = createAction<boolean>('setAutoSync')
 export const setOpenAIUserId = createAction('setUserId')

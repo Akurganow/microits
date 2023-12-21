@@ -10,3 +10,9 @@ export async function getBlogEntries () {
 
 	return entries.items.filter((entry) => entry.fields.slug)
 }
+
+export async function getBlogPosts() {
+	return (await getBlogEntries())
+		.filter(post => post.fields.slug && post.fields.title && post.fields.date)
+		.sort((a, b) => new Date(b.fields.date).getTime() - new Date(a.fields.date).getTime())
+}

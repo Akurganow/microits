@@ -1,3 +1,4 @@
+'use client'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCallback, useMemo } from 'react'
 import { Modal } from 'antd'
@@ -9,6 +10,30 @@ import { useTranslation } from 'react-i18next'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { selectedNewTask } from 'store/selectors/tasks'
 import dayjs from 'dayjs'
+import { isEmpty } from '@plq/is'
+import { nanoid } from 'nanoid'
+
+function valuesToTask(values: NewTaskValues, initialForm: NewTaskValues): Task {
+	const isRepeatable = !isEmpty(values?.repeatable)
+	const isRepeatableChanged = isRepeatable !== !isEmpty(initialForm?.repeatable)
+	const repeatable = !isRepeatable ? undefined : {
+		...values.repeatable,
+		repeatIndex: isRepeatableChanged ? 0 : initialForm?.repeatable?.repeatIndex,
+	} as Task['repeatable']
+
+	return {
+		...values,
+		repeatable,
+		date: values?.date ? dayjs(values.date).toString() : undefined,
+		dueDate: values?.dueDate ? dayjs(values.dueDate).toString() : undefined,
+		checklist: values?.checklist?.map((checkListItem, index) => ({
+			title: checkListItem,
+			id: index,
+			completed: false,
+		})),
+		status: values?.status || TaskStatus.Init,
+	} as Task
+}
 
 export default function NewTask() {
 	const dispatch = useDispatch()
@@ -23,7 +48,7 @@ export default function NewTask() {
 		tags: newTask?.tags || [],
 		status: newTask?.status || TaskStatus.Init,
 		priority: newTask?.priority || TaskPriority.Normal,
-		checkList: newTask?.checkList || [],
+		checklist: newTask?.checklist || [],
 		repeatable: newTask?.repeatable,
 		date: newTask?.date ? dayjs(newTask.date) : undefined,
 		dueDate: newTask?.dueDate ? dayjs(newTask.dueDate) : undefined,
@@ -35,7 +60,7 @@ export default function NewTask() {
 	}, [dispatch])
 
 	const handleFormSubmit = useCallback((values: NewTaskValues) => {
-		const checkList = values?.checkList.map((checkListItem, index) => ({
+		const checklist = values?.checklist.map((checkListItem, index) => ({
 			title: checkListItem,
 			id: index,
 			completed: false,
@@ -44,7 +69,8 @@ export default function NewTask() {
 			...values.repeatable,
 			repeatIndex: 0,
 		} as Task['repeatable']
-		dispatch(addTask({ ...initialForm, ...values, checkList } as unknown as Task))
+		const newTask = valuesToTask(values, initialForm)
+		dispatch(addTask({ ...newTask, checklist, id: nanoid() } as unknown as Task))
 		handleClose()
 	}, [dispatch, handleClose, initialForm])
 

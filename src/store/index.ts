@@ -1,8 +1,6 @@
-'use client'
-import { combineReducers, Store } from 'redux'
+import { combineReducers } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
-import { persistReducer, persistStore, MigrationManifest, createMigrate } from 'redux-persist'
-import { PersistPartial, RootState } from './types'
+import { persistReducer, MigrationManifest, createMigrate, persistStore, type Storage } from 'redux-persist'
 import storage from 'redux-persist-indexeddb-storage'
 import { initialState as tasksInitialState, storeKey as tasksStoreKey } from 'store/constants/tasks'
 import { initialState as settingsInitialState, storeKey as settingsStoreKey } from 'store/constants/settings'
@@ -12,53 +10,108 @@ import tasksReducer from 'store/reducers/tasks'
 import settingsReducer from 'store/reducers/settings'
 import tagsReducer from 'store/reducers/tags'
 import dialogsReducer from 'store/reducers/dialogs'
-import tasksMigrations from 'store/migrations/tasks'
+import tasksMigrations, { tasksVersion } from 'store/migrations/tasks'
 import settingsMigrations from 'store/migrations/settings'
 import tagsMigrations from 'store/migrations/tags'
+import { isServer } from 'lib/is'
+import { createNoopStorage } from 'lib/storage'
+import logMiddleware from 'store/middleware/log'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 export const PERSIST_STORAGE_DB_NAME = 'nanoits'
-export const initialState: RootState = {
-	[tasksStoreKey]: tasksInitialState as typeof tasksInitialState & PersistPartial,
-	[settingsStoreKey]: settingsInitialState as typeof settingsInitialState & PersistPartial,
-	[tagsStoreKey]: tagsInitialState as typeof tagsInitialState & PersistPartial,
-	[dialogsStoreKey]: dialogsInitialState,
-}
-type Storage = typeof storage
 
-function createPersistConfig(key: string, storage: Storage, migrations?: MigrationManifest) {
+function createPersistConfig(key: string, storage: Storage, migrations?: MigrationManifest, version: number = 1) {
 	return {
 		key: `nanoits/${key}`,
-		version: 1,
+		version,
 		storage,
 		migrate: migrations ? createMigrate(migrations) : undefined,
 	}
 }
 
-export const storeStorage = storage(PERSIST_STORAGE_DB_NAME)
+interface ConfigureReducerParams {
+	storeKey: string,
+	storage: Storage,
+	reducer: (initialState: Record<string, unknown>) => ReturnType<typeof combineReducers>,
+	initialState: Record<string, unknown>,
+	migrations?: MigrationManifest,
+	version?: number,
+}
 
-export const rootReducer = combineReducers({
-	[tasksStoreKey]: persistReducer(
-		createPersistConfig(tasksStoreKey, storeStorage, tasksMigrations),
-		tasksReducer(tasksInitialState),
-	),
-	[settingsStoreKey]: persistReducer(
-		createPersistConfig(settingsStoreKey, storeStorage, settingsMigrations),
-		settingsReducer(settingsInitialState),
-	),
-	[tagsStoreKey]: persistReducer(
-		createPersistConfig(tagsStoreKey, storeStorage, tagsMigrations),
-		tagsReducer(tagsInitialState),
-	),
-	[dialogsStoreKey]: dialogsReducer(dialogsInitialState),
-})
-const store = configureStore({
-	reducer: rootReducer,
-	preloadedState: initialState,
-	devTools: true,
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-		serializableCheck: false,
+function configureReducer({
+	storeKey,
+	storage,
+	migrations,
+	version,
+	reducer,
+	initialState,
+}: ConfigureReducerParams) {
+	if (isServer()) {
+		return {
+			[storeKey]: reducer(initialState)
+		}
+	}
+
+	return {
+		[storeKey]: persistReducer(
+			createPersistConfig(storeKey, storage, migrations, version),
+			reducer(initialState),
+		)
+	}
+}
+
+export const serverStorage = createNoopStorage()
+export const clientStorage = storage(PERSIST_STORAGE_DB_NAME)
+export const webStorage = isServer() ? serverStorage : clientStorage
+
+export const reducer = {
+	...configureReducer({
+		storeKey: tasksStoreKey,
+		storage: webStorage,
+		reducer: tasksReducer,
+		initialState: tasksInitialState,
+		migrations: tasksMigrations,
+		version: tasksVersion,
 	}),
-})
-const persistor = persistStore(store as unknown as Store)
+	...configureReducer({
+		storeKey: settingsStoreKey,
+		storage: webStorage,
+		migrations: settingsMigrations,
+		reducer: settingsReducer,
+		initialState: settingsInitialState,
+	}),
+	...configureReducer({
+		storeKey: tagsStoreKey,
+		storage: webStorage,
+		migrations: tagsMigrations,
+		reducer: tagsReducer,
+		initialState: tagsInitialState,
+	}),
+	[dialogsStoreKey]: dialogsReducer(dialogsInitialState),
+}
 
-export { store, persistor }
+export type RootState = {
+	[K in keyof typeof reducer]: ReturnType<typeof reducer[K]>
+}
+
+export const makeStore = () => configureStore({
+	reducer,
+	devTools: process.env.NODE_ENV !== 'production',
+	middleware: gDM => gDM({
+		serializableCheck: false,
+	}).concat(logMiddleware),
+})
+
+export const getPersistedStore = () => {
+	const store = makeStore()
+	const persistor = persistStore(store)
+
+	return { store, persistor }
+}
+
+export type AppStore = ReturnType<typeof makeStore>
+export type AppDispatch = AppStore['dispatch']
+
+type DispatchFunc = () => AppDispatch
+export const useAppDispatch: DispatchFunc = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

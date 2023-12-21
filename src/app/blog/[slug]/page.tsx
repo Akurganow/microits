@@ -2,8 +2,17 @@ import { client } from 'app/contentful'
 import { Asset } from 'contentful'
 import BlogPost from 'components/BlogPost'
 import { BlogPostEntry, BlogPostFields } from 'app/blog/types'
+import { ResolvingMetadata } from 'next'
 
-export default async function Page({ params }: { params: { slug: string } }) {
+type Params = {
+	slug: string
+}
+
+type Props = {
+	params: Params
+}
+
+export default async function Page({ params }: Props) {
 	const entries = await client.getEntries<BlogPostEntry>({
 		content_type: 'blogPage',
 		limit: 1,
@@ -27,12 +36,33 @@ export default async function Page({ params }: { params: { slug: string } }) {
 	/>
 }
 
+export const dynamicParams = true
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata) {
+	const entries = await client.getEntries<BlogPostEntry>({
+		content_type: 'blogPage',
+		limit: 1,
+		'fields.slug[in]': [params.slug],
+	})
+	const entry = entries.items[0].fields
+
+	const parentMetadata = await parent
+	console.log('parent', parentMetadata)
+
+	return {
+		title: entry.title,
+	}
+}
+
 export async function generateStaticParams() {
 	const entries = await client.getEntries<BlogPostEntry>({
 		content_type: 'blogPage',
 		limit: 1000,
 	})
-	const slugs = entries.items.map((entry) => entry.fields.slug)
+	const slugs = entries.items.map((entry) => ({
+		slug: entry.fields.slug,
+		title: entry.fields.title,
+	}))
 
-	return slugs.map((slug) => ({ params: { slug } }))
+	return slugs.map(({ slug, title }) => ({ params: { slug, title } }))
 }

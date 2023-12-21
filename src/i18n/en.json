@@ -134,6 +134,8 @@
     "signup": "Sign up",
     "signout": "Sign out",
     "publicBeta": "Beta",
-    "privateBeta": "Private beta"
+    "privateBeta": "Private beta",
+    "manualSync": "Manual sync",
+    "autoSync": "Auto sync"
   }
 }

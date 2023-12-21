@@ -1,5 +1,5 @@
 import { SettingsState } from 'types/settings'
-import { setOpenAIUserId, setSettings } from 'store/actions/settings'
+import { setAutoSync, setOpenAIUserId, setSettings } from 'store/actions/settings'
 import { nanoid } from 'nanoid'
 import { createReducer } from '@reduxjs/toolkit'
 
@@ -10,6 +10,9 @@ const settingsReducer = (initialState: SettingsState) => createReducer(initialSt
 		})
 		.addCase(setOpenAIUserId, state => {
 			state.openAI.userId = nanoid()
+		})
+		.addCase(setAutoSync, (state, action) => {
+			state.autoSync = action.payload
 		})
 )
 

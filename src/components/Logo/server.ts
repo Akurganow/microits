@@ -35,7 +35,7 @@ type EmptyHint = {
 		date: string
 		dueDate: string
 		tags: string[]
-		checkList: string[]
+		checklist: string[]
 	}
 }
 

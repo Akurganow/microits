@@ -79,24 +79,24 @@ model Tag {
 }
 
 model Task {
-  id            String   @id @default(cuid())
-  count         Int      @default(autoincrement())
-  title         String
-  description   String
-  estimate      Int
-  timeSpent     Int?
-  date          String?
-  dueDate       String?
-  time          String?
-  repeatable    Json?
-  status        String
-  priority      Int
-  tags          Json?
-  checklist     Json?
-  repeatStauses Json?
-  deletedAt     DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String     @id @default(cuid())
+  count          Int        @default(autoincrement())
+  title          String
+  description    String
+  estimate       Int
+  timeSpent      Int?
+  date           String?
+  dueDate        String?
+  time           String?
+  repeatable     Json?
+  status         String
+  priority       Int
+  checklist      Json?
+  repeatStatuses Json?
+  deletedAt      DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  userId         String
+  tags           String[]
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

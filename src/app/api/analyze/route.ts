@@ -14,8 +14,8 @@ export async function POST(req: NextRequest) {
 	const { tasks, tags, locale, userId } = await req.json()
 
 	const systemMessageContent: string = systemMessage[locale.split(/[-_]/i)[0]] || systemMessage.en
-	const tasksMessageContent: string = tasks ? `Here the serialized into csv list of tasks ${json2csv(tasks)}` : 'I have no tasks yet'
-	const tagsMessageContent: string = tags ? `Here the serialized into csv list of tags ${json2csv(tags)}` : 'I have no tags yet'
+	const tasksMessageContent: string = tasks ? `Here the serialized into csv list of tasks "${json2csv(tasks)}"` : 'I have no tasks yet'
+	const tagsMessageContent: string = tags ? `Here the serialized into csv list of tags "${json2csv(tags)}"` : 'I have no tags yet'
 
 	const response = await openai.chat.completions.create({
 		stream: true,

@@ -1,12 +1,10 @@
-import {
-	AsyncThunk,
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
+import type { AsyncThunk,
 	AsyncThunkOptions,
 	AsyncThunkPayloadCreator,
-	createAction,
-	createAsyncThunk,
-	PrepareAction
+	PrepareAction,
+	PayloadActionCreator,
 } from '@reduxjs/toolkit'
-import { PayloadActionCreator } from '@reduxjs/toolkit/src/createAction'
 import { AsyncThunkConfig } from '@reduxjs/toolkit/src/createAsyncThunk'
 
 export interface ActionCreatorFactory {
@@ -16,9 +14,9 @@ export interface ActionCreatorFactory {
 }
 
 export interface ThunkCreatorFactory {
-	<R = void, T extends string = string>(type: T, payloadCreator: AsyncThunkPayloadCreator<R, T>): AsyncThunk<R, T, AsyncThunkConfig>
+	<R = void, P = unknown, T extends string = string>(type: T, payloadCreator: AsyncThunkPayloadCreator<R, P>): AsyncThunk<R, P, AsyncThunkConfig>
 
-	<R = void, T extends string = string>(type: T, payloadCreator: AsyncThunkPayloadCreator<R, T>, options: AsyncThunkOptions<T, AsyncThunkConfig>): AsyncThunk<R, T, AsyncThunkConfig>
+	<R = void, P = unknown, T extends string = string>(type: T, payloadCreator: AsyncThunkPayloadCreator<R, P>, options: AsyncThunkOptions<P, AsyncThunkConfig>): AsyncThunk<R, P, AsyncThunkConfig>
 }
 
 export function actionCreatorFactory(storeKey: string): ActionCreatorFactory {
@@ -26,5 +24,7 @@ export function actionCreatorFactory(storeKey: string): ActionCreatorFactory {
 }
 
 export function thunkCreatorFactory(storeKey: string): ThunkCreatorFactory {
-	return (type: string, payloadCreator: AsyncThunkPayloadCreator<unknown, string>, options?: AsyncThunkOptions<unknown, AsyncThunkConfig>) => createAsyncThunk(`${storeKey}/${type}`, payloadCreator, options)
+	return function <R, P>(type: string, payloadCreator: AsyncThunkPayloadCreator<R, P>, options?: AsyncThunkOptions<unknown, AsyncThunkConfig>) {
+		return createAsyncThunk<R, P>(`${storeKey}/${type}`, payloadCreator, options)
+	}
 }

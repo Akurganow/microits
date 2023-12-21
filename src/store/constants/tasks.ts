@@ -44,7 +44,7 @@ export const initialState: TasksState = {
 // 		priority,
 // 		date,
 // 		time,
-// 		checkList: createCheckListMock(faker.number.int({ min: 1, max: 10 }))
+// 		checklist: createCheckListMock(faker.number.int({ min: 1, max: 10 }))
 // 	}
 // }
 

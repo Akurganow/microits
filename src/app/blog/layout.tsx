@@ -1,15 +1,21 @@
-import Providers from 'src/components/Providers'
+import Providers from 'components/Providers'
+import { PropsWithChildren } from 'react'
+import type { Metadata } from 'next'
 
-export default function BlogLayout({
-	children,
-}: {
-    children: React.ReactNode
-}) {
+export const metadata: Metadata = {
+	title: {
+		template: '%s | Alexenda Blog',
+		default: 'Alexenda Blog',
+		absolute: 'Alexenda Blog',
+	},
+}
+
+export default function BlogLayout({ children }: PropsWithChildren) {
 	return (
-		<main className="blog-container">
-			<Providers>
+		<Providers>
+			<main className="blog-container">
 				{children}
-			</Providers>
-		</main>
+			</main>
+		</Providers>
 	)
 }

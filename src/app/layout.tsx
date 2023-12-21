@@ -3,8 +3,8 @@ import { Inter } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 import 'app/globals.css'
-import { primaryColor } from 'constants/colors'
-import { ReactNode } from 'react'
+import { primaryColor } from 'lib/theme'
+import { PropsWithChildren } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,7 +13,11 @@ export const metadata: Metadata = {
 	alternates: {
 		canonical: '/',
 	},
-	title: 'Alexenda',
+	title: {
+		template: '%s | Alexenda',
+		default: 'Alexenda',
+		absolute: 'Alexenda',
+	},
 	description: 'Tiny planner for your daily tasks',
 	openGraph: {
 		type: 'website',
@@ -31,11 +35,7 @@ export const metadata: Metadata = {
 	}
 }
 
-export default function RootLayout({
-	children,
-}: {
-  children: ReactNode
-}) {
+export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en" data-color-mode="light">
 			<head>

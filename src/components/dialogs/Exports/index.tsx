@@ -6,7 +6,7 @@ import { ChangeEvent, useCallback, useMemo } from 'react'
 import { closeDialog } from 'store/actions/dialogs'
 import { FileExcelTwoTone } from '@ant-design/icons'
 import { selectedTasks } from 'store/selectors/tasks'
-import { downloadArrayAsJSON } from 'utils/files'
+import { downloadArrayAsJSON } from 'lib/files'
 import { importTasks } from 'store/actions/tasks'
 
 export default function Exports() {

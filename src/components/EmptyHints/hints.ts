@@ -28,7 +28,7 @@ const hints = [
 				date: dayjs().toString(),
 				dueDate: dayjs().toString(),
 				tags: ['Study', 'Personal'],
-				checkList: ['History','Math','Game party']
+				checklist: ['History','Math','Game party']
 			},
 			fr: {
 				title: 'Étude et temps personnel',
@@ -37,7 +37,7 @@ const hints = [
 				date: dayjs().toString(),
 				dueDate: dayjs().toString(),
 				tags: ['Étude', 'Personnel'],
-				checkList: ['Histoire', 'Math', 'Fête de jeux']
+				checklist: ['Histoire', 'Math', 'Fête de jeux']
 			},
 			es: {
 				title: 'Estudio y tiempo personal',
@@ -46,7 +46,7 @@ const hints = [
 				date: dayjs().toString(),
 				dueDate: dayjs().toString(),
 				tags: ['Estudio', 'Personal'],
-				checkList: ['Historia', 'Matemáticas', 'Fiesta de juegos']
+				checklist: ['Historia', 'Matemáticas', 'Fiesta de juegos']
 			},
 			ru: {
 				title: 'Учеба и личное время',
@@ -55,7 +55,7 @@ const hints = [
 				date: dayjs().toString(),
 				dueDate: dayjs().toString(),
 				tags: ['Учеба', 'Личное'],
-				checkList: ['История', 'Математика', 'Гейм-пати']
+				checklist: ['История', 'Математика', 'Гейм-пати']
 			}
 		}
 	},
@@ -92,7 +92,7 @@ const hints = [
 				date: dayjs().add(1, 'day').toString(),
 				dueDate: dayjs().startOf('week').add(1, 'week').toString(),
 				tags: ['Еда', 'Личное'],
-				checkList: ['Список продуктов', 'Заказ продуктов', 'Заготовки']
+				checklist: ['Список продуктов', 'Заказ продуктов', 'Заготовки']
 			},
 			fr: {
 				title: 'Menu de la semaine',
@@ -107,7 +107,7 @@ const hints = [
 				date: dayjs().add(1, 'day').toString(),
 				dueDate: dayjs().startOf('week').add(1, 'week').toString(),
 				tags: ['Nourriture', 'Personnel'],
-				checkList: ['Liste des produits', 'Commande de produits', 'Stocks']
+				checklist: ['Liste des produits', 'Commande de produits', 'Stocks']
 			},
 			es: {
 				title: 'Menú semanal',
@@ -122,7 +122,7 @@ const hints = [
 				date: dayjs().add(1, 'day').toString(),
 				dueDate: dayjs().startOf('week').add(1, 'week').toString(),
 				tags: ['Comida', 'Personal'],
-				checkList: ['Lista de productos', 'Pedido de productos', 'Conservas']
+				checklist: ['Lista de productos', 'Pedido de productos', 'Conservas']
 			},
 			en: {
 				title: 'Weekly menu',
@@ -137,7 +137,7 @@ const hints = [
 				date: dayjs().add(1, 'day').toString(),
 				dueDate: dayjs().startOf('week').add(1, 'week').toString(),
 				tags: ['Food', 'Personal'],
-				checkList: ['List of products', 'Product order', 'Stocks']
+				checklist: ['List of products', 'Product order', 'Stocks']
 			}
 		}
 	},
@@ -168,7 +168,7 @@ const hints = [
 				date: dayjs().add(1, 'day').toString(),
 				dueDate: dayjs().add(1, 'day').toString(),
 				tags: ['Личное', 'Рутина'],
-				checkList: ['Медитация', 'Завтрак', 'План на день']
+				checklist: ['Медитация', 'Завтрак', 'План на день']
 			},
 			fr: {
 				title: 'Plan du matin',
@@ -177,7 +177,7 @@ const hints = [
 				date: dayjs().add(1, 'day').toString(),
 				dueDate: dayjs().add(1, 'day').toString(),
 				tags: ['Personnel', 'Routine'],
-				checkList: ['Méditation', 'Petit déjeuner', 'Plan de la journée']
+				checklist: ['Méditation', 'Petit déjeuner', 'Plan de la journée']
 			},
 			es: {
 				title: 'Plan de la mañana',
@@ -186,7 +186,7 @@ const hints = [
 				date: dayjs().add(1, 'day').toString(),
 				dueDate: dayjs().add(1, 'day').toString(),
 				tags: ['Personal', 'Rutina'],
-				checkList: ['Meditación', 'Desayuno', 'Plan del día']
+				checklist: ['Meditación', 'Desayuno', 'Plan del día']
 			},
 			en: {
 				title: 'Morning plan',
@@ -195,7 +195,7 @@ const hints = [
 				date: dayjs().add(1, 'day').toString(),
 				dueDate: dayjs().add(1, 'day').toString(),
 				tags: ['Personal', 'Routine'],
-				checkList: ['Meditation', 'Breakfast', 'Plan for the day']
+				checklist: ['Meditation', 'Breakfast', 'Plan for the day']
 			}
 		}
 	}

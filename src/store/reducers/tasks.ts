@@ -4,12 +4,12 @@ import {
 	addTask,
 	importTasks,
 	removeChecklistItem,
-	removeTask, setNewTask,
+	removeTask, setIsSyncing, setNewTask, syncTasksWithServer,
 	updateChecklistItem,
 	updateTask
 } from 'store/actions/tasks'
-import { nanoid } from 'nanoid'
 import { createReducer } from '@reduxjs/toolkit'
+import { isEmpty } from '@plq/is'
 
 const tasksReducer = (initialState: TasksState) => createReducer(initialState, builder =>
 	builder
@@ -21,7 +21,6 @@ const tasksReducer = (initialState: TasksState) => createReducer(initialState, b
 
 			state.tasks.push({
 				...action.payload,
-				id: nanoid(),
 				count: highestCount + 1,
 			})
 		})
@@ -39,15 +38,15 @@ const tasksReducer = (initialState: TasksState) => createReducer(initialState, b
 			const task = state.tasks.find(task => task.id === action.payload.taskId)
 
 			if (task) {
-				task.checkList = (task.checkList || []).map(item => item.id === action.payload.item.id ? action.payload.item : item)
+				task.checklist = (task.checklist || []).map(item => item.id === action.payload.item.id ? action.payload.item : item)
 			}
 		})
 		.addCase(addChecklistItem, (state, action) => {
 			const task = state.tasks.find(task => task.id === action.payload)
 
 			if (task) {
-				task.checkList = [...(task.checkList || []), {
-					id: (task.checkList || []).length,
+				task.checklist = [...(task.checklist || []), {
+					id: (task.checklist || []).length,
 					title: '',
 					completed: false
 				}]
@@ -57,7 +56,7 @@ const tasksReducer = (initialState: TasksState) => createReducer(initialState, b
 			const task = state.tasks.find(task => task.id === action.payload.taskId)
 
 			if (task) {
-				task.checkList = (task.checkList || []).filter(item => item.id !== action.payload.itemId)
+				task.checklist = (task.checklist || []).filter(item => item.id !== action.payload.itemId)
 			}
 		})
 		.addCase(importTasks, (state, action) => {
@@ -66,5 +65,51 @@ const tasksReducer = (initialState: TasksState) => createReducer(initialState, b
 				...action.payload,
 			]
 		})
+		.addCase(setIsSyncing, (state, action) => {
+			state.isSyncing = action.payload
+		})
+		.addCase(syncTasksWithServer.pending, (state) => {
+			state.isSyncing = true
+		})
+		.addCase(syncTasksWithServer.rejected, (state) => {
+			state.isSyncing = false
+		})
+		.addCase(syncTasksWithServer.fulfilled, (state, { payload }) => {
+			console.log('syncWithServer.fulfilled:start')
+			if (!payload || isEmpty(payload)) return
+			// console.debug('syncWithServer.fulfilled:payload', payload)
+			const { diff, lastServerUpdate } = payload
+
+			// console.debug('syncWithServer.fulfilled:diff.create', diff?.create && diff.create.length > 0, diff?.create)
+			if (diff && diff.create.length > 0) {
+				const tasksMap = new Map(state.tasks.map(task => [task.id, task]))
+
+				for (const task of diff.create) {
+					tasksMap.set(task.id, task)
+				}
+
+				state.tasks = Array.from(tasksMap.values())
+				// console.debug('syncWithServer.fulfilled:diff.create:state.tasks', state.tasks)
+			}
+
+			for (const task of (diff?.update || [])) {
+				state.tasks.map(t => t.id === task.id ? { ...t, ...task } : t)
+			}
+
+			if (diff && diff.delete.length > 0) {
+				// console.debug('syncWithServer.fulfilled:diff.delete', diff.delete)
+				// console.debug(
+				// 	'syncWithServer.fulfilled:diff.delete:removedTasks',
+				// 	state.tasks
+				// 		.filter(task => diff.delete.includes(task.id))
+				// 		.map(({ id, title }) => ({ id, title }))
+				// )
+				state.tasks = state.tasks.filter(task => !diff.delete.includes(task.id))
+			}
+
+			state.lastServerUpdate = lastServerUpdate?.toString()
+			state.isSyncing = false
+		})
+
 )
 export default tasksReducer

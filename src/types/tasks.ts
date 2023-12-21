@@ -1,4 +1,5 @@
 import { Dayjs } from 'dayjs'
+import { RecursivePartial } from 'types/common'
 
 export enum TaskStatus {
     Init = 'initial',
@@ -40,7 +41,7 @@ export type Task = {
     tags: string[]
     status: TaskStatus
     priority: TaskPriority
-    checkList: CheckListItem[]
+    checklist: CheckListItem[]
     repeatStatuses?: TaskStatus[]
     createdAt: string
     updatedAt: string
@@ -54,11 +55,18 @@ export type TaskFormValues = Omit<Task, 'id' | 'date' | 'time' | 'dueDate'> & {
     dueDate?: Dayjs
 }
 
-export type NewTaskValues = Partial<Omit<Task, 'checkList'>> & {
-    checkList: string[]
+export type NewTaskValues = Partial<Omit<Task, 'checklist'>> & {
+    checklist: string[]
 }
 
 export type TasksState = {
     tasks: Task[]
     newTask: NewTaskValues | null
+    lastServerUpdate?: string
+    isSyncing?: boolean
+}
+export type TaskDiff = {
+    update: (RecursivePartial<Task> & Pick<Task, 'id'>)[]
+    create: Task[]
+    delete: Task['id'][]
 }

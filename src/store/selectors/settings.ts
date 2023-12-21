@@ -3,17 +3,22 @@ import { RootState } from 'store/types'
 import { createSelector } from '@reduxjs/toolkit'
 import { SettingsState, SettingsKey, SettingsValue } from 'types/settings'
 
-const rawSettings = (state: RootState) => state[storeKey]
+export const selectedSettings = (state: RootState) => state[storeKey]
+
+export const selectedAutoSync = createSelector(
+	selectedSettings,
+	(settings) => settings.autoSync
+)
 
 export const selectedOpenAI = createSelector(
-	rawSettings,
+	selectedSettings,
 	(settings) => settings.openAI
 )
 
 export const selectedSettingValue = (key: SettingsKey) =>
 	(state: SettingsState) => createSelector(
 		[
-			rawSettings,
+			selectedSettings,
 			(_state, key) => key,
 		],
 		(settings, key) =>

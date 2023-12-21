@@ -11,7 +11,7 @@ import { useChat } from 'ai/react'
 import st from './styles.module.css'
 import cn from 'classnames'
 import Markdown from 'react-markdown'
-import { primaryColor } from 'constants/colors'
+import { primaryColor } from 'lib/theme'
 
 export default function AnalyzeButton() {
 	const { t, i18n } = useTranslation()
@@ -30,10 +30,10 @@ export default function AnalyzeButton() {
 		},
 		initialInput: '',
 		onResponse: res => {
-			console.info('AnalyzeButton.onResponse', res)
+			console.debug('AnalyzeButton.onResponse', res)
 		},
 		onFinish: message => {
-			console.info('AnalyzeButton.onFinish', message)
+			console.debug('AnalyzeButton.onFinish', message)
 		},
 		onError: error => {
 			console.error(error)

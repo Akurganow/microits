@@ -1,12 +1,12 @@
 import { Flex, Timeline } from 'antd'
 import Link from 'next/link'
-import { getBlogEntries } from 'app/blog/server'
 import ContentfulImage from 'components/ContentfulImage'
 import st from './styles.module.css'
+import { getBlogPosts } from 'app/blog/server'
 import type { BlogPostEntry } from 'app/blog/types'
 import type { Asset, Entry } from 'contentful'
 import PostIcon from 'components/PostIcon'
-import { primaryColor } from 'constants/colors'
+import { primaryColor } from 'lib/theme'
 
 function TimelinePost(post: Entry<BlogPostEntry>) {
 	const postImage = (post.fields.image as Asset | undefined)?.fields
@@ -29,11 +29,8 @@ function TimelinePost(post: Entry<BlogPostEntry>) {
 }
 
 export default async function Page() {
-	const posts = await getBlogEntries()
-
+	const posts  = await getBlogPosts()
 	const timelineItems = posts
-		.filter(post => post.fields.slug && post.fields.title && post.fields.date)
-		.sort((a, b) => new Date(b.fields.date).getTime() - new Date(a.fields.date).getTime())
 		.map(post => {
 			return {
 				color: primaryColor,

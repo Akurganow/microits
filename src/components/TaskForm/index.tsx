@@ -106,7 +106,7 @@ export default function TaskForm({ initialValues, name, onFinish }: TaskFormProp
 			</Select>
 		</Form.Item>
 
-		<Form.Item<Task> name="checkList" label={t('checkList')}>
+		<Form.Item<Task> name="checklist" label={t('checkList')}>
 			<Select mode="tags" />
 		</Form.Item>
 	</Form>

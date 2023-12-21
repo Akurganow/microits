@@ -1,7 +1,7 @@
 'use server'
 import { AssetFile, createClient, EntryFields } from 'contentful'
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
-import { getRandomItem } from 'utils/array'
+import { getRandomItem } from 'lib/array'
 import { LocaleCode } from 'contentful/dist/types/types/locale'
 import { AssetFields } from 'contentful/dist/types/types/asset'
 import { JsonObject } from 'type-fest/source/basic'

@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import { Task, TaskStatus } from 'types/tasks'
 import { WithRequired } from 'types/common'
 import minMax from 'dayjs/plugin/minMax'
-import { getDayTitle, splitByDays, splitByTime } from 'utils/tasks'
+import { getDayTitle, splitByDays, splitByTime } from 'lib/tasks/client'
 import { ListTitle } from 'components/TasksList'
 
 dayjs.extend(minMax)
@@ -14,6 +14,15 @@ const rawSelectedTasks = (state: RootState) => state[storeKey]
 export const selectedTasks = createSelector(
 	rawSelectedTasks,
 	(state) => state.tasks
+)
+export const selectedLastServerUpdate = createSelector(
+	rawSelectedTasks,
+	(state) => state.lastServerUpdate ? new Date(state.lastServerUpdate) : new Date(0)
+)
+
+export const selectedIsSyncing = createSelector(
+	rawSelectedTasks,
+	(state) => state.isSyncing
 )
 
 export const selectedNewTask = createSelector(

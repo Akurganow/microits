@@ -1,4 +1,4 @@
-import Head from 'next/head'
+'use client'
 import { BLOCKS, MARKS, Document } from '@contentful/rich-text-types'
 import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer'
 import ContentfulImage from 'components/ContentfulImage'
@@ -38,30 +38,24 @@ export default function BlogPost({ body, title, image, recommendedPosts }: BlogP
 	const content = documentToReactComponents(body, contentRendererOptions)
 	const recommended = recommendedPosts?.filter((post) => post.slug)
 
-	return <>
-		<Head>
-			<title>{title} | Alexenda</title>
-		</Head>
-
-		<div>
-			<h1>{title}</h1>
-			{image && <ContentfulImage
-				preview={false}
-				src={image.url}
-				alt={image.description}
-				className={st.mainImage}
-			/>}
-			<div>{content}</div>
-			{recommended?.length && recommended.length > 0 && <div>
-				<h2>Recommended Posts</h2>
-				<ul>
-					{recommended.map(({ slug, title }) =>
-						<li key={slug}>
-							<a href={`/blog/${slug}`}>{title}</a>
-						</li>
-					)}
-				</ul>
-			</div>}
-		</div>
-	</>
+	return <div>
+		<h1>{title}</h1>
+		{image && <ContentfulImage
+			preview={false}
+			src={image.url}
+			alt={image.description}
+			className={st.mainImage}
+		/>}
+		<div>{content}</div>
+		{recommended?.length && recommended.length > 0 && <div>
+			<h2>Recommended Posts</h2>
+			<ul>
+				{recommended.map(({ slug, title }) =>
+					<li key={slug}>
+						<a href={`/blog/${slug}`}>{title}</a>
+					</li>
+				)}
+			</ul>
+		</div>}
+	</div>
 }

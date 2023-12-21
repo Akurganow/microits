@@ -6,13 +6,9 @@ import Header from 'components/Header'
 import TasksList, { ListTitle } from 'components/TasksList'
 import HiddenTasks from 'components/HiddenTasks'
 import EmptyHints from 'components/EmptyHints'
-import dayjs from 'dayjs'
-import calendar from 'dayjs/plugin/calendar'
 import { selectedSettingValue } from 'store/selectors/settings'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-
-dayjs.extend(calendar)
 
 export default function HomePage() {
 	const { t } = useTranslation()

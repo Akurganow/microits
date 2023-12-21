@@ -1,7 +1,22 @@
+'use client'
 import dayjs, { Dayjs } from 'dayjs'
 import capitalize from 'lodash/capitalize'
 import i18n from 'src/i18n'
 import { Task, TaskFormValues } from 'types/tasks'
+import { isEqual } from 'lodash'
+
+export function getTaskDiff(oldTask: Task, newTask: Task) {
+	const diff: Partial<Task> = {}
+
+	for (const key in newTask) {
+		if (!isEqual(newTask[key], oldTask[key])) {
+			diff[key] = newTask[key]
+			diff.id = newTask.id
+		}
+	}
+
+	return diff
+}
 
 export function getDayTitle(date: string) {
 	const isToday = dayjs(date).isSame(dayjs(), 'day')
@@ -75,8 +90,8 @@ export function splitByDays<T extends { date: string | number | Date | Dayjs }>(
 }
 
 export function valuesToTask(values: TaskFormValues, task: Task): Task {
-	const checkList = values.checkList?.map((checkListItem, index) => {
-		const itemChecklist = task.checkList[index]
+	const checkList = values.checklist?.map((checkListItem, index) => {
+		const itemChecklist = task.checklist[index]
 
 		return {
 			...itemChecklist,
@@ -87,9 +102,10 @@ export function valuesToTask(values: TaskFormValues, task: Task): Task {
 	return {
 		...task,
 		...values,
-		checkList,
+		checklist: checkList,
 		dueDate: values.dueDate?.toISOString(),
 		date: values.date?.toISOString(),
 		time: values.time?.toISOString(),
 	}
 }
+
