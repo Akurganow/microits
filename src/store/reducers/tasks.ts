@@ -89,6 +89,8 @@ export default tasksReducer
 function performTasksSync(state: WritableDraft<TasksState>, { payload }: { payload?: { diff?: TaskDiff, lastServerUpdate?: Date } }) {
 	state.isSyncing = false
 
+	console.info('performTasksSync:payload', payload)
+
 	if (!payload || isEmpty(payload)) return
 
 	const { diff, lastServerUpdate } = payload
@@ -110,6 +112,8 @@ function performTasksSync(state: WritableDraft<TasksState>, { payload }: { paylo
 	if (diff && diff.delete.length > 0) {
 		state.tasks = state.tasks.filter(task => !diff.delete.includes(task.id))
 	}
+
+	console.info('performTasksSync:lastServerUpdate', lastServerUpdate)
 
 	state.lastServerUpdate = lastServerUpdate?.toString()
 }

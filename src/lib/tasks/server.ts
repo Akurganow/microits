@@ -11,12 +11,10 @@ function serverTaskToClientTask(task: Awaited<ReturnType<typeof getUserServerTas
 	return {
 		...task,
 		repeatable: task.repeatable as TaskRepeatable | undefined,
-		checklist: (task.checklist as Task['checklist'])?.map(item => ({
-			...item,
-		} as Task['checklist'][number])),
-		createdAt: task.createdAt?.toString(),
-		updatedAt: task.updatedAt?.toString(),
-		deletedAt: task.deletedAt?.toString(),
+		checklist: task.checklist as Task['checklist'],
+		createdAt: task.createdAt ? task.createdAt?.toString() : undefined,
+		updatedAt: task.updatedAt ? task.updatedAt?.toString() : undefined,
+		deletedAt: task.deletedAt ? task.deletedAt?.toString() : undefined,
 	} as RecursiveNullToOptional<Task>
 }
 
