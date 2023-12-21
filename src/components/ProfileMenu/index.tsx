@@ -24,15 +24,18 @@ export default function ProfileMenu() {
 	const image = useMemo(() => session.data?.user?.image ?? '/logo500.png', [session.data?.user?.image])
 
 	const handleSyncWithServer = useCallback(() => {
-		if (isSyncing) return
-
-		console.debug('syncWithServer', { lastServerUpdate })
 		if (autoSync) {
 			dispatch(syncTasksWithServer({ lastServerUpdate }))
 		} else {
 			dispatch(setIsSyncing(false))
 		}
-	}, [autoSync, dispatch, isSyncing, lastServerUpdate])
+	}, [autoSync, dispatch, lastServerUpdate])
+
+	const handleAutoSyncWithServer = useCallback(() => {
+		if (!isSyncing) {
+			handleSyncWithServer()
+		}
+	}, [handleSyncWithServer, isSyncing])
 
 	const menuItems = useMemo(() => ([
 		(syncFF && {
@@ -61,11 +64,11 @@ export default function ProfileMenu() {
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			handleSyncWithServer()
+			handleAutoSyncWithServer()
 		}, 60000)
 
 		return () => clearTimeout(timeout)
-	}, [lastServerUpdate, dispatch, handleSyncWithServer])
+	}, [lastServerUpdate, dispatch, handleSyncWithServer, handleAutoSyncWithServer])
 
 	const ProfileImage = useMemo(() => (<>
 		<svg className={st.loader} width={imageSize} height={imageSize}>
