@@ -26,6 +26,7 @@ function clientTaskToServerTask(task: ClientTask): Omit<Prisma.TaskCreateInput, 
 		createdAt: task.createdAt ? new Date(task.createdAt) : undefined,
 		updatedAt: task.updatedAt ? new Date(task.updatedAt) : undefined,
 		deletedAt: task.deletedAt ? new Date(task.deletedAt) : undefined,
+		description: task.description || '',
 	} as Omit<Prisma.TaskCreateInput, 'user'>
 }
 
