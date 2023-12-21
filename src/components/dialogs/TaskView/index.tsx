@@ -171,7 +171,7 @@ export default function TaskView({ item, name, index, ...props }: TaskViewProper
 	return <Modal
 		getContainer="#dialog"
 		destroyOnClose={true}
-		width="50vw"
+		style={{ minWidth: '50vw' }}
 		open={isDialogOpened}
 		title={`#${item.count}`}
 		onCancel={handleClose}

@@ -47,7 +47,7 @@ export default function Settings() {
 	return <Modal
 		forceRender
 		title="Settings"
-		width="50vw"
+		style={{ minWidth: '50vw' }}
 		open={isDialogOpened}
 		okButtonProps={{ htmlType: 'submit', form: 'settings-form' }}
 		okText={t('save')}

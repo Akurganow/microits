@@ -76,7 +76,7 @@ export default function NewTask() {
 
 
 	return <Modal
-		width="60vw"
+		style={{ minWidth: '60vw' }}
 		open={isDialogOpened}
 		title={t('addNewTask')}
 		onCancel={handleClose}

@@ -131,7 +131,7 @@ export default function Tags() {
 		open={isDialogOpened}
 		getContainer="#dialog"
 		destroyOnClose={true}
-		width="50vw"
+		style={{ minWidth: '50vw' }}
 		title={t('editTags')}
 		onCancel={handleClose}
 		footer={null}

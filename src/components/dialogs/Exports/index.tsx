@@ -46,7 +46,7 @@ export default function Exports() {
 	}, [dispatch, messageApi, t])
     
 	return <Modal
-		width="50vw"
+		style={{ minWidth: '50vw' }}
 		open={isDialogOpened}
 		title={t('export')}
 		onCancel={handleClose}
