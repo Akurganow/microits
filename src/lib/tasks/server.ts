@@ -66,6 +66,10 @@ export async function createTask(data: ClientTask) {
 }
 
 export async function createManyTasks(data: Prisma.TaskCreateManyInput[]) {
+	const user = await getCurrentUser()
+
+	if (!user) return
+
 	console.info('createManyTasks:start', data)
 	const ids: string[] = data.map(task => task.id).filter(Boolean) as string[]
 	const existingIds = (await prisma.task.findMany({
@@ -99,9 +103,24 @@ export async function createManyTasks(data: Prisma.TaskCreateManyInput[]) {
 }
 
 export async function updateManyTasks(tasks: ClientTask[]) {
+	const user = await getCurrentUser()
+
+	if (!user) return
+
 	console.debug('updateManyTasks:start', tasks)
 
 	for (const task of tasks) {
+		const isTaskExists = await prisma.task.findUnique({
+			where: {
+				id: task.id,
+			},
+		})
+
+		if (!isTaskExists) {
+			await createTask(task as Task)
+			continue
+		}
+
 		if (task.id) {
 			try {
 				console.debug('updateManyTasks:update', task)
@@ -117,6 +136,10 @@ export async function updateManyTasks(tasks: ClientTask[]) {
 }
 
 export async function deleteManyTasks(ids: PrismaModels['Task']['id'][]) {
+	const user = await getCurrentUser()
+
+	if (!user) return
+
 	const where = {
 		id: {
 			in: ids,
@@ -141,24 +164,19 @@ export async function getUserServerTasks() {
 
 	if (!user) return []
 
-	try {
-		console.debug('getUserServerTasks:start')
-		return prisma.task.findMany({
-			where: {
-				AND: [
-					{ userId: user.id },
-					{
-						OR: [
-							{ deletedAt: null },
-							{ deletedAt: undefined },
-						]
-					},
-				],
-			},
-		})
-	} catch (error) {
-		throw new Error(error)
-	}
+	return prisma.task.findMany({
+		where: {
+			AND: [
+				{ userId: user.id },
+				{
+					OR: [
+						{ deletedAt: null },
+						{ deletedAt: undefined },
+					]
+				},
+			],
+		},
+	})
 }
 
 export async function getServerTasksDiff(lastClientUpdate?: Date): Promise<TaskDiff> {
@@ -223,8 +241,8 @@ export async function getServerTasksDiff(lastClientUpdate?: Date): Promise<TaskD
 		})
 		console.debug('getServerTasksDiff:deletedTasks', deletedTasks)
 
-		diff.create = createdTasks.map(task => serverTaskToClientTask(task))
-		diff.update = updatedTasks.map(task => serverTaskToClientTask(task))
+		diff.create = createdTasks.map(serverTaskToClientTask)
+		diff.update = updatedTasks.map(serverTaskToClientTask)
 		diff.delete = deletedTasks.map(task => task.id)
 
 		return diff
@@ -287,7 +305,7 @@ export async function performClientDiff(clientDiff: TaskDiff, lastClientUpdate: 
 
 	const { create, update, delete: deleted } = clientDiff
 
-	if (create.length > 0) {
+	if (create && create.length > 0) {
 		console.debug('performClientDiff:create', create)
 		await createManyTasks(create.map(task => ({
 			...clientTaskToServerTask(task),
@@ -295,12 +313,12 @@ export async function performClientDiff(clientDiff: TaskDiff, lastClientUpdate: 
 		})))
 	}
 
-	if (update.length > 0) {
+	if (update && update.length > 0) {
 		console.debug('performClientDiff:update', update)
 		await updateManyTasks(update)
 	}
 
-	if (deleted.length > 0) {
+	if (deleted && deleted.length > 0) {
 		console.debug('performClientDiff:delete', deleted)
 		await deleteManyTasks(deleted)
 	}

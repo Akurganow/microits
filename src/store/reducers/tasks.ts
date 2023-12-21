@@ -4,7 +4,7 @@ import {
 	addTask,
 	importTasks, initialSyncTasksWithServer,
 	removeChecklistItem,
-	removeTask, setIsSyncing, setNewTask, syncTasksWithServer,
+	removeTask, setIsTasksSyncing, setNewTask, syncTasksWithServer,
 	updateChecklistItem,
 	updateTask
 } from 'store/actions/tasks'
@@ -66,7 +66,7 @@ const tasksReducer = (initialState: TasksState) => createReducer(initialState, b
 				...action.payload,
 			]
 		})
-		.addCase(setIsSyncing, (state, action) => {
+		.addCase(setIsTasksSyncing, (state, action) => {
 			state.isSyncing = action.payload
 		})
 		.addCase(initialSyncTasksWithServer.pending, (state) => {
@@ -93,7 +93,7 @@ function performTasksSync(state: WritableDraft<TasksState>, { payload }: { paylo
 
 	const { diff, lastServerUpdate } = payload
 
-	if (diff && diff.create.length > 0) {
+	if (diff?.create && diff.create.length > 0) {
 		const tasksMap = new Map(state.tasks.map(task => [task.id, task]))
 
 		for (const task of diff.create) {
@@ -112,8 +112,8 @@ function performTasksSync(state: WritableDraft<TasksState>, { payload }: { paylo
 			)
 	}
 
-	if (diff && diff.delete.length > 0) {
-		state.tasks = state.tasks.filter(task => !diff.delete.includes(task.id))
+	if (diff?.delete && diff.delete.length > 0) {
+		state.tasks = state.tasks.filter(task => !diff.delete!.includes(task.id))
 	}
 
 	state.lastServerUpdate = lastServerUpdate?.toString()

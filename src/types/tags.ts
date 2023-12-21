@@ -1,4 +1,5 @@
 import { Color } from 'antd/es/color-picker'
+import { Diff } from 'types/common'
 
 export interface Tag {
     id: string;
@@ -16,4 +17,8 @@ export interface TagForm extends Omit<Tag, 'id' | 'color'> {
 
 export type TagsState = {
     tags: Tag[]
+    lastServerUpdate?: string
+    isSyncing?: boolean
 }
+
+export type TagDiff = Diff<Tag>

@@ -4,7 +4,8 @@ import { performClientDiff } from 'lib/tasks/server'
 import type { CheckListItem, NewTaskValues, Task, TaskDiff, TasksState } from 'types/tasks'
 import type { RootState } from 'store/types'
 import { createLogStorage } from 'lib/syncLog/storages'
-import { PartialWithId, SyncPayload } from 'lib/syncLog/types'
+import { SyncPayload } from 'lib/syncLog/types'
+import { PartialWithId } from 'types/common'
 
 const createAction = actionCreatorFactory(storeKey)
 const createThunk = thunkCreatorFactory(storeKey)
@@ -17,7 +18,7 @@ export const updateChecklistItem = createAction<{ taskId: Task['id'], item: Chec
 export const addChecklistItem = createAction<Task['id']>('ADD_CHECKLIST_ITEM')
 export const removeChecklistItem = createAction<{ taskId: Task['id'], itemId: CheckListItem['id'] }>('REMOVE_CHECKLIST_ITEM')
 export const importTasks = createAction<Task[]>('IMPORT_TASKS')
-export const setIsSyncing = createAction<boolean>('SET_IS_SYNCING')
+export const setIsTasksSyncing = createAction<boolean>('SET_IS_SYNCING')
 export const initialSyncTasksWithServer = createThunk(
 	'INITIAL_SYNC_WITH_SERVER',
 	(_, api) => {
@@ -50,11 +51,8 @@ async function initialSync(state: TasksState): Promise<{ diff?: TaskDiff, lastSe
 				'Content-Type': 'application/json',
 			}
 		})
-		const result: { diff?: TaskDiff, lastServerUpdate?: Date } = await response.json()
 
-		if (result) {
-			return result
-		}
+		return await response.json()
 	} catch (error) {
 		console.error('startSync:performServerDiff:error', error)
 	}
@@ -84,20 +82,20 @@ async function startSync(state: TasksState): Promise<{ diff?: TaskDiff, lastServ
 
 	for (const log of tasksLog) {
 		if (log.created) {
-			clientDiff.create.push(log.created)
+			clientDiff.create!.push(log.created)
 		}
 		if (log.updated) {
 			const updateId = log.updated.id
-			const existedUpdate = clientDiff.update.find(task => task.id === updateId)
+			const existedUpdate = clientDiff.update!.find(task => task.id === updateId)
 
 			if (existedUpdate) {
 				Object.assign(existedUpdate, log.updated)
 			} else {
-				clientDiff.update.push(log.updated)
+				clientDiff.update!.push(log.updated)
 			}
 		}
 		if (log.deleted) {
-			clientDiff.delete.push(log.deleted)
+			clientDiff.delete!.push(log.deleted)
 		}
 	}
 
@@ -113,7 +111,7 @@ async function startSync(state: TasksState): Promise<{ diff?: TaskDiff, lastServ
 			await tasksSyncLogger.clear()
 		}
 	} catch (error) {
-		console.error('startSync:performServerDiff:error', error)
+		console.error('Task:startSync:performServerDiff:error', error)
 	}
 
 	return {

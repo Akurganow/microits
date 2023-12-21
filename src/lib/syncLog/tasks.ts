@@ -8,8 +8,7 @@ import {
 } from 'store/actions/tasks'
 import { createSyncConfig } from 'lib/syncLog/createSyncConfig'
 import type { Task } from 'types/tasks'
-import { RecursivePartial } from 'types/common'
-import { SyncPayload } from 'lib/syncLog/types'
+import type { SyncPayload } from 'lib/syncLog/types'
 
 const config = createSyncConfig<Task>(builder => builder
 	.case(addTask, ({ payload }) => ({
@@ -68,7 +67,7 @@ const config = createSyncConfig<Task>(builder => builder
 		return {}
 	})
 	.case(importTasks, ({ payload }) => {
-		const tasks = payload as RecursivePartial<Task>[]
+		const tasks = payload as Partial<Task>[]
 
 		return tasks.map(task => ({
 			created: task

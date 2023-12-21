@@ -1,5 +1,6 @@
 import { Dayjs } from 'dayjs'
-import { PartialWithId } from 'lib/syncLog/types'
+
+import { Diff } from 'types/common'
 
 export enum TaskStatus {
     Init = 'initial',
@@ -65,8 +66,4 @@ export type TasksState = {
     lastServerUpdate?: string
     isSyncing?: boolean
 }
-export type TaskDiff = {
-    update: PartialWithId<Task>[]
-    create: Task[]
-    delete: Task['id'][]
-}
+export type TaskDiff = Diff<Task>

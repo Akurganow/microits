@@ -4,12 +4,13 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'src/store'
 import { selectedIsSyncing, selectedLastServerUpdate } from 'store/selectors/tasks'
-import { setIsSyncing, syncTasksWithServer } from 'store/actions/tasks'
+import { setIsTasksSyncing, syncTasksWithServer } from 'store/actions/tasks'
 import st from './styles.module.css'
 import cn from 'classnames'
 import { selectedAutoSync } from 'store/selectors/settings'
 import { useFeatureFlag } from 'lib/hooks/featureFlags'
 import { LoadingOutlined, LogoutOutlined, SyncOutlined } from '@ant-design/icons'
+import { syncTagsWithServer } from 'store/actions/tags'
 
 const imageSize = 32
 
@@ -26,8 +27,9 @@ export default function ProfileMenu() {
 	const handleSyncWithServer = useCallback(() => {
 		if (autoSync) {
 			dispatch(syncTasksWithServer({ lastServerUpdate }))
+			dispatch(syncTagsWithServer({ lastServerUpdate }))
 		} else {
-			dispatch(setIsSyncing(false))
+			dispatch(setIsTasksSyncing(false))
 		}
 	}, [autoSync, dispatch, lastServerUpdate])
 

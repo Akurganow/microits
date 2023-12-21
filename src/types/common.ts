@@ -11,3 +11,10 @@ export type NullToOptional<T> = {
 export type RecursiveNullToOptional<T> = {
     [P in keyof T]: T[P] extends null ? T[P] | undefined : RecursiveNullToOptional<T[P]>
 }
+export type PartialWithId<T extends { id: string }> = Partial<T> & Pick<T, 'id'>
+
+export type Diff<T extends { id: string }> = {
+    create?: T[]
+    update?: PartialWithId<T>[]
+    delete?: T['id'][]
+}

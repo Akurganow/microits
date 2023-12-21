@@ -1,8 +1,7 @@
 import { UnknownAction } from 'redux'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { RootState } from 'store/types'
-
-export type PartialWithId<T extends { id: string }> = Partial<T> & Pick<T, 'id'>
+import { PartialWithId } from 'types/common'
 
 export type SyncPayload<T extends { id: string }> = {
     created?: T
