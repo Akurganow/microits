@@ -12,9 +12,7 @@ export type FeatureFlagsPhases = {
 }
 
 export async function getFeatureFlagsPhaseUsers() {
-	console.log('process.env.EDGE_CONFIG', process.env.EDGE_CONFIG)
 	const config = createClient(process.env.EDGE_CONFIG!)
-	console.log('config', config)
 
 	return await config.get<FeatureFlagsPhases>('featureFlagsUsers')
 }

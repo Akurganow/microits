@@ -19,6 +19,13 @@ export const addChecklistItem = createAction<Task['id']>('ADD_CHECKLIST_ITEM')
 export const removeChecklistItem = createAction<{ taskId: Task['id'], itemId: CheckListItem['id'] }>('REMOVE_CHECKLIST_ITEM')
 export const importTasks = createAction<Task[]>('IMPORT_TASKS')
 export const setIsSyncing = createAction<boolean>('SET_IS_SYNCING')
+export const initialSyncTasksWithServer = createThunk(
+	'INITIAL_SYNC_WITH_SERVER',
+	(_, api) => {
+		const state = api.getState() as RootState
+		return initialSync(state.tasks)
+	}
+)
 export const syncTasksWithServer = createThunk<
 	{ diff?: TaskDiff, lastServerUpdate?: Date } | undefined
 >(
@@ -29,17 +36,51 @@ export const syncTasksWithServer = createThunk<
 	},
 )
 
+async function initialSync(state: TasksState): Promise<{ diff?: TaskDiff, lastServerUpdate?: Date }> {
+	const clientDiff: TaskDiff = {
+		create: state.tasks,
+		update: [],
+		delete: [],
+	}
+	const lastServerUpdate = state.lastServerUpdate ? new Date(state.lastServerUpdate) : undefined
+
+	try {
+		const response = await fetch('/api/sync/tasks', {
+			method: 'POST',
+			next: { revalidate: 360 },
+			body: JSON.stringify({
+				diff: clientDiff,
+				lastServerUpdate: lastServerUpdate || new Date(0)
+			}),
+			headers: {
+
+			}
+		})
+		const result: { diff?: TaskDiff, lastServerUpdate?: Date } = await response.json()
+
+		console.log('initialSync:result', result)
+
+		if (result) {
+			return result
+		}
+	} catch (error) {
+		console.error('startSync:performServerDiff:error', error)
+	}
+
+	return {}
+}
+
 async function startSync(state: TasksState): Promise<{ diff?: TaskDiff, lastServerUpdate?: Date }> {
 	const lastServerUpdate = state.lastServerUpdate ? new Date(state.lastServerUpdate) : undefined
 
 	const clientDiff: TaskDiff = {
-		update: [],
 		create: [],
+		update: [],
 		delete: [],
 	}
 	let serverDiff: TaskDiff = {
-		update: [],
 		create: [],
+		update: [],
 		delete: [],
 	}
 

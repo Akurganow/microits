@@ -1,8 +1,8 @@
-import { TasksState } from 'types/tasks'
+import { TaskDiff, TasksState } from 'types/tasks'
 import {
 	addChecklistItem,
 	addTask,
-	importTasks,
+	importTasks, initialSyncTasksWithServer,
 	removeChecklistItem,
 	removeTask, setIsSyncing, setNewTask, syncTasksWithServer,
 	updateChecklistItem,
@@ -10,6 +10,7 @@ import {
 } from 'store/actions/tasks'
 import { createReducer } from '@reduxjs/toolkit'
 import { isEmpty } from '@plq/is'
+import { WritableDraft } from 'immer/src/types/types-external'
 
 const tasksReducer = (initialState: TasksState) => createReducer(initialState, builder =>
 	builder
@@ -68,48 +69,47 @@ const tasksReducer = (initialState: TasksState) => createReducer(initialState, b
 		.addCase(setIsSyncing, (state, action) => {
 			state.isSyncing = action.payload
 		})
+		.addCase(initialSyncTasksWithServer.pending, (state) => {
+			state.isSyncing = true
+		})
+		.addCase(initialSyncTasksWithServer.rejected, (state) => {
+			state.isSyncing = false
+		})
+		.addCase(initialSyncTasksWithServer.fulfilled, performTasksSync)
 		.addCase(syncTasksWithServer.pending, (state) => {
 			state.isSyncing = true
 		})
 		.addCase(syncTasksWithServer.rejected, (state) => {
 			state.isSyncing = false
 		})
-		.addCase(syncTasksWithServer.fulfilled, (state, { payload }) => {
-			console.log('syncWithServer.fulfilled:start')
-			if (!payload || isEmpty(payload)) return
-			// console.debug('syncWithServer.fulfilled:payload', payload)
-			const { diff, lastServerUpdate } = payload
-
-			// console.debug('syncWithServer.fulfilled:diff.create', diff?.create && diff.create.length > 0, diff?.create)
-			if (diff && diff.create.length > 0) {
-				const tasksMap = new Map(state.tasks.map(task => [task.id, task]))
-
-				for (const task of diff.create) {
-					tasksMap.set(task.id, task)
-				}
-
-				state.tasks = Array.from(tasksMap.values())
-				// console.debug('syncWithServer.fulfilled:diff.create:state.tasks', state.tasks)
-			}
-
-			for (const task of (diff?.update || [])) {
-				state.tasks.map(t => t.id === task.id ? { ...t, ...task } : t)
-			}
-
-			if (diff && diff.delete.length > 0) {
-				// console.debug('syncWithServer.fulfilled:diff.delete', diff.delete)
-				// console.debug(
-				// 	'syncWithServer.fulfilled:diff.delete:removedTasks',
-				// 	state.tasks
-				// 		.filter(task => diff.delete.includes(task.id))
-				// 		.map(({ id, title }) => ({ id, title }))
-				// )
-				state.tasks = state.tasks.filter(task => !diff.delete.includes(task.id))
-			}
-
-			state.lastServerUpdate = lastServerUpdate?.toString()
-			state.isSyncing = false
-		})
-
+		.addCase(syncTasksWithServer.fulfilled, performTasksSync)
 )
 export default tasksReducer
+
+function performTasksSync(state: WritableDraft<TasksState>, { payload }: { payload?: { diff?: TaskDiff, lastServerUpdate?: Date } }) {
+	state.isSyncing = false
+
+	if (!payload || isEmpty(payload)) return
+
+	const { diff, lastServerUpdate } = payload
+
+	if (diff && diff.create.length > 0) {
+		const tasksMap = new Map(state.tasks.map(task => [task.id, task]))
+
+		for (const task of diff.create) {
+			tasksMap.set(task.id, task)
+		}
+
+		state.tasks = Array.from(tasksMap.values())
+	}
+
+	for (const task of (diff?.update || [])) {
+		state.tasks.map(t => t.id === task.id ? { ...t, ...task } : t)
+	}
+
+	if (diff && diff.delete.length > 0) {
+		state.tasks = state.tasks.filter(task => !diff.delete.includes(task.id))
+	}
+
+	state.lastServerUpdate = lastServerUpdate?.toString()
+}

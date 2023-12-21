@@ -136,6 +136,7 @@
     "publicBeta": "Beta",
     "privateBeta": "Private beta",
     "manualSync": "Manual sync",
-    "autoSync": "Auto sync"
+    "autoSync": "Auto sync",
+    "autoSyncEnabled": "Auto sync enabled"
   }
 }

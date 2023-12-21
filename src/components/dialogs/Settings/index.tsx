@@ -1,6 +1,6 @@
 'use client'
 import { Form, Input, message, Modal, Switch } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { selectedDialog } from 'store/selectors/dialogs'
 import { useCallback, useEffect } from 'react'
@@ -8,12 +8,14 @@ import { closeDialog } from 'store/actions/dialogs'
 import { setOpenAIUserId, setSettings } from 'store/actions/settings'
 import { selectedOpenAI, selectedSettings } from 'store/selectors/settings'
 import FeatureFlag from 'components/FeatureFlag'
+import { initialSyncTasksWithServer } from 'store/actions/tasks'
+import { useAppDispatch } from 'src/store'
 
 export default function Settings() {
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const { t } = useTranslation()
 	const currentSettings = useSelector(selectedSettings)
-	const [messageApi] = message.useMessage()
+	const [messageApi, contextHolder] = message.useMessage()
 	const isDialogOpened = useSelector(selectedDialog('settings'))
 	const { userId } = useSelector(selectedOpenAI)
 	const [form] = Form.useForm()
@@ -28,7 +30,13 @@ export default function Settings() {
 		dispatch(setSettings(values))
 		dispatch(closeDialog('settings'))
 		messageApi.success(t('settingsSaved'))
-	}, [dispatch, messageApi, t])
+
+		if (values.autoSync && !currentSettings.autoSync) {
+			await dispatch(initialSyncTasksWithServer({}))
+			messageApi.success(t('autoSyncEnabled'))
+		}
+
+	}, [currentSettings.autoSync, dispatch, messageApi, t])
 
 	useEffect(() => {
 		if (!userId || userId.length === 0) {
@@ -45,6 +53,7 @@ export default function Settings() {
 		okText={t('save')}
 		onCancel={handleClose}
 	>
+		{contextHolder}
 		<Form
 			form={form}
 			id="settings-form"
