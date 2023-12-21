@@ -1,5 +1,4 @@
 import { Dayjs } from 'dayjs'
-import { RecursivePartial } from 'types/common'
 
 export enum TaskStatus {
     Init = 'initial',
@@ -66,7 +65,7 @@ export type TasksState = {
     isSyncing?: boolean
 }
 export type TaskDiff = {
-    update: (RecursivePartial<Task> & Pick<Task, 'id'>)[]
+    update: (Partial<Task> & Pick<Task, 'id'>)[]
     create: Task[]
     delete: Task['id'][]
 }

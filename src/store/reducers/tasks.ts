@@ -1,4 +1,4 @@
-import { TaskDiff, TasksState } from 'types/tasks'
+import { Task, TaskDiff, TasksState } from 'types/tasks'
 import {
 	addChecklistItem,
 	addTask,
@@ -106,7 +106,14 @@ function performTasksSync(state: WritableDraft<TasksState>, { payload }: { paylo
 	}
 
 	for (const task of (diff?.update || [])) {
-		state.tasks.map(t => t.id === task.id ? { ...t, ...task } : t)
+		console.log('performTasksSync:update', task)
+		console.log('performTasksSync:update:state.tasks', state.tasks.find(t => t.id === task.id))
+		state.tasks = state.tasks
+			.map(t =>
+				t.id === task.id
+					? { ...t, ...task } as Task
+					: t
+			)
 	}
 
 	if (diff && diff.delete.length > 0) {

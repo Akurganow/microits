@@ -256,20 +256,25 @@ export async function getLastServerUpdate() {
 				createdAt: true,
 			},
 			orderBy: [
+				{ createdAt: 'desc' },
 				{ updatedAt: 'desc' },
 				{ deletedAt: 'desc' },
-				{ createdAt: 'desc' },
 			],
 			take: 1,
 		})
 
 		if (tasks.length === 0) return
 
-		return [
+		const lastUpdate = Math.max.apply(null, [
 			tasks[0].updatedAt,
 			tasks[0].deletedAt,
 			tasks[0].createdAt,
-		].filter(Boolean).sort()[0] || undefined
+		]
+			.filter(Boolean)
+			.map(date => new Date(date!).getTime()))
+
+		console.log('getLastServerUpdate:lastUpdate', lastUpdate ? new Date(lastUpdate) : undefined)
+		return lastUpdate ? new Date(lastUpdate) : undefined
 	} catch (error) {
 		throw new Error(error)
 	}
@@ -302,6 +307,8 @@ export async function performClientDiff(clientDiff: TaskDiff, lastClientUpdate: 
 
 	const serverDiff = await getServerTasksDiff(lastClientUpdate)
 	const newServerUpdate = await getLastServerUpdate()
+
+	console.info('performClientDiff:newServerUpdate', newServerUpdate?.toISOString())
 
 	return {
 		diff: serverDiff,
