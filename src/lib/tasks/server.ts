@@ -45,6 +45,8 @@ export async function createManyTasks(data: Prisma.TaskCreateManyInput[]) {
 	const updatedTasks = data.filter(task => existingIds.includes(task.id as string))
 	const newTasks = data.filter(task => !existingIds.includes(task.id as string))
 
+	console.info('createManyTasks:updatedTasks', { ids, existingIds, updatedTasks, newTasks })
+
 	if (updatedTasks.length > 0) {
 		await updateManyTasks(updatedTasks as ClientTask[])
 	}
