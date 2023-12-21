@@ -9,6 +9,7 @@ import AnalyzeButton from 'components/AnalyzeButton'
 import LoginButton from 'components/LoginButton'
 import { useAppDispatch } from 'src/store'
 import FeatureFlag from 'components/FeatureFlag'
+import DevMode from 'components/DevMode'
 
 export default function Header() {
 	const dispatch = useAppDispatch()
@@ -51,9 +52,9 @@ export default function Header() {
 						</Button>
 					</Tooltip>
 
-					<FeatureFlag name="auth">
+					<DevMode>
 						<LoginButton />
-					</FeatureFlag>
+					</DevMode>
 				</Flex>
 			</Flex>
 		</Layout.Header>
