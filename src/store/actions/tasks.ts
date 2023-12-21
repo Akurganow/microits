@@ -58,8 +58,6 @@ async function initialSync(state: TasksState): Promise<{ diff?: TaskDiff, lastSe
 		})
 		const result: { diff?: TaskDiff, lastServerUpdate?: Date } = await response.json()
 
-		console.log('initialSync:result', result)
-
 		if (result) {
 			return result
 		}
