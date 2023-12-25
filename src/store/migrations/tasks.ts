@@ -28,8 +28,12 @@ const tasks: MigrationManifest = {
 			checkList: undefined
 		}))
 	}),
+	4: (state: PersistPartial<TasksState>) => ({
+		...state,
+		items: (state as unknown as { tasks: TasksState['items'] }).tasks,
+	}),
 }
 
-export const tasksVersion = 3
+export const version = 4
 
 export default tasks
