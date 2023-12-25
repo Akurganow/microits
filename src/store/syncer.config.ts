@@ -4,8 +4,9 @@ import { RootState } from 'store/types'
 const syncerVersion = 1
 const syncer = new Syncer<RootState>('nanoits', syncerVersion)
 	.addIgnoredActions([
-		'persist',
-		'dialogs',
+		'persist/',
+		'settings/',
+		'dialogs/',
 	])
 
 export default syncer
