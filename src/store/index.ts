@@ -15,8 +15,8 @@ import settingsMigrations from 'store/migrations/settings'
 import tagsMigrations from 'store/migrations/tags'
 import { isServer } from 'lib/is'
 import { createNoopStorage } from 'lib/storage'
-import logMiddleware from 'store/middleware/log'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import syncer from 'store/syncer.config'
 
 export const PERSIST_STORAGE_DB_NAME = 'nanoits'
 
@@ -99,7 +99,7 @@ export const makeStore = () => configureStore({
 	devTools: process.env.NODE_ENV !== 'production',
 	middleware: gDM => gDM({
 		serializableCheck: false,
-	}).concat(logMiddleware),
+	}).concat(syncer.createReduxMiddleware()),
 })
 
 export const getPersistedStore = () => {

@@ -1,9 +1,14 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import syncer from 'store/syncer.config'
 
-export const config = {
-	matcher: '/welcome',
-}
+const syncMiddleware = syncer.createNextMiddleware()
 
-export async function middleware() {
-	return NextResponse.json({ message: 'Welcome to Vercel Edge!' })
+export const config = syncMiddleware.config
+
+export async function middleware(request: NextRequest) {
+	if (syncMiddleware.match(request)) {
+		const body = syncMiddleware.handler(request)
+
+		return NextResponse.json(body, { status: 200 })
+	}
 }
