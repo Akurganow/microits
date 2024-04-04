@@ -47,6 +47,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 				<meta name="msapplication-TileColor" content={primaryColor}/>
 				<meta name="theme-color" content="#ffffff"/>
 			</head>
+
 			<body className={inter.className} suppressHydrationWarning={true}>
 				{children}
 				<div id="dialog"></div>

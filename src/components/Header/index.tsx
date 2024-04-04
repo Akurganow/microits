@@ -10,6 +10,7 @@ import LoginButton from 'components/LoginButton'
 import { useAppDispatch } from 'src/store'
 import FeatureFlag from 'components/FeatureFlag'
 import DevMode from 'components/DevMode'
+import LogRocketComponent from 'components/LogRocket'
 
 export default function Header() {
 	const dispatch = useAppDispatch()
@@ -21,6 +22,8 @@ export default function Header() {
 	}, [dispatch])
 
 	return <>
+		<LogRocketComponent />
+
 		<Layout.Header className={st.header}>
 			<Flex justify="space-between" align="center">
 				<Logo />
