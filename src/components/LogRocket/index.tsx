@@ -15,6 +15,7 @@ export default function LogRocketComponent() {
 		LogRocket.identify(user.id, {
 			name: user.name || user.email,
 			email: user.email,
+			env: process.env.NODE_ENV,
 		})
 	}
 
