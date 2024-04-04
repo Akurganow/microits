@@ -22,7 +22,7 @@ export default function Header() {
 	}, [dispatch])
 
 	return <>
-		<LogRocketComponent />
+		{process.env.NODE_ENV! === 'production' && <LogRocketComponent/>}
 
 		<Layout.Header className={st.header}>
 			<Flex justify="space-between" align="center">
