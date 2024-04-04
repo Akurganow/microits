@@ -7,7 +7,7 @@ export default function LogRocketComponent() {
 	const user = useUser()
 
 	if (typeof window !== 'undefined') {
-		LogRocket.init('xm5w3t/alexenda')
+		LogRocket.init(process.env.NEXT_PUBLIC_LOGROCKET_APP_ID!)
 		setupLogRocketReact(LogRocket)
 	}
 
